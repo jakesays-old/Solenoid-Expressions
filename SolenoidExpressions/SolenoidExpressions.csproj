@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{710961A3-0DF4-49E4-A26E-F5B9C044AC84}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Solenoid.Expressions</AssemblyName>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Solenoid.Expressions</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UseAlternateLikeImplementation Condition="Exists('$(ProjectDir)LikeOperatorImplementation.cs')">true</UseAlternateLikeImplementation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG;NET_4_0;DEBUG_DYNAMIC_DISABLED</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>219, 162, 618, 1591</NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;NET_4_0</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>219, 162, 618, 1591</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" Condition="'$(UseAlternateLikeImplementation)' != 'true'" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Collections\CaseInsensitiveHashtable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Collections\DictionarySet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Collections\HybridSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Collections\ISet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Collections\LinkedList.cs" />
+    <Compile Include="Support\Collections\ListSet.cs" />
+    <Compile Include="Support\Collections\Set.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\IErrorCoded.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\InvalidPropertyException.cs" />
+    <Compile Include="Support\MethodInvocationException.cs" />
+    <Compile Include="Support\NotReadablePropertyException.cs" />
+    <Compile Include="Support\NotWritablePropertyException.cs" />
+    <Compile Include="Support\NullValueInNestedPathException.cs" />
+    <Compile Include="Support\PropertyAccessException.cs" />
+    <Compile Include="Support\PropertyChangeEventArgs.cs" />
+    <Compile Include="Support\TypeConversion\TypeConversionUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\TypeConversion\FileInfoConverter.cs" />
+    <Compile Include="Support\TypeConversion\NameValueConverter.cs" />
+    <Compile Include="Support\TypeConversion\RegexConverter.cs" />
+    <Compile Include="Support\TypeConversion\RuntimeTypeConverter.cs" />
+    <Compile Include="Support\TypeConversion\StringArrayConverter.cs" />
+    <Compile Include="Support\TypeConversion\TimeSpanConverter.cs" />
+    <Compile Include="Support\TypeConversion\TypeConverterRegistry.cs" />
+    <Compile Include="Support\TypeConversion\UriConverter.cs" />
+    <Compile Include="Support\TypeMismatchException.cs" />
+    <Compile Include="Support\TypeResolution\CachedTypeResolver.cs" />
+    <Compile Include="Support\TypeResolution\GenericArgumentsHolder.cs" />
+    <Compile Include="Support\TypeResolution\TypeAssemblyHolder.cs" />
+    <Compile Include="Support\TypeResolution\GenericTypeResolver.cs" />
+    <Compile Include="Support\TypeResolution\ITypeResolver.cs" />
+    <Compile Include="Support\TypeResolution\TypeResolutionUtils.cs" />
+    <Compile Include="Support\TypeResolution\TypeRegistry.cs" />
+    <Compile Include="Support\TypeResolution\TypeResolver.cs" />
+    <Compile Include="DefaultNode.cs" />
+    <Compile Include="ExpressionConverter.cs" />
+    <Compile Include="OpXOR.cs" />
+    <Compile Include="Parser\antlr\ANTLRException.cs" />
+    <Compile Include="Parser\antlr\ANTLRPanicException.cs" />
+    <Compile Include="Parser\antlr\ASTFactory.cs" />
+    <Compile Include="Parser\antlr\ASTNodeCreator.cs" />
+    <Compile Include="Parser\antlr\ASTNULLType.cs" />
+    <Compile Include="Parser\antlr\ASTPair.cs" />
+    <Compile Include="Parser\antlr\ASTVisitor.cs" />
+    <Compile Include="Parser\antlr\BaseAST.cs" />
+    <Compile Include="Parser\antlr\ByteBuffer.cs" />
+    <Compile Include="Parser\antlr\CharBuffer.cs" />
+    <Compile Include="Parser\antlr\CharQueue.cs" />
+    <Compile Include="Parser\antlr\CharScanner.cs" />
+    <Compile Include="Parser\antlr\CharStreamException.cs" />
+    <Compile Include="Parser\antlr\CharStreamIOException.cs" />
+    <Compile Include="Parser\antlr\collections\AST.cs" />
+    <Compile Include="Parser\antlr\collections\impl\ASTArray.cs" />
+    <Compile Include="Parser\antlr\collections\impl\BitSet.cs" />
+    <Compile Include="Parser\antlr\CommonAST.cs" />
+    <Compile Include="Parser\antlr\CommonASTWithHiddenTokens.cs" />
+    <Compile Include="Parser\antlr\CommonHiddenStreamToken.cs" />
+    <Compile Include="Parser\antlr\CommonToken.cs" />
+    <Compile Include="Parser\antlr\debug\ANTLREventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingCharScanner.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingInputBuffer.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingParser.cs" />
+    <Compile Include="Parser\antlr\debug\GuessingEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ICharScannerDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\IDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferListener.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferReporter.cs" />
+    <Compile Include="Parser\antlr\debug\IParserDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\Listener.cs" />
+    <Compile Include="Parser\antlr\debug\LLkDebuggingParser.cs" />
+    <Compile Include="Parser\antlr\debug\MessageEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\MessageListener.cs" />
+    <Compile Include="Parser\antlr\debug\MessageListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\NewLineEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\NewLineListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserController.cs" />
+    <Compile Include="Parser\antlr\debug\ParserEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\ParserListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParserReporter.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParseTreeDebugParser.cs" />
+    <Compile Include="Parser\antlr\debug\ScannerEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateListener.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateListener.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\TraceEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\TraceListener.cs" />
+    <Compile Include="Parser\antlr\debug\TraceListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\Tracer.cs" />
+    <Compile Include="Parser\antlr\DefaultFileLineFormatter.cs" />
+    <Compile Include="Parser\antlr\DumpASTVisitor.cs" />
+    <Compile Include="Parser\antlr\FileLineFormatter.cs" />
+    <Compile Include="Parser\antlr\IHiddenStreamToken.cs" />
+    <Compile Include="Parser\antlr\InputBuffer.cs" />
+    <Compile Include="Parser\antlr\IToken.cs" />
+    <Compile Include="Parser\antlr\LexerSharedInputState.cs" />
+    <Compile Include="Parser\antlr\LLkParser.cs" />
+    <Compile Include="Parser\antlr\MismatchedCharException.cs" />
+    <Compile Include="Parser\antlr\MismatchedTokenException.cs" />
+    <Compile Include="Parser\antlr\NoViableAltException.cs" />
+    <Compile Include="Parser\antlr\NoViableAltForCharException.cs" />
+    <Compile Include="Parser\antlr\Parser.cs" />
+    <Compile Include="Parser\antlr\ParserSharedInputState.cs" />
+    <Compile Include="Parser\antlr\ParseTree.cs" />
+    <Compile Include="Parser\antlr\ParseTreeRule.cs" />
+    <Compile Include="Parser\antlr\ParseTreeToken.cs" />
+    <Compile Include="Parser\antlr\RecognitionException.cs" />
+    <Compile Include="Parser\antlr\SemanticException.cs" />
+    <Compile Include="Parser\antlr\StringUtils.cs" />
+    <Compile Include="Parser\antlr\SupportClass.cs" />
+    <Compile Include="Parser\antlr\Token.cs" />
+    <Compile Include="Parser\antlr\TokenBuffer.cs" />
+    <Compile Include="Parser\antlr\TokenCreator.cs" />
+    <Compile Include="Parser\antlr\TokenQueue.cs" />
+    <Compile Include="Parser\antlr\TokenStream.cs" />
+    <Compile Include="Parser\antlr\TokenStreamBasicFilter.cs" />
+    <Compile Include="Parser\antlr\TokenStreamException.cs" />
+    <Compile Include="Parser\antlr\TokenStreamHiddenTokenFilter.cs" />
+    <Compile Include="Parser\antlr\TokenStreamIOException.cs" />
+    <Compile Include="Parser\antlr\TokenStreamRecognitionException.cs" />
+    <Compile Include="Parser\antlr\TokenStreamRetryException.cs" />
+    <Compile Include="Parser\antlr\TokenStreamRewriteEngine.cs" />
+    <Compile Include="Parser\antlr\TokenStreamSelector.cs" />
+    <Compile Include="Parser\antlr\TokenWithIndex.cs" />
+    <Compile Include="Parser\antlr\TreeParser.cs" />
+    <Compile Include="Parser\antlr\TreeParserSharedInputState.cs" />
+    <Compile Include="Processors\DateConversionProcessor.cs" />
+    <Compile Include="Processors\IMethodCallProcessor.cs" />
+    <Compile Include="SyntaxErrorException.cs" />
+    <Compile Include="Parser\ExpressionLexer.cs" />
+    <Compile Include="Parser\ExpressionParser.cs" />
+    <Compile Include="Processors\AverageAggregator.cs" />
+    <Compile Include="Processors\ConversionProcessor.cs" />
+    <Compile Include="Processors\NonNullProcessor.cs" />
+    <Compile Include="Processors\OrderByProcessor.cs" />
+    <Compile Include="Processors\DistinctProcessor.cs" />
+    <Compile Include="Processors\ReverseProcessor.cs" />
+    <Compile Include="Processors\SortProcessor.cs" />
+    <Compile Include="Processors\CountAggregator.cs" />
+    <Compile Include="Processors\SumAggregator.cs" />
+    <Compile Include="Processors\MinAggregator.cs" />
+    <Compile Include="Processors\MaxAggregator.cs" />
+    <Compile Include="Processors\ICollectionProcessor.cs" />
+    <Compile Include="ArrayConstructorNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssignNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BinaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BooleanLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConstructorNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AttributeNode.cs" />
+    <Compile Include="LocalFunctionNode.cs" />
+    <Compile Include="FunctionNode.cs" />
+    <Compile Include="LocalVariableNode.cs" />
+    <Compile Include="LambdaExpressionNode.cs" />
+    <Compile Include="OpBetween.cs" />
+    <Compile Include="OpMatches.cs" />
+    <Compile Include="OpIs.cs" />
+    <Compile Include="SelectionLastNode.cs" />
+    <Compile Include="SelectionFirstNode.cs" />
+    <Compile Include="SelectionNode.cs" />
+    <Compile Include="MapEntryNode.cs" />
+    <Compile Include="MapInitializerNode.cs" />
+    <Compile Include="ListInitializerNode.cs" />
+    <Compile Include="OpIn.cs" />
+    <Compile Include="QualifiedIdentifier.cs" />
+    <Compile Include="NamedArgumentNode.cs" />
+    <Compile Include="Expression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExpressionEvaluator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExpressionListNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HexLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IExpression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IndexerNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MethodNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeWithArguments.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpADD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpAND.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpDIVIDE.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpEqual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpGreater.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpGreaterOrEqual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpLess.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpLessOrEqual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpMODULUS.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpMULTIPLY.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpNOT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpNotEqual.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpOR.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpPOWER.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpSUBTRACT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpUnaryMinus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpUnaryPlus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProjectionNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyOrFieldNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RealLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpringAST.cs" />
+    <Compile Include="StringLiteralNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TernaryNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TypeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnaryOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VariableNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Logging\FormatMessageHandler.cs" />
+    <Compile Include="Support\Logging\ILog.cs" />
+    <Compile Include="Support\Logging\ILoggerFactoryAdapter.cs" />
+    <Compile Include="Support\Logging\LogLevel.cs" />
+    <Compile Include="Support\Logging\LogManager.cs" />
+    <Compile Include="Support\Logging\NoOpLogger.cs" />
+    <Compile Include="Support\Logging\NoOpLoggerFactoryAdapter.cs" />
+    <Compile Include="Support\Reflection\Dynamic\BaseDynamicMember.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicConstructor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicIndexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicMethod.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Reflection\Dynamic\DynamicReflectionManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\ArrayUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\AssertUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\CompareUtils.cs" />
+    <Compile Include="Support\Util\FatalReflectionException.cs" />
+    <Compile Include="Support\Util\ObjectUtils.cs" />
+    <Compile Include="Support\Util\PatternMatchUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\ReflectionException.cs" />
+    <Compile Include="Support\Util\SecurityCritical.cs" />
+    <Compile Include="Support\Util\SystemUtils.cs" />
+    <Compile Include="Support\Util\DynamicCodeManager.cs" />
+    <Compile Include="Support\Util\NumberUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\ReflectionUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Support\Util\StringUtils.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="Expression.g" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Parser\antlr\README_ANTLR.txt" />
+    <Content Include="Parser\ExpressionParserTokenTypes.txt" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseAlternateLikeImplementation)' == 'true'">
+      <Compile Include="LikeOperatorImplementation.cs" />
+    <Compile Include="OpLike.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseAlternateLikeImplementation)' != 'true'">
+    <Compile Include="OpLikeVb.cs" />
+  </ItemGroup>
+    <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)..\BuildTools\antlr-2.7.6\antlr-2.7.6.exe -o $(ProjectDir)Parser $(ProjectDir)Expression.g
+</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
