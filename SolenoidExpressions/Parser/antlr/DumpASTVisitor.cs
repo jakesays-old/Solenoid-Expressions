@@ -29,7 +29,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		private void tabs() 
 		{
-			for (int i = 0; i < level; i++) 
+			for (var i = 0; i < level; i++) 
 			{
 				Console.Out.Write("   ");
 			}
@@ -38,7 +38,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		public void visit(AST node) 
 		{
 			// Flatten this level of the tree if it has no children
-			bool flatten = /*true*/ false;
+			var flatten = /*true*/ false;
 			AST node2;
 			for (node2 = node; node2 != null; node2 = node2.getNextSibling()) 
 			{

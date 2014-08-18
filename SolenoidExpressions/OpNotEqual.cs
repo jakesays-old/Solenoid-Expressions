@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpNotEqual():base()
+        public OpNotEqual()
         {
         }
 
@@ -54,32 +50,26 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object leftVal = GetLeftValue( context, evalContext );
-            object rightVal = GetRightValue( context, evalContext );
+            var leftVal = GetLeftValue( context, evalContext );
+            var rightVal = GetRightValue( context, evalContext );
 
             if (leftVal == null)
             {
                 return (rightVal != null);
             }
-            else if (rightVal == null)
-            {
-                return true;
-            }
-            else if (leftVal.GetType() == rightVal.GetType())
-            {
-                if (leftVal is Array)
-                {
-                    return !ArrayUtils.AreEqual(leftVal as Array, rightVal as Array);
-                }
-                else
-                {
-                    return !leftVal.Equals(rightVal);
-                }
-            }
-            else
-            {
-                return CompareUtils.Compare(leftVal, rightVal) != 0;
-            }
+	        if (rightVal == null)
+	        {
+		        return true;
+	        }
+	        if (leftVal.GetType() == rightVal.GetType())
+	        {
+		        if (leftVal is Array)
+		        {
+			        return !ArrayUtils.AreEqual(leftVal as Array, rightVal as Array);
+		        }
+		        return !leftVal.Equals(rightVal);
+	        }
+	        return CompareUtils.Compare(leftVal, rightVal) != 0;
         }
     }
 }

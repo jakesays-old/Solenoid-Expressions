@@ -27,7 +27,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/*
 		* CharStreamException constructor comment.
 		*/
-		public CharStreamException(string s) : base(s)
+		public CharStreamException(string message) : base(message)
 		{
 		}
 	}

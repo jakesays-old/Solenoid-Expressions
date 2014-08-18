@@ -45,7 +45,7 @@ namespace Solenoid.Expressions.Processors
         public object Process(ICollection source, object[] args)
         {
             object total = 0d;
-            foreach (object item in source)
+            foreach (var item in source)
             {
                 if (item != null)
                 {

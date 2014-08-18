@@ -42,7 +42,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			get
 			{
-				StringBuilder mesg = new StringBuilder("unexpected char: ");
+				var mesg = new StringBuilder("unexpected char: ");
 			
 				// I'm trying to mirror a change in the C++ stuff.
 				// But java seems to lack something isprint-ish..

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 
@@ -30,7 +26,7 @@ namespace Solenoid.Expressions
     [Serializable]
     public class IntLiteralNode : BaseNode
     {
-        private object nodeValue;
+        private object _nodeValue;
 
         /// <summary>
         /// Create a new instance
@@ -44,7 +40,7 @@ namespace Solenoid.Expressions
         /// </summary>
         public IntLiteralNode(string text)
         {
-            this.Text = text;
+            Text = text;
         }
 
         /// <summary>
@@ -63,26 +59,26 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (nodeValue == null)
+            if (_nodeValue == null)
             {
                 lock (this)
                 {
-                    if (nodeValue == null)
+                    if (_nodeValue == null)
                     {
-                        string n = this.getText();
+                        var n = getText();
                         try
                         {
-                            nodeValue = Int32.Parse(n);
+                            _nodeValue = Int32.Parse(n);
                         }
                         catch (OverflowException)
                         {
-                            nodeValue = Int64.Parse(n);
+                            _nodeValue = Int64.Parse(n);
                         }
                     }
                 }
             }
 
-            return nodeValue;
+            return _nodeValue;
         }
     }
 }

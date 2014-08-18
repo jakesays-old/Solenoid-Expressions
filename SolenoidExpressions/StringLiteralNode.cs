@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 
@@ -33,16 +29,16 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public StringLiteralNode():base()
+        public StringLiteralNode()
         {
         }
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public StringLiteralNode(string text):base()
+        public StringLiteralNode(string text)
         {
-            this.Text = text;
+            Text = text;
         }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            return this.getText();
+            return getText();
         }
     }
 }

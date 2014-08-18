@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -36,39 +32,39 @@ namespace Solenoid.Expressions
     [Serializable]
     public class MethodNode : NodeWithArguments
     {
-        private const BindingFlags BINDING_FLAGS
+        private const BindingFlags DefaultBindingFlags
             = BindingFlags.Public | BindingFlags.NonPublic
             | BindingFlags.Instance | BindingFlags.Static
             | BindingFlags.IgnoreCase;
 
-        private static readonly IDictionary collectionProcessorMap = new Hashtable();
-        private static readonly IDictionary extensionMethodProcessorMap = new Hashtable();
+        private static readonly IDictionary _collectionProcessorMap = new Hashtable();
+        private static readonly IDictionary _extensionMethodProcessorMap = new Hashtable();
 
-        private bool initialized = false;
-        private bool cachedIsParamArray = false;
-        private Type paramArrayType;
-        private int argumentCount;
-        private SafeMethod cachedInstanceMethod;
-        private int cachedInstanceMethodHash;
+        private bool _initialized = false;
+        private bool _cachedIsParamArray = false;
+        private Type _paramArrayType;
+        private int _argumentCount;
+        private SafeMethod _cachedInstanceMethod;
+        private int _cachedInstanceMethodHash;
 
         /// <summary>
         /// Static constructor. Initializes a map of special collection processor methods.
         /// </summary>
         static MethodNode()
         {
-            collectionProcessorMap.Add("count", new CountAggregator());
-            collectionProcessorMap.Add("sum", new SumAggregator());
-            collectionProcessorMap.Add("max", new MaxAggregator());
-            collectionProcessorMap.Add("min", new MinAggregator());
-            collectionProcessorMap.Add("average", new AverageAggregator());
-            collectionProcessorMap.Add("sort", new SortProcessor());
-            collectionProcessorMap.Add("orderBy", new OrderByProcessor());
-            collectionProcessorMap.Add("distinct", new DistinctProcessor());
-            collectionProcessorMap.Add("nonNull", new NonNullProcessor());
-            collectionProcessorMap.Add("reverse", new ReverseProcessor());
-            collectionProcessorMap.Add("convert", new ConversionProcessor());
+            _collectionProcessorMap.Add("count", new CountAggregator());
+            _collectionProcessorMap.Add("sum", new SumAggregator());
+            _collectionProcessorMap.Add("max", new MaxAggregator());
+            _collectionProcessorMap.Add("min", new MinAggregator());
+            _collectionProcessorMap.Add("average", new AverageAggregator());
+            _collectionProcessorMap.Add("sort", new SortProcessor());
+            _collectionProcessorMap.Add("orderBy", new OrderByProcessor());
+            _collectionProcessorMap.Add("distinct", new DistinctProcessor());
+            _collectionProcessorMap.Add("nonNull", new NonNullProcessor());
+            _collectionProcessorMap.Add("reverse", new ReverseProcessor());
+            _collectionProcessorMap.Add("convert", new ConversionProcessor());
 
-            extensionMethodProcessorMap.Add("date", new DateConversionProcessor());
+            _extensionMethodProcessorMap.Add("date", new DateConversionProcessor());
         }
 
         /// <summary>
@@ -94,8 +90,8 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string methodName = this.getText();
-            object[] argValues = ResolveArguments(evalContext);
+            var methodName = this.getText();
+            var argValues = ResolveArguments(evalContext);
             ICollectionProcessor localCollectionProcessor = null;
             IMethodCallProcessor methodCallProcessor = null;
 
@@ -106,7 +102,7 @@ namespace Solenoid.Expressions
                 if ((context == null || context is ICollection))
                 {
                     // predefined collection processor?
-                    localCollectionProcessor = (ICollectionProcessor)collectionProcessorMap[methodName];
+                    localCollectionProcessor = (ICollectionProcessor)_collectionProcessorMap[methodName];
 
                     // user-defined collection processor?
                     if (localCollectionProcessor == null && evalContext.Variables != null)
@@ -118,7 +114,7 @@ namespace Solenoid.Expressions
                 }
 
                 // try extension methods
-                methodCallProcessor = (IMethodCallProcessor)extensionMethodProcessorMap[methodName];
+                methodCallProcessor = (IMethodCallProcessor)_extensionMethodProcessorMap[methodName];
                 {
                     // user-defined extension method processor?
                     if (methodCallProcessor == null && evalContext.Variables != null)
@@ -133,16 +129,16 @@ namespace Solenoid.Expressions
                 if (context != null)
                 {
                     // calculate checksum, if the cached method matches the current context
-                    if (initialized)
+                    if (_initialized)
                     {
-                        int calculatedHash = CalculateMethodHash(context.GetType(), argValues);
-                        initialized = (calculatedHash == cachedInstanceMethodHash);
+                        var calculatedHash = CalculateMethodHash(context.GetType(), argValues);
+                        _initialized = (calculatedHash == _cachedInstanceMethodHash);
                     }
 
-                    if (!initialized)
+                    if (!_initialized)
                     {
                         Initialize(methodName, argValues, context);
-                        initialized = true;
+                        _initialized = true;
                     }
                 }
             }
@@ -151,69 +147,65 @@ namespace Solenoid.Expressions
             {
                 return localCollectionProcessor.Process((ICollection)context, argValues);
             }
-            else if (methodCallProcessor != null)
-            {
-                return methodCallProcessor.Process(context, argValues);
-            }
-            else if (cachedInstanceMethod != null)
-            {
-                object[] paramValues = (cachedIsParamArray)
-                                        ? ReflectionUtils.PackageParamArray(argValues, argumentCount, paramArrayType)
-                                        : argValues;
-                return cachedInstanceMethod.Invoke(context, paramValues);
-            }
-            else
-            {
-                throw new ArgumentException(string.Format("Method '{0}' with the specified number and types of arguments does not exist.", methodName));
-            }
+	        if (methodCallProcessor != null)
+	        {
+		        return methodCallProcessor.Process(context, argValues);
+	        }
+	        if (_cachedInstanceMethod != null)
+	        {
+		        var paramValues = (_cachedIsParamArray)
+			        ? ReflectionUtils.PackageParamArray(argValues, _argumentCount, _paramArrayType)
+			        : argValues;
+		        return _cachedInstanceMethod.Invoke(context, paramValues);
+	        }
+	        throw new ArgumentException(string.Format("Method '{0}' with the specified number and types of arguments does not exist.", methodName));
         }
 
         private int CalculateMethodHash(Type contextType, object[] argValues)
         {
-            int hash = contextType.GetHashCode();
-            for (int i = 0; i < argValues.Length; i++)
+            var hash = contextType.GetHashCode();
+            for (var i = 0; i < argValues.Length; i++)
             {
-                object arg = argValues[i];
-                if (arg != null)
-                    hash += s_primes[i] * arg.GetType().GetHashCode();
+                var arg = argValues[i];
+	            if (arg != null)
+	            {
+		            hash += _primeNumbers[i] * arg.GetType().GetHashCode();
+	            }
             }
             return hash;
         }
 
         private void Initialize(string methodName, object[] argValues, object context)
         {
-            Type contextType = (context is Type ? context as Type : context.GetType());
+            var contextType = (context is Type ? context as Type : context.GetType());
 
             // check the context type first
-            MethodInfo mi = GetBestMethod(contextType, methodName, BINDING_FLAGS, argValues);
+            var mi = GetBestMethod(contextType, methodName, DefaultBindingFlags, argValues);
 
             // if not found, probe the Type's type          
             if (mi == null)
             {
-                mi = GetBestMethod(typeof(Type), methodName, BINDING_FLAGS, argValues);
+                mi = GetBestMethod(typeof(Type), methodName, DefaultBindingFlags, argValues);
             }
 
             if (mi == null)
             {
                 return;
             }
-            else
-            {
-                ParameterInfo[] parameters = mi.GetParameters();
-                if (parameters.Length > 0)
-                {
-                    ParameterInfo lastParameter = parameters[parameters.Length - 1];
-                    cachedIsParamArray = lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
-                    if (cachedIsParamArray)
-                    {
-                        paramArrayType = lastParameter.ParameterType.GetElementType();
-                        argumentCount = parameters.Length;
-                    }
-                }
+	        var parameters = mi.GetParameters();
+	        if (parameters.Length > 0)
+	        {
+		        var lastParameter = parameters[parameters.Length - 1];
+		        _cachedIsParamArray = lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
+		        if (_cachedIsParamArray)
+		        {
+			        _paramArrayType = lastParameter.ParameterType.GetElementType();
+			        _argumentCount = parameters.Length;
+		        }
+	        }
 
-                cachedInstanceMethod = new SafeMethod(mi);
-                cachedInstanceMethodHash = CalculateMethodHash(contextType, argValues);
-            }
+	        _cachedInstanceMethod = new SafeMethod(mi);
+	        _cachedInstanceMethodHash = CalculateMethodHash(contextType, argValues);
         }
 
         /// <summary>
@@ -234,7 +226,7 @@ namespace Solenoid.Expressions
             catch (AmbiguousMatchException)
             {
 
-                IList<MethodInfo> overloads = GetCandidateMethods(type, methodName, bindingFlags, argValues.Length);
+                var overloads = GetCandidateMethods(type, methodName, bindingFlags, argValues.Length);
                 if (overloads.Count > 0)
                 {
                     mi = ReflectionUtils.GetMethodByArgumentValues(overloads, argValues);
@@ -247,21 +239,21 @@ namespace Solenoid.Expressions
 
         private static IList<MethodInfo> GetCandidateMethods(Type type, string methodName, BindingFlags bindingFlags, int argCount)
         {
-            MethodInfo[] methods = type.GetMethods(bindingFlags | BindingFlags.FlattenHierarchy);
-            List<MethodInfo> matches = new List<MethodInfo>();
+            var methods = type.GetMethods(bindingFlags | BindingFlags.FlattenHierarchy);
+            var matches = new List<MethodInfo>();
 
-            foreach (MethodInfo method in methods)
+            foreach (var method in methods)
             {
                 if (method.Name == methodName)
                 {
-                    ParameterInfo[] parameters = method.GetParameters();
+                    var parameters = method.GetParameters();
                     if (parameters.Length == argCount)
                     {
                         matches.Add(method);
                     }
                     else if (parameters.Length > 0)
                     {
-                        ParameterInfo lastParameter = parameters[parameters.Length - 1];
+                        var lastParameter = parameters[parameters.Length - 1];
                         if (lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0)
                         {
                             matches.Add(method);
@@ -274,21 +266,21 @@ namespace Solenoid.Expressions
         }
 
         // used to calculate signature hash while caring for arg positions
-        private static readonly int[] s_primes =
-            {
-                17, 19, 23, 29
-                , 31, 37, 41, 43, 47, 53, 59, 61, 67, 71
-                , 73, 79, 83, 89, 97, 101, 103, 107, 109, 113
-                , 127, 131, 137, 139, 149, 151, 157, 163, 167, 173
-                , 179, 181, 191, 193, 197, 199, 211, 223, 227, 229
-                , 233, 239, 241, 251, 257, 263, 269, 271, 277, 281
-                , 283, 293, 307, 311, 313, 317, 331, 337, 347, 349
-                , 353, 359, 367, 373, 379, 383, 389, 397, 401, 409
-                , 419, 421, 431, 433, 439, 443, 449, 457, 461, 463
-                , 467, 479, 487, 491, 499, 503, 509, 521, 523, 541
-                , 547, 557, 563, 569, 571, 577, 587, 593, 599, 601
-                , 607, 613, 617, 619, 631, 641, 643, 647, 653, 659
-                , 661, 673, 677, 683, 691, 701, 709, 719, 727, 733
-            };
+	    private static readonly int[] _primeNumbers =
+	    {
+		    17, 19, 23, 29
+		    , 31, 37, 41, 43, 47, 53, 59, 61, 67, 71
+		    , 73, 79, 83, 89, 97, 101, 103, 107, 109, 113
+		    , 127, 131, 137, 139, 149, 151, 157, 163, 167, 173
+		    , 179, 181, 191, 193, 197, 199, 211, 223, 227, 229
+		    , 233, 239, 241, 251, 257, 263, 269, 271, 277, 281
+		    , 283, 293, 307, 311, 313, 317, 331, 337, 347, 349
+		    , 353, 359, 367, 373, 379, 383, 389, 397, 401, 409
+		    , 419, 421, 431, 433, 439, 443, 449, 457, 461, 463
+		    , 467, 479, 487, 491, 499, 503, 509, 521, 523, 541
+		    , 547, 557, 563, 569, 571, 577, 587, 593, 599, 601
+		    , 607, 613, 617, 619, 631, 641, 643, 647, 653, 659
+		    , 661, 673, 677, 683, 691, 701, 709, 719, 727, 733
+	    };
     }
 }

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,132 +14,131 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents lambda expression.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class LambdaExpressionNode : BaseNode
-    {
-        /// <summary>
-        /// caches argumentNames of this instance
-        /// </summary>
-        private string[] argumentNames;
-        
-        /// <summary>
-        /// caches body expression of this lambda function
-        /// </summary>
-        private BaseNode bodyExpression;
+	/// <summary>
+	///     Represents lambda expression.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class LambdaExpressionNode : BaseNode
+	{
+		/// <summary>
+		///     caches argumentNames of this instance
+		/// </summary>
+		private string[] _argumentNames;
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public LambdaExpressionNode()
-        {
-        }
+		/// <summary>
+		///     caches body expression of this lambda function
+		/// </summary>
+		private BaseNode _bodyExpression;
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected LambdaExpressionNode(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        
-        /// <summary>
-        /// Gets argument names for this lambda expression.
-        /// </summary>
-        public string[] ArgumentNames
-        {
-            get
-            {
-                if(bodyExpression == null)
-                {
-                    InitializeLambda();
-                }
-                return argumentNames;
-            }
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public LambdaExpressionNode()
+		{
+		}
 
-        /// <summary>
-        /// Assigns value of the right operand to the left one.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            if(bodyExpression == null)
-            {
-                InitializeLambda();
-            }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected LambdaExpressionNode(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-            object result = GetValue(bodyExpression, context, evalContext);
-            return result;
-        }
+		/// <summary>
+		///     Gets argument names for this lambda expression.
+		/// </summary>
+		public string[] ArgumentNames
+		{
+			get
+			{
+				if (_bodyExpression == null)
+				{
+					InitializeLambda();
+				}
+				return _argumentNames;
+			}
+		}
 
-        /// <summary>
-        /// Evaluates this node, switching local variables map to the ones specified in <paramref name="argValues"/>.
-        /// </summary>
-        protected override object Get(object context, EvaluationContext evalContext, object[] argValues)
-        {
-            string[] argNames = this.ArgumentNames;
+		/// <summary>
+		///     Assigns value of the right operand to the left one.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			if (_bodyExpression == null)
+			{
+				InitializeLambda();
+			}
 
-            if (argValues.Length != argNames.Length)
-            {
-                throw new ArgumentMismatchException(string.Format("Invalid number of arguments - expected {0} arguments, but was called with {1}", argNames.Length, argValues.Length));
-            }
+			var result = GetValue(_bodyExpression, context, evalContext);
+			return result;
+		}
 
-            IDictionary arguments = new Hashtable();
-            for (int i = 0; i < argValues.Length; i++)
-            {
-                arguments[argNames[i]] = argValues[i];
-            }
+		/// <summary>
+		///     Evaluates this node, switching local variables map to the ones specified in <paramref name="argValues" />.
+		/// </summary>
+		protected override object Get(object context, EvaluationContext evalContext, object[] argValues)
+		{
+			var argNames = ArgumentNames;
 
-            EvaluationContext ec = (EvaluationContext)evalContext;
-            using (ec.SwitchLocalVariables(arguments))
-            {
-                object result = Get(context, ec);
-                return result;
-            }
-        }
+			if (argValues.Length != argNames.Length)
+			{
+				throw new ArgumentMismatchException(
+					string.Format("Invalid number of arguments - expected {0} arguments, but was called with {1}", argNames.Length,
+						argValues.Length));
+			}
 
-        private void InitializeLambda()
-        {
-            lock (this)
-            {
-                if (bodyExpression == null)
-                {
-                    if (this.getNumberOfChildren() == 1)
-                    {
-                        argumentNames = new string[0];
-                        bodyExpression = (BaseNode)this.getFirstChild();
-                    }
-                    else
-                    {
-                        AST argsNode = this.getFirstChild();
-                        argumentNames = new string[argsNode.getNumberOfChildren()];
-                        AST argNode = argsNode.getFirstChild();
-                        int i = 0;
-                        while (argNode != null)
-                        {
-                            argumentNames[i++] = argNode.getText();
-                            argNode = argNode.getNextSibling();
-                        }
+			IDictionary arguments = new Hashtable();
+			for (var i = 0; i < argValues.Length; i++)
+			{
+				arguments[argNames[i]] = argValues[i];
+			}
 
-                        bodyExpression = (BaseNode)argsNode.getNextSibling();
-                    }
-                }
-            }
-        }
-    }
+			var ec = evalContext;
+			using (ec.SwitchLocalVariables(arguments))
+			{
+				var result = Get(context, ec);
+				return result;
+			}
+		}
+
+		private void InitializeLambda()
+		{
+			lock (this)
+			{
+				if (_bodyExpression == null)
+				{
+					if (getNumberOfChildren() == 1)
+					{
+						_argumentNames = new string[0];
+						_bodyExpression = (BaseNode) getFirstChild();
+					}
+					else
+					{
+						var argsNode = getFirstChild();
+						_argumentNames = new string[argsNode.getNumberOfChildren()];
+						var argNode = argsNode.getFirstChild();
+						var i = 0;
+						while (argNode != null)
+						{
+							_argumentNames[i++] = argNode.getText();
+							argNode = argNode.getNextSibling();
+						}
+
+						_bodyExpression = (BaseNode) argsNode.getNextSibling();
+					}
+				}
+			}
+		}
+	}
 }

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -29,19 +25,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpOR : BinaryOperator
+    public class OpOr : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpOR():base()
+        public OpOr()
         {
         }
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpOR(BaseNode left, BaseNode right)
+        public OpOr(BaseNode left, BaseNode right)
             :base(left, right)
         {
         }
@@ -49,7 +45,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpOR(SerializationInfo info, StreamingContext context)
+        protected OpOr(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -62,11 +58,11 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object l = GetLeftValue(context, evalContext);
+            var l = GetLeftValue(context, evalContext);
             
             if (NumberUtils.IsInteger(l))
             {
-                object r = GetRightValue(context, evalContext);
+                var r = GetRightValue(context, evalContext);
                 if (NumberUtils.IsInteger(r))
                 {
                     return NumberUtils.BitwiseOr(l, r);
@@ -74,14 +70,14 @@ namespace Solenoid.Expressions
             }
             else if (l is Enum)
             {
-                object r = GetRightValue(context, evalContext);
+                var r = GetRightValue(context, evalContext);
                 if (l.GetType() == r.GetType())
                 {
-                    Type enumType = l.GetType();
-                    Type integralType = Enum.GetUnderlyingType(enumType);
+                    var enumType = l.GetType();
+                    var integralType = Enum.GetUnderlyingType(enumType);
                     l = Convert.ChangeType(l, integralType);
                     r = Convert.ChangeType(r, integralType);
-                    object result = NumberUtils.BitwiseOr(l, r);
+                    var result = NumberUtils.BitwiseOr(l, r);
                     return Enum.ToObject(enumType, result);
                 }
             }

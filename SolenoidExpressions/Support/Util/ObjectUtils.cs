@@ -26,7 +26,6 @@ using System.Collections;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Remoting;
-using System.Runtime.Remoting.Proxies;
 using Solenoid.Expressions.Support.Logging;
 using Solenoid.Expressions.Support.Reflection.Dynamic;
 
@@ -65,7 +64,7 @@ namespace Solenoid.Expressions.Support.Util
 
         static ObjectUtils()
 		{
-			Type type = typeof(object);
+			var type = typeof(object);
 			_getHashCodeMethodInfo = type.GetMethod("GetHashCode");
 		}
         #region Constructor (s) / Destructor
@@ -96,7 +95,7 @@ namespace Solenoid.Expressions.Support.Util
         {
             AssertUtils.ArgumentNotNull(assembly, "assembly");
             AssertUtils.ArgumentNotNull(typeName, "typeName");
-            Type resolvedType = assembly.GetType(typeName, false, false);
+            var resolvedType = assembly.GetType(typeName, false, false);
             if (resolvedType == null)
             {
                 throw new FatalReflectionException(
@@ -130,7 +129,7 @@ namespace Solenoid.Expressions.Support.Util
         {
             AssertUtils.ArgumentNotNull(type, "type");
 
-            ConstructorInfo constructor = GetZeroArgConstructorInfo(type);
+            var constructor = GetZeroArgConstructorInfo(type);
             return ObjectUtils.InstantiateType(constructor, ObjectUtils.EmptyObjects);
         }
 
@@ -145,7 +144,7 @@ namespace Solenoid.Expressions.Support.Util
         public static ConstructorInfo GetZeroArgConstructorInfo(Type type)
         {
             IsInstantiable(type);
-            ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+            var constructor = type.GetConstructor(Type.EmptyTypes);
             if (constructor == null)
             {
                 throw new FatalReflectionException(
@@ -237,7 +236,7 @@ namespace Solenoid.Expressions.Support.Util
             }
             catch (Exception ex)
             {
-                Type ctorType = constructor.DeclaringType;
+                var ctorType = constructor.DeclaringType;
                 throw new FatalReflectionException(
                     string.Format(
                         CultureInfo.InvariantCulture,
@@ -304,7 +303,7 @@ namespace Solenoid.Expressions.Support.Util
 
             if (RemotingServices.IsTransparentProxy(obj))
             {
-                RealProxy rp = RemotingServices.GetRealProxy(obj);
+                var rp = RemotingServices.GetRealProxy(obj);
                 if (rp is IRemotingTypeInfo)
                 {
                     return ((IRemotingTypeInfo) rp).CanCastTo(type, obj);
@@ -480,7 +479,7 @@ namespace Solenoid.Expressions.Support.Util
                 throw new ArgumentOutOfRangeException();
             }
             object element = null;
-            int i = 0;
+            var i = 0;
             while (enumerator.MoveNext())
             {
                 element = enumerator.Current;
@@ -562,7 +561,7 @@ namespace Solenoid.Expressions.Support.Util
         /// <returns>The object's identity code in hex notation</returns>
         public static string GetIdentityHexString(object obj)
         {
-            int hashcode = (int)_getHashCodeMethodInfo.Invoke(obj, null);
+            var hashcode = (int)_getHashCodeMethodInfo.Invoke(obj, null);
             return hashcode.ToString("X6");
         }
     }

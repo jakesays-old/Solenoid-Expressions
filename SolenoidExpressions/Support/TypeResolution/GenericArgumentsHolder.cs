@@ -169,7 +169,7 @@ namespace Solenoid.Expressions.Support.TypeResolution
                 if (unresolvedGenericArguments == null)
                     return false;
 
-                foreach (string arg in unresolvedGenericArguments)
+                foreach (var arg in unresolvedGenericArguments)
                 {
                     if (arg.Length > 0)
                         return false;
@@ -232,9 +232,9 @@ namespace Solenoid.Expressions.Support.TypeResolution
 
             originalString = originalString.Trim();
 
-            bool isClrStyleNotation = originalString.IndexOf('`') > -1;
+            var isClrStyleNotation = originalString.IndexOf('`') > -1;
 
-            Match m = (isClrStyleNotation)
+            var m = (isClrStyleNotation)
                           ? ClrPattern.Match(originalString)
                           : CSharpPattern.Match(originalString);
 
@@ -245,17 +245,17 @@ namespace Solenoid.Expressions.Support.TypeResolution
                 return;
             }
 
-            Group g = m.Groups["args"];
+            var g = m.Groups["args"];
             unresolvedGenericArguments = ParseGenericArgumentList(g.Value);
 
-            string name = m.Groups["name"].Value;
-            string remainder = m.Groups["remainder"].Value.Trim();
+            var name = m.Groups["name"].Value;
+            var remainder = m.Groups["remainder"].Value.Trim();
 
             // check, if we're dealing with an array type declaration
             if (remainder.Length > 0 && remainder.IndexOf('[') > -1)
             {
-                string[] remainderParts = StringUtils.Split(remainder, ",", false, false, "[]");
-                string arrayPart = remainderParts[0].Trim();
+                var remainderParts = StringUtils.Split(remainder, ",", false, false, "[]");
+                var arrayPart = remainderParts[0].Trim();
                 if (arrayPart[0] == '[' && arrayPart[arrayPart.Length-1] == ']')
                 {
                     arrayDeclaration = arrayPart;
@@ -297,11 +297,11 @@ namespace Solenoid.Expressions.Support.TypeResolution
 
         private static string[] ParseGenericArgumentList(string originalArgs)
         {
-            string[] args = StringUtils.Split(originalArgs, ",", true, false, "[]<>"     );
+            var args = StringUtils.Split(originalArgs, ",", true, false, "[]<>"     );
             // remove quotes if necessary
-            for(int i=0;i<args.Length;i++)
+            for(var i=0;i<args.Length;i++)
             {
-                string arg = args[i];
+                var arg = args[i];
                 if (arg.Length > 1 && arg[0] == '[')
                 {
                     args[i] = arg.Substring(1, arg.Length - 2);

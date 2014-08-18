@@ -31,19 +31,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpSUBTRACT : BinaryOperator
+    public class OpSubtract : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpSUBTRACT():base()
+        public OpSubtract()
         {
         }
 
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpSUBTRACT(SerializationInfo info, StreamingContext context)
+        protected OpSubtract(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -56,8 +56,8 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+            var left = GetLeftValue( context, evalContext );
+            var right = GetRightValue( context, evalContext );
 
             if (NumberUtils.IsNumber(left) && NumberUtils.IsNumber(right))
             {
@@ -122,7 +122,7 @@ namespace Solenoid.Expressions
                     + "'.");
                 }
                 IDictionary result = new Hashtable(rightset.Count);
-                foreach(object key in leftset.Minus(rightset))
+                foreach(var key in leftset.Minus(rightset))
                 {
                     result.Add(key, ((IDictionary)left)[key]);
                 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using Solenoid.Expressions.Parser.antlr.collections.impl;
 using Solenoid.Expressions.Parser.antlr.debug;
@@ -433,8 +432,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual void  match(string s)
 		{
-			int len = s.Length;
-			 for (int i = 0; i < len; i++)
+			var len = s.Length;
+			 for (var i = 0; i < len; i++)
 			{
 				if (cached_LA1 != s[i])
 				{
@@ -483,8 +482,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		*/
 		public virtual void  tab()
 		{
-			int c = getColumn();
-			int nc = (((c - 1) / tabsize) + 1) * tabsize + 1; // calculate tab stop
+			var c = getColumn();
+			var nc = (((c - 1) / tabsize) + 1) * tabsize + 1; // calculate tab stop
 			setColumn(nc);
 		}
 		
@@ -658,13 +657,13 @@ namespace Solenoid.Expressions.Parser.antlr
 		// Override this method to perform a different literals test
 		public virtual int testLiteralsTable(int ttype)
 		{
-			string tokenText = text.ToString();
+			var tokenText = text.ToString();
 
 			if ( (tokenText == null) || (tokenText == string.Empty) )
 				return ttype;
 			else
 			{
-				object typeAsObject = literals[tokenText];
+				var typeAsObject = literals[tokenText];
 				return (typeAsObject == null) ? ttype : ((int) typeAsObject);
 			}
 		}
@@ -680,7 +679,7 @@ namespace Solenoid.Expressions.Parser.antlr
 				return ttype;
 			else
 			{
-				object typeAsObject = literals[someText];
+				var typeAsObject = literals[someText];
 				return (typeAsObject == null) ? ttype : ((int) typeAsObject);
 			}
 		}
@@ -693,7 +692,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual void  traceIndent()
 		{
-			 for (int i = 0; i < traceDepth; i++)
+			 for (var i = 0; i < traceDepth; i++)
 				Console.Out.Write(" ");
 		}
 		
@@ -759,7 +758,7 @@ namespace Solenoid.Expressions.Parser.antlr
 			private void SetTokenType(string tokenTypeName)
 			{
 				this.tokenTypeName = tokenTypeName;
-				foreach (Assembly assem in AppDomain.CurrentDomain.GetAssemblies())
+				foreach (var assem in AppDomain.CurrentDomain.GetAssemblies())
 				{
 					try
 					{

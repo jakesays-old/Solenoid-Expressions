@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -54,40 +50,34 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue(context, evalContext);
-            object right = GetRightValue(context, evalContext);
+            var lhs = GetLeftValue(context, evalContext);
+            var rhs = GetRightValue(context, evalContext);
 
-            if (left == null)
+            if (lhs == null)
             {
-                return (right == null);
+                return (rhs == null);
             }
-            else if (right == null)
-            {
-                return false;
-            }
-            else if (left.GetType() == right.GetType())
-            {
-                if (left is Array)
-                {
-                    return ArrayUtils.AreEqual(left as Array, right as Array);
-                }
-                else
-                {
-                    return left.Equals(right);
-                }
-            }
-            else if (left.GetType().IsEnum && right is string)
-            {
-                return left.Equals(Enum.Parse(left.GetType(), (string)right));
-            }
-            else if (right.GetType().IsEnum && left is string)
-            {
-                return right.Equals(Enum.Parse(right.GetType(), (string)left));
-            }
-            else
-            {
-                return CompareUtils.Compare(left, right) == 0;
-            }
+	        if (rhs == null)
+	        {
+		        return false;
+	        }
+	        if (lhs.GetType() == rhs.GetType())
+	        {
+		        if (lhs is Array)
+		        {
+			        return ArrayUtils.AreEqual(lhs as Array, rhs as Array);
+		        }
+		        return lhs.Equals(rhs);
+	        }
+	        if (lhs.GetType().IsEnum && rhs is string)
+	        {
+		        return lhs.Equals(Enum.Parse(lhs.GetType(), (string)rhs));
+	        }
+	        if (rhs.GetType().IsEnum && lhs is string)
+	        {
+		        return rhs.Equals(Enum.Parse(rhs.GetType(), (string)lhs));
+	        }
+	        return CompareUtils.Compare(lhs, rhs) == 0;
         }
     }
 }

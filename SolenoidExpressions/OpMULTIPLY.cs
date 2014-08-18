@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
@@ -31,19 +27,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpMULTIPLY : BinaryOperator
+    public class OpMultiply : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpMULTIPLY():base()
+        public OpMultiply()
         {
         }
 
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpMULTIPLY(SerializationInfo info, StreamingContext context)
+        protected OpMultiply(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -56,70 +52,67 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+            var lhs = GetLeftValue( context, evalContext );
+            var rhs = GetRightValue( context, evalContext );
 
-            if (NumberUtils.IsNumber(left) && NumberUtils.IsNumber(right))
+            if (NumberUtils.IsNumber(lhs) && NumberUtils.IsNumber(rhs))
             {
-                return NumberUtils.Multiply(left, right);
+                return NumberUtils.Multiply(lhs, rhs);
             }
-            else if (left is IList || left is ISet)
-            {
-                ISet leftset = new HybridSet(left as ICollection);
-                ISet rightset;
-                if (right is IList || right is ISet)
-                {
-                    rightset = new HybridSet(right as ICollection);
-                }
-                else if (right is IDictionary)
-                {
-                    rightset = new HybridSet(((IDictionary)right).Keys);
-                }
-                else
-                {
-                    throw new ArgumentException("Cannot subtract instances of '"
-                    + left.GetType().FullName
-                    + "' and '"
-                    + right.GetType().FullName
-                    + "'.");
-                }
-                return leftset.Intersect(rightset);
-            }
-            else if (left is IDictionary)
-            {
-                ISet leftset = new HybridSet(((IDictionary)left).Keys);
-                ISet rightset;
-                if (right is IList || right is ISet)
-                {
-                    rightset = new HybridSet(right as ICollection);
-                }
-                else if (right is IDictionary)
-                {
-                    rightset = new HybridSet(((IDictionary)right).Keys);
-                }
-                else
-                {
-                    throw new ArgumentException("Cannot subtract instances of '"
-                    + left.GetType().FullName
-                    + "' and '"
-                    + right.GetType().FullName
-                    + "'.");
-                }
-                IDictionary result = new Hashtable(rightset.Count);
-                foreach (object key in leftset.Intersect(rightset))
-                {
-                    result.Add(key, ((IDictionary)left)[key]);
-                }
-                return result;
-            }
-            else
-            {
-                throw new ArgumentException("Cannot multiply instances of '"
-                                            + left.GetType().FullName
-                                            + "' and '"
-                                            + right.GetType().FullName
-                                            + "'.");
-            }
+	        if (lhs is IList || lhs is ISet)
+	        {
+		        ISet leftset = new HybridSet(lhs as ICollection);
+		        ISet rightset;
+		        if (rhs is IList || rhs is ISet)
+		        {
+			        rightset = new HybridSet(rhs as ICollection);
+		        }
+		        else if (rhs is IDictionary)
+		        {
+			        rightset = new HybridSet(((IDictionary)rhs).Keys);
+		        }
+		        else
+		        {
+			        throw new ArgumentException("Cannot subtract instances of '"
+												+ lhs.GetType().FullName
+												+ "' and '"
+												+ rhs.GetType().FullName
+												+ "'.");
+		        }
+		        return leftset.Intersect(rightset);
+	        }
+	        if (lhs is IDictionary)
+	        {
+		        ISet leftset = new HybridSet(((IDictionary)lhs).Keys);
+		        ISet rightset;
+		        if (rhs is IList || rhs is ISet)
+		        {
+			        rightset = new HybridSet(rhs as ICollection);
+		        }
+		        else if (rhs is IDictionary)
+		        {
+			        rightset = new HybridSet(((IDictionary)rhs).Keys);
+		        }
+		        else
+		        {
+			        throw new ArgumentException("Cannot subtract instances of '"
+												+ lhs.GetType().FullName
+												+ "' and '"
+												+ rhs.GetType().FullName
+												+ "'.");
+		        }
+		        IDictionary result = new Hashtable(rightset.Count);
+		        foreach (var key in leftset.Intersect(rightset))
+		        {
+			        result.Add(key, ((IDictionary)lhs)[key]);
+		        }
+		        return result;
+	        }
+	        throw new ArgumentException("Cannot multiply instances of '"
+										+ lhs.GetType().FullName
+										+ "' and '"
+										+ rhs.GetType().FullName
+										+ "'.");
         }
     }
 }

@@ -125,7 +125,7 @@ namespace Solenoid.Expressions.Support
 
         private static string BuildMessage(PropertyChangeEventArgs propertyChangeEventArgs, Type requiredType)
         {
-            StringBuilder message = new StringBuilder();
+            var message = new StringBuilder();
             message.Append("Cannot convert property value of type [");
             if (propertyChangeEventArgs != null && propertyChangeEventArgs.NewValue != null)
             {

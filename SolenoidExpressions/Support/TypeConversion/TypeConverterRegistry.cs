@@ -128,8 +128,8 @@ namespace Solenoid.Expressions.Support.TypeConversion
             
             try
             {
-                Type type = TypeResolutionUtils.ResolveType(typeName);
-                Type converterType = TypeResolutionUtils.ResolveType(converterTypeName);
+                var type = TypeResolutionUtils.ResolveType(typeName);
+                var converterType = TypeResolutionUtils.ResolveType(converterTypeName);
                 if (!typeof(TypeConverter).IsAssignableFrom(converterType))
                 {
                     throw new ArgumentException(

@@ -82,7 +82,7 @@ namespace Solenoid.Expressions.Support.TypeResolution
         /// </exception>
         public static Type ResolveType(string typeName)
         {
-            Type type = TypeRegistry.ResolveType(typeName);
+            var type = TypeRegistry.ResolveType(typeName);
             if (type == null)
             {
                 type = internalTypeResolver.Resolve(typeName);
@@ -113,13 +113,13 @@ namespace Solenoid.Expressions.Support.TypeResolution
         {
             AssertUtils.ArgumentNotNull(interfaceNames, "interfaceNames");
 
-            List<Type> interfaces = new List<Type>();
-            for (int i = 0; i < interfaceNames.Length; i++)
+            var interfaces = new List<Type>();
+            for (var i = 0; i < interfaceNames.Length; i++)
             {
-                string interfaceName = interfaceNames[i];
+                var interfaceName = interfaceNames[i];
                 AssertUtils.ArgumentNotNull(interfaceName,
                                             string.Format(CultureInfo.InvariantCulture, "interfaceNames[{0}]", i));
-                Type resolvedInterface = ResolveType(interfaceName);
+                var resolvedInterface = ResolveType(interfaceName);
                 if (!resolvedInterface.IsInterface)
                 {
                     throw new ArgumentException(
@@ -154,32 +154,32 @@ namespace Solenoid.Expressions.Support.TypeResolution
         /// </exception>
         public static bool MethodMatch(string pattern, MethodInfo method)
         {
-            Match m = methodMatchRegex.Match(pattern);
+            var m = methodMatchRegex.Match(pattern);
 
             if (!m.Success)
                 throw new ArgumentException(String.Format("The pattern [{0}] is not well-formed.", pattern));
 
             // Check method name
-            string methodNamePattern = m.Groups["methodName"].Value;
+            var methodNamePattern = m.Groups["methodName"].Value;
             if (!PatternMatchUtils.SimpleMatch(methodNamePattern, method.Name))
                 return false;
 
             if (m.Groups["parameters"].Value.Length > 0)
             {
                 // Check parameter types
-                string parameters = m.Groups["parameterTypes"].Value;
-                string[] paramTypes =
+                var parameters = m.Groups["parameterTypes"].Value;
+                var paramTypes =
                     (parameters.Length == 0)
                     ? new string[0]
                     : StringUtils.DelimitedListToStringArray(parameters, ",");
-                ParameterInfo[] paramInfos = method.GetParameters();
+                var paramInfos = method.GetParameters();
 
                 // Verify parameter count
                 if (paramTypes.Length != paramInfos.Length)
                     return false;
 
                 // Match parameter types
-                for (int i = 0; i < paramInfos.Length; i++)
+                for (var i = 0; i < paramInfos.Length; i++)
                 {
                     if (paramInfos[i].ParameterType != TypeResolutionUtils.ResolveType(paramTypes[i]))
                         return false;

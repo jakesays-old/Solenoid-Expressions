@@ -49,7 +49,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <see cref="ISet.Union(ISet)"/>
 		public virtual ISet Union(ISet setOne)
 		{
-			ISet resultSet = (ISet) this.Clone();
+			var resultSet = (ISet) this.Clone();
 			if (setOne != null) 
 			{
 				resultSet.AddAll(setOne);
@@ -123,7 +123,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <see cref="ISet.Intersect(ISet)"/>
 		public virtual ISet Intersect(ISet setOne)
 		{
-			ISet resultSet = (ISet) this.Clone();
+			var resultSet = (ISet) this.Clone();
 			if (setOne != null)
 			{
 				resultSet.RetainAll(setOne);
@@ -199,7 +199,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <seealso cref="ISet.Minus(ISet)"/>
 		public virtual ISet Minus(ISet setOne)
 		{
-			ISet resultSet = (ISet) this.Clone();
+			var resultSet = (ISet) this.Clone();
 			if (setOne != null)
 			{
 				resultSet.RemoveAll(setOne);
@@ -271,8 +271,8 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <seealso cref="ISet.ExclusiveOr(ISet)"/>
 		public virtual ISet ExclusiveOr(ISet setOne)
 		{
-			ISet resultSet = (ISet) this.Clone();
-			foreach (object element in setOne)
+			var resultSet = (ISet) this.Clone();
+			foreach (var element in setOne)
 			{
 				if (resultSet.Contains(element))
 				{
@@ -441,7 +441,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <returns>A clone of this object.</returns>
 		public virtual object Clone()
 		{
-			Set newSet = (Set) Activator.CreateInstance(this.GetType());
+			var newSet = (Set) Activator.CreateInstance(this.GetType());
 			newSet.AddAll(this);
 			return newSet;
 		}
@@ -532,14 +532,14 @@ namespace Solenoid.Expressions.Support.Collections
 		/// </returns>
 		public override bool Equals(object obj)
 		{
-			Set theOtherSet = obj as Set;
+			var theOtherSet = obj as Set;
 			if (theOtherSet == null || theOtherSet.Count != Count)
 			{
 				return false;
 			}
 			else
 			{
-				foreach (object element in theOtherSet)
+				foreach (var element in theOtherSet)
 				{
 					if (!this.Contains(element))
 					{
@@ -556,7 +556,7 @@ namespace Solenoid.Expressions.Support.Collections
 		public override int GetHashCode()
 		{
             int hashCode = 0, count = 0;
-            foreach (object element in this)
+            foreach (var element in this)
             {
                 hashCode += element.GetHashCode();
                 count++;

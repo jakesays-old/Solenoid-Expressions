@@ -1,5 +1,4 @@
 using System.Text;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions.Parser.antlr
 {
@@ -47,14 +46,14 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns></returns>
 		protected internal override int getLeftmostDerivation(StringBuilder buf, int step) 
 		{
-			int numReplacements = 0;
+			var numReplacements = 0;
 			if ( step <= 0 ) 
 			{
 				buf.Append(' ');
 				buf.Append(ToString());
 				return numReplacements;
 			}
-			AST child = getFirstChild();
+			var child = getFirstChild();
 			numReplacements = 1;
 			// walk child printing them out, descending into at most one
 			while ( child != null ) 
@@ -67,8 +66,8 @@ namespace Solenoid.Expressions.Parser.antlr
 				else 
 				{
 					// descend for at least one more derivation; update count
-					int remainingReplacements = step - numReplacements;
-					int n = ((ParseTree) child).getLeftmostDerivation(buf, remainingReplacements);
+					var remainingReplacements = step - numReplacements;
+					var n = ((ParseTree) child).getLeftmostDerivation(buf, remainingReplacements);
 					numReplacements += n;
 				}
 				child = child.getNextSibling();

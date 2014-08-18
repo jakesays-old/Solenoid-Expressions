@@ -129,7 +129,7 @@ namespace Solenoid.Expressions.Support.Collections
 			}
 			else
 			{
-				Node insert = GetNode(index);
+				var insert = GetNode(index);
 				node = new Node(value, insert.PreviousNode, insert);
 			}
 			node.PreviousNode.NextNode = node;
@@ -145,7 +145,7 @@ namespace Solenoid.Expressions.Support.Collections
 		public void Remove(object value)
 		{
 			CheckUpdateState();
-			NodeHolder nh = GetNode(value);
+			var nh = GetNode(value);
 			RemoveNode(nh.Node);
 		}
 
@@ -183,7 +183,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// </returns>
 		public int IndexOf(object value)
 		{
-			NodeHolder nh = GetNode(value);
+			var nh = GetNode(value);
 			if (nh == null)
 			{
 				return -1;
@@ -209,7 +209,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <param name="elements">The list of objects to add.</param>
 		public void AddAll(IList elements)
 		{
-			foreach (object obj in elements)
+			foreach (var obj in elements)
 			{
 				Add(obj);
 			}
@@ -271,8 +271,8 @@ namespace Solenoid.Expressions.Support.Collections
 		private Node GetNode(int index)
 		{
 			ValidateIndex(index);
-			Node node = _rootNode;
-			for (int i = 0; i <= index; i++)
+			var node = _rootNode;
+			for (var i = 0; i <= index; i++)
 			{
 				node = node.NextNode;
 			}
@@ -289,11 +289,11 @@ namespace Solenoid.Expressions.Support.Collections
 		/// </returns>
 		private NodeHolder GetNode(object value)
 		{
-            int i = 0;
+            var i = 0;
             if (value == null)
             {
 
-                for (Node n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
+                for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
                 {
                     if (n.Value == null)
                     {
@@ -305,7 +305,7 @@ namespace Solenoid.Expressions.Support.Collections
             else
             {
 
-                for (Node n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
+                for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
                 {
                     if (value.Equals(n.Value))                
                     {
@@ -323,7 +323,7 @@ namespace Solenoid.Expressions.Support.Collections
 		/// <param name="node">The node to be removed.</param>
 		private void RemoveNode(Node node)
 		{
-			Node previousNode = node.PreviousNode;
+			var previousNode = node.PreviousNode;
 			previousNode.NextNode = node.NextNode;
 			node.NextNode.PreviousNode = previousNode;
 			node.PreviousNode = null;
@@ -402,7 +402,7 @@ namespace Solenoid.Expressions.Support.Collections
 				throw new ArgumentException("Array is of insufficient size.");
 			}
 
-			Node node = this._rootNode;
+			var node = this._rootNode;
 			for (int i = 0, pos = index; i < this._nodeIndex; i++, pos++)
 			{
 				node = node.NextNode;

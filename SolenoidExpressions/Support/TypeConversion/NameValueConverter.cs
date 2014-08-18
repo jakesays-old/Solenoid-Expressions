@@ -144,10 +144,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
 			ITypeDescriptorContext context,
 			CultureInfo culture, object value)
 		{
-			string text = value as string;
+			var text = value as string;
 			if (text != null)
 			{
-				XmlDocument doc = new XmlDocument();
+				var doc = new XmlDocument();
 				doc.LoadXml(text);
 				return new NameValueSectionHandler()
 					.Create(null, null, doc.DocumentElement);

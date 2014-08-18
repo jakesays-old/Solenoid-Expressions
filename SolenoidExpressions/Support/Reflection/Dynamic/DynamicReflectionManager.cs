@@ -164,10 +164,10 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         internal static TypeBuilder CreateTypeBuilder(string name)
         {
             // Generates type name
-            string typeName = String.Format("{0}.{1}_{2}",
+            var typeName = String.Format("{0}.{1}_{2}",
                 ASSEMBLY_NAME, name, Guid.NewGuid().ToString("N"));
 
-            ModuleBuilder module = DynamicCodeManager.GetModuleBuilder(ASSEMBLY_NAME);
+            var module = DynamicCodeManager.GetModuleBuilder(ASSEMBLY_NAME);
             return module.DefineType(typeName, TYPE_ATTRIBUTES);
         }
 
@@ -292,10 +292,10 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(fieldInfo, "You cannot create a delegate for a null value.");
 
-            bool skipVisibility = true; //!IsPublic(fieldInfo);
-            Type[] argumentTypes = new Type[] { typeof(object) };
-            System.Reflection.Emit.DynamicMethod dmGetter = CreateDynamicMethod("get_" + fieldInfo.Name, typeof(object), argumentTypes, fieldInfo, skipVisibility);
-            ILGenerator il = dmGetter.GetILGenerator();
+            var skipVisibility = true; //!IsPublic(fieldInfo);
+            var argumentTypes = new Type[] { typeof(object) };
+            var dmGetter = CreateDynamicMethod("get_" + fieldInfo.Name, typeof(object), argumentTypes, fieldInfo, skipVisibility);
+            var il = dmGetter.GetILGenerator();
             EmitFieldGetter(il, fieldInfo, false);
             return (FieldGetterDelegate)dmGetter.CreateDelegate(typeof(FieldGetterDelegate));
         }
@@ -313,9 +313,9 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(fieldInfo, "You cannot create a delegate for a null value.");
 
-            bool skipVisibility = true; // !IsPublic(fieldInfo);
-            System.Reflection.Emit.DynamicMethod dmSetter = CreateDynamicMethod("set_" + fieldInfo.Name, null, new Type[] { typeof(object), typeof(object) }, fieldInfo, skipVisibility);
-            ILGenerator il = dmSetter.GetILGenerator();
+            var skipVisibility = true; // !IsPublic(fieldInfo);
+            var dmSetter = CreateDynamicMethod("set_" + fieldInfo.Name, null, new Type[] { typeof(object), typeof(object) }, fieldInfo, skipVisibility);
+            var il = dmSetter.GetILGenerator();
             EmitFieldSetter(il, fieldInfo, false);
             return (FieldSetterDelegate)dmSetter.CreateDelegate(typeof(FieldSetterDelegate));
         }
@@ -333,10 +333,10 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(propertyInfo, "You cannot create a delegate for a null value.");
 
-            MethodInfo getMethod = propertyInfo.GetGetMethod();
-            bool skipVisibility = true; // (null == getMethod || !IsPublic(getMethod)); // getter is public
-            System.Reflection.Emit.DynamicMethod dm = CreateDynamicMethod("get_" + propertyInfo.Name, typeof(object), new Type[] { typeof(object), typeof(object[]) }, propertyInfo, skipVisibility);
-            ILGenerator il = dm.GetILGenerator();
+            var getMethod = propertyInfo.GetGetMethod();
+            var skipVisibility = true; // (null == getMethod || !IsPublic(getMethod)); // getter is public
+            var dm = CreateDynamicMethod("get_" + propertyInfo.Name, typeof(object), new Type[] { typeof(object), typeof(object[]) }, propertyInfo, skipVisibility);
+            var il = dm.GetILGenerator();
             EmitPropertyGetter(il, propertyInfo, false);
             return (PropertyGetterDelegate)dm.CreateDelegate(typeof(PropertyGetterDelegate));
         }
@@ -354,11 +354,11 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(propertyInfo, "You cannot create a delegate for a null value.");
 
-            MethodInfo setMethod = propertyInfo.GetSetMethod();
-            bool skipVisibility = true; // (null == setMethod || !IsPublic(setMethod)); // setter is public
-            Type[] argumentTypes = new Type[] { typeof(object), typeof(object), typeof(object[]) };
-            System.Reflection.Emit.DynamicMethod dm = CreateDynamicMethod("set_" + propertyInfo.Name, null, argumentTypes, propertyInfo, skipVisibility);
-            ILGenerator il = dm.GetILGenerator();
+            var setMethod = propertyInfo.GetSetMethod();
+            var skipVisibility = true; // (null == setMethod || !IsPublic(setMethod)); // setter is public
+            var argumentTypes = new Type[] { typeof(object), typeof(object), typeof(object[]) };
+            var dm = CreateDynamicMethod("set_" + propertyInfo.Name, null, argumentTypes, propertyInfo, skipVisibility);
+            var il = dm.GetILGenerator();
             EmitPropertySetter(il, propertyInfo, false);
             return (PropertySetterDelegate)dm.CreateDelegate(typeof(PropertySetterDelegate));
         }
@@ -372,9 +372,9 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(methodInfo, "You cannot create a delegate for a null value.");
 
-            bool skipVisibility = true; // !IsPublic(methodInfo);
-            System.Reflection.Emit.DynamicMethod dm = CreateDynamicMethod(methodInfo.Name, typeof(object), new Type[] { typeof(object), typeof(object[]) }, methodInfo, skipVisibility);
-            ILGenerator il = dm.GetILGenerator();
+            var skipVisibility = true; // !IsPublic(methodInfo);
+            var dm = CreateDynamicMethod(methodInfo.Name, typeof(object), new Type[] { typeof(object), typeof(object[]) }, methodInfo, skipVisibility);
+            var il = dm.GetILGenerator();
             EmitInvokeMethod(il, methodInfo, false);
             return (FunctionDelegate)dm.CreateDelegate(typeof(FunctionDelegate));
         }
@@ -388,13 +388,13 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             AssertUtils.ArgumentNotNull(constructorInfo, "You cannot create a dynamic constructor for a null value.");
 
-            bool skipVisibility = true; //!IsPublic(constructorInfo);
+            var skipVisibility = true; //!IsPublic(constructorInfo);
             System.Reflection.Emit.DynamicMethod dmGetter;
-            Type[] argumentTypes = new Type[] { typeof(object[]) };
+            var argumentTypes = new Type[] { typeof(object[]) };
             dmGetter = CreateDynamicMethod(constructorInfo.Name, typeof(object), argumentTypes, constructorInfo, skipVisibility);
-            ILGenerator il = dmGetter.GetILGenerator();
+            var il = dmGetter.GetILGenerator();
             EmitInvokeConstructor(il, constructorInfo, false);
-            ConstructorDelegate ctor = (ConstructorDelegate)dmGetter.CreateDelegate(typeof(ConstructorDelegate));
+            var ctor = (ConstructorDelegate)dmGetter.CreateDelegate(typeof(ConstructorDelegate));
             return ctor;
         }
 
@@ -509,7 +509,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             if (fieldInfo.IsLiteral)
             {
-                object value = fieldInfo.GetValue(null);
+                var value = fieldInfo.GetValue(null);
                 EmitConstant(il, value);
             }
             else if (fieldInfo.IsStatic)
@@ -571,7 +571,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         {
             if (propertyInfo.CanRead)
             {
-                MethodInfo getMethod = propertyInfo.GetGetMethod(true);
+                var getMethod = propertyInfo.GetGetMethod(true);
                 EmitInvokeMethod(il, getMethod, isInstanceMethod);
             }
             else
@@ -582,7 +582,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
 
         internal static void EmitPropertySetter(ILGenerator il, PropertyInfo propertyInfo, bool isInstanceMethod)
         {
-            MethodInfo method = propertyInfo.GetSetMethod(true);
+            var method = propertyInfo.GetSetMethod(true);
 
             if (propertyInfo.CanWrite
                 && !(propertyInfo.DeclaringType.IsValueType && !method.IsStatic))
@@ -593,8 +593,8 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
 
                 const int paramsArrayPosition = 2;
                 IDictionary outArgs = new Hashtable();
-                ParameterInfo[] args = propertyInfo.GetIndexParameters(); // get indexParameters here!
-                for (int i = 0; i < args.Length; i++)
+                var args = propertyInfo.GetIndexParameters(); // get indexParameters here!
+                for (var i = 0; i < args.Length; i++)
                 {
                     SetupOutputArgument(il, paramsArrayPosition, args[i], outArgs);
                 }
@@ -606,7 +606,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
                 }
 
                 // load indexer arguments
-                for (int i = 0; i < args.Length; i++)
+                for (var i = 0; i < args.Length; i++)
                 {
                     SetupMethodArgument(il, paramsArrayPosition, args[i], outArgs);
                 }
@@ -625,7 +625,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
                 // call setter
                 EmitCall(il, method);
 
-                for (int i = 0; i < args.Length; i++)
+                for (var i = 0; i < args.Length; i++)
                 {
                     ProcessOutputArgument(il, paramsArrayPosition, args[i], outArgs);
                 }
@@ -642,10 +642,10 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         /// </summary>
         internal static void EmitInvokeMethod(ILGenerator il, MethodInfo method, bool isInstanceMethod)
         {
-            int paramsArrayPosition = (isInstanceMethod) ? 2 : 1;
-            ParameterInfo[] args = method.GetParameters();
+            var paramsArrayPosition = (isInstanceMethod) ? 2 : 1;
+            var args = method.GetParameters();
             IDictionary outArgs = new Hashtable();
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 SetupOutputArgument(il, paramsArrayPosition, args[i], outArgs);
             }
@@ -655,14 +655,14 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
                 EmitTarget(il, method.DeclaringType, isInstanceMethod);
             }
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 SetupMethodArgument(il, paramsArrayPosition, args[i], outArgs);
             }
 
             EmitCall(il, method);
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 ProcessOutputArgument(il, paramsArrayPosition, args[i], outArgs);
             }
@@ -672,23 +672,23 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
 
         internal static void EmitInvokeConstructor(ILGenerator il, ConstructorInfo constructor, bool isInstanceMethod)
         {
-            int paramsArrayPosition = (isInstanceMethod) ? 1 : 0;
-            ParameterInfo[] args = constructor.GetParameters();
+            var paramsArrayPosition = (isInstanceMethod) ? 1 : 0;
+            var args = constructor.GetParameters();
 
             IDictionary outArgs = new Hashtable();
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 SetupOutputArgument(il, paramsArrayPosition, args[i], outArgs);
             }
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 SetupMethodArgument(il, paramsArrayPosition, args[i], null);
             }
 
             il.Emit(OpCodes.Newobj, constructor);
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 ProcessOutputArgument(il, paramsArrayPosition, args[i], outArgs);
             }
@@ -705,9 +705,9 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             if (!IsOutputOrRefArgument(argInfo))
                 return;
 
-            Type argType = argInfo.ParameterType.GetElementType();
+            var argType = argInfo.ParameterType.GetElementType();
 
-            LocalBuilder lb = il.DeclareLocal(argType);
+            var lb = il.DeclareLocal(argType);
             if (!argInfo.IsOut)
             {
                 PushParamsArgumentValue(il, paramsArrayPosition, argType, argInfo.Position);
@@ -726,7 +726,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             if (!IsOutputOrRefArgument(argInfo))
                 return;
 
-            Type argType = argInfo.ParameterType.GetElementType();
+            var argType = argInfo.ParameterType.GetElementType();
 
             il.Emit(LdArgOpCodes[paramsArrayPosition]);
             il.Emit(OpCodes.Ldc_I4, argInfo.Position);
@@ -823,7 +823,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
                 throw new InvalidCastException(string.Format("Cannot convert NULL at position {0} to argument type {1}", argIndex, targetType.FullName));
             }
 
-            Type valueType = value.GetType();
+            var valueType = value.GetType();
 
             if (ReflectionUtils.IsNullableType(targetType))
             {
@@ -859,7 +859,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             il.Emit((isInstanceMethod) ? OpCodes.Ldarg_1 : OpCodes.Ldarg_0);
             if (targetType.IsValueType)
             {
-                LocalBuilder local = il.DeclareLocal(targetType);
+                var local = il.DeclareLocal(targetType);
                 EmitUnbox(il, targetType);
                 il.Emit(OpCodes.Stloc_0);
                 il.Emit(OpCodes.Ldloca_S, 0);

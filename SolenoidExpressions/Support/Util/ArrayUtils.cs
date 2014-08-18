@@ -42,7 +42,7 @@ namespace Solenoid.Expressions.Support.Util
         public static bool HasElements(ICollection collection)
         {
             if (!HasLength(collection)) return false;
-            IEnumerator it = collection.GetEnumerator();
+            var it = collection.GetEnumerator();
             while(it.MoveNext())
             {
                 if (it.Current == null ) return false;
@@ -58,7 +58,7 @@ namespace Solenoid.Expressions.Support.Util
         {
             if (SystemUtils.MonoRuntime)
             {
-                ArrayList list = new ArrayList(array);
+                var list = new ArrayList(array);
                 list.Sort(comparer);
                 list.ToArray().CopyTo(array, list.Count);
                 return;
@@ -93,10 +93,10 @@ namespace Solenoid.Expressions.Support.Util
             {
                 if (a.Length == b.Length)
                 {
-                    for (int i = 0; i < a.Length; i++)
+                    for (var i = 0; i < a.Length; i++)
                     {
-                        object elemA = a.GetValue(i);
-                        object elemB = b.GetValue(i);
+                        var elemA = a.GetValue(i);
+                        var elemB = b.GetValue(i);
                         
                         if (elemA is Array && elemB is Array)
                         {
@@ -131,13 +131,13 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static int GetHashCode(Array array)
         {
-            int hashCode = 0;
+            var hashCode = 0;
 
             if (array != null)
             {
-                for (int i = 0; i < array.Length; i++)
+                for (var i = 0; i < array.Length; i++)
                 {
-                    object el = array.GetValue(i);
+                    var el = array.GetValue(i);
                     if (el != null)
                     {
                         if (el is Array)
@@ -171,12 +171,12 @@ namespace Solenoid.Expressions.Support.Util
                 return "null";
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append('{');
 
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
-                object val = array.GetValue(i);
+                var val = array.GetValue(i);
                 sb.Append(val == null ? "null" : val.ToString());
                 
                 if (i < array.Length - 1)
@@ -203,8 +203,8 @@ namespace Solenoid.Expressions.Support.Util
             if (second == null) return first;
 
             Type resultElementType;
-            Type firstElementType = first.GetType().GetElementType();
-            Type secondElementType = second.GetType().GetElementType();
+            var firstElementType = first.GetType().GetElementType();
+            var secondElementType = second.GetType().GetElementType();
             if (firstElementType.IsAssignableFrom(secondElementType))
             {
                 resultElementType = firstElementType;
@@ -217,7 +217,7 @@ namespace Solenoid.Expressions.Support.Util
             {
                 throw new ArgumentException(string.Format("Array element types '{0}' and '{1}' are not compatible", firstElementType, secondElementType));
             }
-            Array result = Array.CreateInstance(resultElementType, first.Length + second.Length);
+            var result = Array.CreateInstance(resultElementType, first.Length + second.Length);
             Array.Copy( first, result, first.Length );
             Array.Copy(second, 0, result, first.Length, second.Length);
             return result;

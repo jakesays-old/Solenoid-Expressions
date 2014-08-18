@@ -12,52 +12,44 @@ namespace Solenoid.Expressions
     /// This class is only required to enable serialization of parsed Spring expressions since antlr.CommonAST
     /// unfortunately is not marked as [Serializable].<br/>
     /// <br/>
-    /// <b>Note:</b>Since SpringAST implements <see cref="ISerializable"/>, deriving classes 
+    /// <b>Note:</b>Since SerializableNode implements <see cref="ISerializable"/>, deriving classes 
     /// have to explicitely override <see cref="GetObjectData"/> if they need to persist additional
     /// data during serialization.
     /// </remarks>
     [Serializable]
-    public class SpringAST : Parser.antlr.BaseAST, ISerializable
+    public class SerializableNode : BaseAST, ISerializable
     {
-        #region Global SpringAST Factory
-
-        internal class SpringASTCreator : Parser.antlr.ASTNodeCreator
+	    internal class SerializableNodeCreator : ASTNodeCreator
         {
-            public override Parser.antlr.collections.AST Create()
+            public override AST Create()
             {
-                return new SpringAST();
+                return new SerializableNode();
             }
 
             public override string ASTNodeTypeName
             {
-                get { return typeof(SpringAST).FullName; }
+                get { return typeof(SerializableNode).FullName; }
             }
         }
 
         /// <summary>
-        /// The global SpringAST node factory
+        /// The global SerializableNode node factory
         /// </summary>
-        internal static readonly SpringASTCreator Creator = new SpringASTCreator();
+        internal static readonly SerializableNodeCreator Creator = new SerializableNodeCreator();
 
-        #endregion
+	    private string _text;
+        private int _ttype;
 
-        #region Members
-
-        private string text;
-        private int ttype;
-
-        #endregion
-
-        /// <summary>
+	    /// <summary>
         /// Create an instance
         /// </summary>
-        public SpringAST()
+        public SerializableNode()
         {}
 
         /// <summary>
         /// Create an instance from a token
         /// </summary>
-        public SpringAST(IToken token)
+        public SerializableNode(IToken token)
         {
             initialize(token);
         }
@@ -67,8 +59,8 @@ namespace Solenoid.Expressions
         /// </summary>
         public override void initialize(AST t)
         {
-            this.setText(t.getText());
-            this.Type = t.Type;
+            setText(t.getText());
+            Type = t.Type;
         }
 
         /// <summary>
@@ -76,8 +68,8 @@ namespace Solenoid.Expressions
         /// </summary>
         public override void initialize(IToken tok)
         {
-            this.setText(tok.getText());
-            this.Type = tok.Type;
+            setText(tok.getText());
+            Type = tok.Type;
         }
 
         /// <summary>
@@ -85,8 +77,8 @@ namespace Solenoid.Expressions
         /// </summary>
         public override void initialize(int t, string txt)
         {
-            this.Type = t;
-            this.setText(txt);
+            Type = t;
+            setText(txt);
         }
 
         /// <summary>
@@ -94,8 +86,8 @@ namespace Solenoid.Expressions
         /// </summary>
         public override int Type
         {
-            get { return this.ttype; }
-            set { this.ttype = value; }
+            get { return _ttype; }
+            set { _ttype = value; }
         }
 
         /// <summary>
@@ -103,8 +95,8 @@ namespace Solenoid.Expressions
         /// </summary>
         public string Text
         {
-            get { return this.getText(); }
-            set { this.setText(value); }
+            get { return getText(); }
+            set { setText(value); }
         }
 
         /// <summary>
@@ -112,7 +104,7 @@ namespace Solenoid.Expressions
         /// </summary>
         public override void setText(string txt)
         {
-            this.text = txt;
+            _text = txt;
         }
 
         /// <summary>
@@ -120,20 +112,18 @@ namespace Solenoid.Expressions
         /// </summary>
         public override string getText()
         {
-            return this.text;
+            return _text;
         }
 
-        #region ISerializable Implementation
-
-        /// <summary>
+	    /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected SpringAST(SerializationInfo info, StreamingContext context)
+        protected SerializableNode(SerializationInfo info, StreamingContext context)
         {
-            base.down = (BaseAST)info.GetValue("down", typeof(BaseAST));
-            base.right = (BaseAST)info.GetValue("right", typeof(BaseAST));
-            this.ttype = info.GetInt32("ttype");
-            this.text = info.GetString("text");
+            down = (BaseAST)info.GetValue("down", typeof(BaseAST));
+            right = (BaseAST)info.GetValue("right", typeof(BaseAST));
+            _ttype = info.GetInt32("ttype");
+            _text = info.GetString("text");
         }
 
         /// <summary>
@@ -141,12 +131,10 @@ namespace Solenoid.Expressions
         /// </summary>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("down", base.down, typeof(SpringAST));
-            info.AddValue("right", base.right, typeof(SpringAST));
-            info.AddValue("ttype", this.Type, typeof(int));
-            info.AddValue("text", this.Text, typeof(string));
+            info.AddValue("down", down, typeof(SerializableNode));
+            info.AddValue("right", right, typeof(SerializableNode));
+            info.AddValue("ttype", Type, typeof(int));
+            info.AddValue("text", Text, typeof(string));
         }
-        
-        #endregion
     }
 }

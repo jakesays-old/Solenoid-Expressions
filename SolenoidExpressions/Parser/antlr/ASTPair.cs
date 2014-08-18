@@ -44,7 +44,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/*Copy an ASTPair.  Don't call it clone() because we want type-safety */
 		public ASTPair copy()
 		{
-			ASTPair tmp = new ASTPair();
+			var tmp = new ASTPair();
 			tmp.root = root;
 			tmp.child = child;
 			return tmp;
@@ -58,8 +58,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		override public string ToString()
 		{
-			string r = (root == null) ? "null" : root.getText();
-			string c = (child == null) ? "null" : child.getText();
+			var r = (root == null) ? "null" : root.getText();
+			var c = (child == null) ? "null" : child.getText();
 			return "[" + r + "," + c + "]";
 		}
 	}

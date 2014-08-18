@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,11 +14,8 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 using Solenoid.Expressions.Support.TypeResolution;
 
 namespace Solenoid.Expressions
@@ -32,13 +27,12 @@ namespace Solenoid.Expressions
     [Serializable]
     public class TypeNode : BaseNode
     {
-        private Type type;
+        private Type _type;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
         public TypeNode()
-            : base()
         {
         }
 
@@ -58,15 +52,15 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (type == null)
+            if (_type == null)
             {
                 lock(this)
                 {
-                    type = TypeResolutionUtils.ResolveType(getText());
+                    _type = TypeResolutionUtils.ResolveType(getText());
                 }
             }
 
-            return type;
+            return _type;
         }
 
         /// <summary>
@@ -78,16 +72,9 @@ namespace Solenoid.Expressions
         /// </returns>
         public override string getText()
         {
-            string tmp = base.getText();
-//            if (tmp != null && TypeRegistry.ContainsAlias(tmp))
-//            {
-//                Type type = TypeRegistry.ResolveType(tmp);
-//                if (type != null)
-//                {
-//                    tmp = type.AssemblyQualifiedName;
-//                }                
-//            }
-            AST node = this.getFirstChild();
+            var tmp = base.getText();
+
+			var node = getFirstChild();
             while (node != null)
             {
                 tmp += node.getText();

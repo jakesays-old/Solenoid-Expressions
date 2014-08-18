@@ -227,7 +227,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <param name="instructionIndex"></param>
 		public void rollback(string programName, int instructionIndex) 
 		{
-			ArrayList il = (ArrayList) programs[programName];
+			var il = (ArrayList) programs[programName];
 			if ( il != null ) 
 			{
 				programs[programName] = il.GetRange(MIN_TOKEN_INDEX, (instructionIndex - MIN_TOKEN_INDEX));
@@ -260,7 +260,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		protected void addToSortedRewriteList(string programName, RewriteOperation op) 
 		{
-			ArrayList rewrites = (ArrayList) getProgram(programName);
+			var rewrites = (ArrayList) getProgram(programName);
 			// if at or beyond last op's index, just append
 			if ( op.index >= getLastRewriteTokenIndex(programName) ) 
 			{
@@ -270,7 +270,7 @@ namespace Solenoid.Expressions.Parser.antlr
 				return;
 			}
 			// not after the last one, so must insert to ordered list
-			int pos = rewrites.BinarySearch(op, RewriteOperationComparer.Default);
+			var pos = rewrites.BinarySearch(op, RewriteOperationComparer.Default);
 			if (pos < 0) 
 			{
 				rewrites.Insert(-pos-1, op);
@@ -403,8 +403,8 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		public string ToOriginalString(int start, int end) 
 		{
-			StringBuilder buf = new StringBuilder();
-			for (int i = start; (i >= MIN_TOKEN_INDEX) && (i <= end) && (i < tokens.Count); i++) 
+			var buf = new StringBuilder();
+			for (var i = start; (i >= MIN_TOKEN_INDEX) && (i <= end) && (i < tokens.Count); i++) 
 			{
 				buf.Append(getToken(i).getText());
 			}
@@ -428,24 +428,24 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		public string ToString(string programName, int start, int end) 
 		{
-			IList rewrites = (IList) programs[programName];
+			var rewrites = (IList) programs[programName];
 			if (rewrites == null) 
 			{
 				return null; // invalid program
 			}
-			StringBuilder buf = new StringBuilder();
+			var buf = new StringBuilder();
 
 			// Index of first rewrite we have not done
-			int rewriteOpIndex = 0;
+			var rewriteOpIndex = 0;
 
-			int tokenCursor = start;
+			var tokenCursor = start;
 			while ( (tokenCursor >= MIN_TOKEN_INDEX) &&
 				(tokenCursor <= end) &&
 				(tokenCursor < tokens.Count) )
 			{
 				if (rewriteOpIndex < rewrites.Count) 
 				{
-					RewriteOperation op = (RewriteOperation) rewrites[rewriteOpIndex];
+					var op = (RewriteOperation) rewrites[rewriteOpIndex];
 					while ( (tokenCursor == op.index) && (rewriteOpIndex < rewrites.Count) ) 
 					{
 						/*
@@ -468,9 +468,9 @@ namespace Solenoid.Expressions.Parser.antlr
 				}
 			}
 			// now see if there are operations (append) beyond last token index
-			for (int opi = rewriteOpIndex; opi < rewrites.Count; opi++) 
+			for (var opi = rewriteOpIndex; opi < rewrites.Count; opi++) 
 			{
-				RewriteOperation op = (RewriteOperation) rewrites[opi];
+				var op = (RewriteOperation) rewrites[opi];
 				op.execute(buf); // must be insertions if after last token
 			}
 
@@ -484,8 +484,8 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		public string ToDebugString(int start, int end) 
 		{
-			StringBuilder buf = new StringBuilder();
-			for (int i = start; (i >= MIN_TOKEN_INDEX) && (i <= end) && (i < tokens.Count); i++) 
+			var buf = new StringBuilder();
+			for (var i = start; (i >= MIN_TOKEN_INDEX) && (i <= end) && (i < tokens.Count); i++) 
 			{
 				buf.Append(getToken(i));
 			}
@@ -499,7 +499,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		protected int getLastRewriteTokenIndex(string programName) 
 		{
-			object i = lastRewriteTokenIndexes[programName];
+			var i = lastRewriteTokenIndexes[programName];
 			if (i == null)
 			{
 				return -1;
@@ -514,7 +514,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		protected IList getProgram(string name) 
 		{
-			IList il = (IList) programs[name];
+			var il = (IList) programs[name];
 			if ( il == null ) 
 			{
 				il = initializeProgram(name);
@@ -535,8 +535,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 			public virtual int Compare(object o1, object o2)
 			{
-				RewriteOperation rop1 = (RewriteOperation) o1;
-				RewriteOperation rop2 = (RewriteOperation) o2;
+				var rop1 = (RewriteOperation) o1;
+				var rop2 = (RewriteOperation) o2;
 
 				if (rop1.index < rop2.index) return -1;
 				if (rop1.index > rop2.index) return 1;

@@ -43,9 +43,9 @@ namespace Solenoid.Expressions.Parser.antlr
 			do 
 			{
 				changed = false;
-				 for (int i = 0; i < remove.Length; i++)
+				 for (var i = 0; i < remove.Length; i++)
 				{
-					char c = remove[i];
+					var c = remove[i];
 					while (s.Length > 0 && s[s.Length - 1] == c)
 					{
 						changed = true;
@@ -84,9 +84,9 @@ namespace Solenoid.Expressions.Parser.antlr
 			do 
 			{
 				changed = false;
-				 for (int i = 0; i < remove.Length; i++)
+				 for (var i = 0; i < remove.Length; i++)
 				{
-					char c = remove[i];
+					var c = remove[i];
 					while (s.Length > 0 && s[0] == c)
 					{
 						changed = true;
@@ -107,8 +107,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		*/
 		public static string stripFrontBack(string src, string head, string tail)
 		{
-			int h = src.IndexOf(head);
-			int t = src.LastIndexOf(tail);
+			var h = src.IndexOf(head);
+			var t = src.LastIndexOf(tail);
 			if (h == - 1 || t == - 1)
 				return src;
 			return src.Substring(h + 1, (t) - (h + 1));

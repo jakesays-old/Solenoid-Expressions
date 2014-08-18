@@ -60,7 +60,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			if (node == null)
 				return ;
-			BaseAST t = this.down;
+			var t = this.down;
 			if (t != null)
 			{
 				while (t.right != null)
@@ -241,7 +241,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		*/
 		public virtual IEnumerator findAll(AST target)
 		{
-			ArrayList roots = new ArrayList(10);
+			var roots = new ArrayList(10);
 			//AST sibling;
 			
 			// the empty tree cannot result in an enumeration
@@ -261,7 +261,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		*/
 		public virtual IEnumerator findAllPartial(AST sub)
 		{
-			ArrayList roots = new ArrayList(10);
+			var roots = new ArrayList(10);
 			//AST sibling;
 			
 			// the empty tree cannot result in an enumeration
@@ -306,8 +306,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>Number of children</returns>
 		public int getNumberOfChildren() 
 		{
-			BaseAST t = this.down;
-			int n = 0;
+			var t = this.down;
+			var n = 0;
 			if (t != null) 
 			{
 				n = 1;
@@ -362,7 +362,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		override public string ToString()
 		{
-			StringBuilder b = new StringBuilder();
+			var b = new StringBuilder();
 			// if verbose and type name not same as text (keyword probably)
 			if (verboseStringConversion && 
 					(0 != String.Compare(getText(), (tokenNames[Type]), true)) &&
@@ -382,7 +382,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		public virtual string ToStringList()
 		{
 			AST t = this;
-			string ts = "";
+			var ts = "";
 			if (t.getFirstChild() != null)
 				ts += " (";
 			ts += " " + this.ToString();
@@ -402,7 +402,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		public virtual string ToStringTree() 
 		{
 			AST t = this;
-			string ts = "";
+			var ts = "";
 			if (t.getFirstChild() != null) 
 			{
 				ts += " (";
@@ -426,7 +426,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual string ToTree(string prefix) 
 		{
-			StringBuilder sb = new StringBuilder(prefix);
+			var sb = new StringBuilder(prefix);
 		
 			// Replace vertical bar if there is no next sibling.
 			if ( (getNextSibling() == null) )
@@ -455,8 +455,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		public static string decode(string text)
 		{
 			char c, c1, c2, c3, c4, c5;
-			StringBuilder n = new StringBuilder();
-			 for (int i = 0; i < text.Length; i++)
+			var n = new StringBuilder();
+			 for (var i = 0; i < text.Length; i++)
 			{
 				c = text[i];
 				if (c == '&')
@@ -504,8 +504,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		public static string encode(string text)
 		{
 			char c;
-			StringBuilder n = new StringBuilder();
-			 for (int i = 0; i < text.Length; i++)
+			var n = new StringBuilder();
+			 for (var i = 0; i < text.Length; i++)
 			{
 				c = text[i];
 				switch (c)
@@ -553,7 +553,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual void  xmlSerializeNode(TextWriter outWriter)
 		{
-			StringBuilder buf = new StringBuilder(100);
+			var buf = new StringBuilder(100);
 			buf.Append("<");
 			buf.Append(GetType().FullName + " ");
 			buf.Append("text=\"" + encode(getText()) + "\" type=\"" + Type + "\"/>");
@@ -562,7 +562,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual void  xmlSerializeRootOpen(TextWriter outWriter)
 		{
-			StringBuilder buf = new StringBuilder(100);
+			var buf = new StringBuilder(100);
 			buf.Append("<");
 			buf.Append(GetType().FullName + " ");
 			buf.Append("text=\"" + encode(getText()) + "\" type=\"" + Type + "\">\n");

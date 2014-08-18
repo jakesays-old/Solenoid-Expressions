@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -29,19 +25,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpPOWER : BinaryOperator
+    public class OpPower : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpPOWER():base()
+        public OpPower()
         {
         }
 
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpPOWER(SerializationInfo info, StreamingContext context)
+        protected OpPower(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -54,21 +50,18 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+            var lhs = GetLeftValue( context, evalContext );
+            var rhs = GetRightValue( context, evalContext );
 
-            if (NumberUtils.IsNumber(left) && NumberUtils.IsNumber(right))
+            if (NumberUtils.IsNumber(lhs) && NumberUtils.IsNumber(rhs))
             {
-                return NumberUtils.Power(left, right);
+                return NumberUtils.Power(lhs, rhs);
             }
-            else
-            {
-                throw new ArgumentException("Cannot calculate exponent for the instances of '"
-                                            + left.GetType().FullName
-                                            + "' and '"
-                                            + right.GetType().FullName
-                                            + "'.");
-            }
+	        throw new ArgumentException("Cannot calculate exponent for the instances of '"
+										+ lhs.GetType().FullName
+										+ "' and '"
+										+ rhs.GetType().FullName
+										+ "'.");
         }
     }
 }

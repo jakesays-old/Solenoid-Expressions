@@ -53,7 +53,7 @@ namespace Solenoid.Expressions.Support.TypeResolution
             {
                 throw BuildTypeLoadException(typeName);
             }
-            GenericArgumentsHolder genericInfo = new GenericArgumentsHolder(typeName);
+            var genericInfo = new GenericArgumentsHolder(typeName);
             Type type = null;
             try
             {
@@ -62,9 +62,9 @@ namespace Solenoid.Expressions.Support.TypeResolution
                     type = TypeResolutionUtils.ResolveType(genericInfo.GenericTypeName);
                     if (!genericInfo.IsGenericDefinition)
                     {
-                        string[] unresolvedGenericArgs = genericInfo.GetGenericArguments();
-                        Type[] genericArgs = new Type[unresolvedGenericArgs.Length];
-                        for (int i = 0; i < unresolvedGenericArgs.Length; i++)
+                        var unresolvedGenericArgs = genericInfo.GetGenericArguments();
+                        var genericArgs = new Type[unresolvedGenericArgs.Length];
+                        for (var i = 0; i < unresolvedGenericArgs.Length; i++)
                         {
                             genericArgs[i] = TypeResolutionUtils.ResolveType(unresolvedGenericArgs[i]);
                         }

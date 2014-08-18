@@ -139,7 +139,7 @@ namespace Solenoid.Expressions.Parser.antlr
 			
 			// we always consume hidden tokens after monitored, thus,
 			// upon entry LA(1) is a monitored token.
-			IHiddenStreamToken monitored = LA(1);
+			var monitored = LA(1);
 			// point to hidden tokens found during last invocation
 			monitored.setHiddenBefore(lastHiddenToken);
 			lastHiddenToken = null;
@@ -147,7 +147,7 @@ namespace Solenoid.Expressions.Parser.antlr
 			// Look for hidden tokens, hook them into list emanating
 			// from the monitored tokens.
 			consume();
-			IHiddenStreamToken p = monitored;
+			var p = monitored;
 			// while hidden or discarded scarf tokens
 			while (hideMask.member(LA(1).Type) || discardMask.member(LA(1).Type))
 			{

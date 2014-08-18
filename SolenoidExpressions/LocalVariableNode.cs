@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -56,8 +52,8 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string varName = this.getText();
-            IDictionary locals = evalContext.LocalVariables;
+            var varName = getText();
+            var locals = evalContext.LocalVariables;
             if (locals != null)
             {
                 return locals[varName];
@@ -73,8 +69,8 @@ namespace Solenoid.Expressions
         /// <param name="newValue">New value for this node.</param>
         protected override void Set(object context, EvaluationContext evalContext, object newValue)
         {
-            string varName = this.getText();
-            IDictionary locals = evalContext.LocalVariables;
+            var varName = getText();
+            var locals = evalContext.LocalVariables;
             if (locals == null)
             {
                 locals = new Hashtable();

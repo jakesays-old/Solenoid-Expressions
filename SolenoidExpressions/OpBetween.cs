@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -57,16 +53,16 @@ namespace Solenoid.Expressions
         /// </returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object value = GetLeftValue(context, evalContext);
-            IList range = GetRightValue(context, evalContext) as IList;
+            var value = GetLeftValue(context, evalContext);
+            var range = GetRightValue(context, evalContext) as IList;
 
             if (range == null || range.Count != 2)
             {
                 throw new ArgumentException("Right operand for the 'between' operator has to be a two-element list.");
             }
 
-            object low = range[0];
-            object high = range[1];
+            var low = range[0];
+            var high = range[1];
 
             return (CompareUtils.Compare(value, low) >= 0 && CompareUtils.Compare(value, high) <= 0);
         }

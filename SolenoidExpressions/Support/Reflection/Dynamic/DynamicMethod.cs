@@ -118,7 +118,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             state = (SafeMethodState)stateCache[methodInfo];
             if (state == null)
             {
-                SafeMethodState newState = new SafeMethodState(DynamicReflectionManager.CreateMethod(methodInfo),
+                var newState = new SafeMethodState(DynamicReflectionManager.CreateMethod(methodInfo),
                 new object[methodInfo.GetParameters().Length]
                 );
 
@@ -151,9 +151,9 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
         public object Invoke(object target, params object[] arguments)
         {
             // special case - when calling Invoke(null,null) it is undecidible if the second null is an argument or the argument array
-            object[] nullArguments = state.nullArguments;
+            var nullArguments = state.nullArguments;
             if (arguments == null && nullArguments.Length == 1) arguments = nullArguments;
-            int arglen = (arguments == null ? 0 : arguments.Length);
+            var arglen = (arguments == null ? 0 : arguments.Length);
             if (nullArguments.Length != arglen)
             {
                 throw new ArgumentException(string.Format("Invalid number of arguments passed into method {0} - expected {1}, but was {2}", methodInfo.Name, nullArguments.Length, arglen));

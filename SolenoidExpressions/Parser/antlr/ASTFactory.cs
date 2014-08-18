@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Reflection;
 using Solenoid.Expressions.Parser.antlr.collections;
 using Solenoid.Expressions.Parser.antlr.collections.impl;
 
@@ -207,17 +206,17 @@ namespace Solenoid.Expressions.Parser.antlr
 			}
 			else
 			{
-				int length = heteroList_.Length;
+				var length = heteroList_.Length;
 
 				if ( NodeType >= length )
 				{
-					FactoryEntry[] newList = new FactoryEntry[NodeType+1];
+					var newList = new FactoryEntry[NodeType+1];
 					Array.Copy(heteroList_, 0, newList, 0, length);
 					heteroList_ = newList;
 				}
 				else if ( NodeType < length )
 				{
-					FactoryEntry[] newList = new FactoryEntry[NodeType+1];
+					var newList = new FactoryEntry[NodeType+1];
 					Array.Copy(heteroList_, 0, newList, 0, (NodeType+1));
 					heteroList_ = newList;
 				}
@@ -288,7 +287,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>An initialized AST node object.</returns>
 		public virtual AST create(int type)
 		{
-			AST newNode = createFromNodeType(type);
+			var newNode = createFromNodeType(type);
 			newNode.initialize(type, "");
 			return newNode;
 		}
@@ -307,7 +306,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>An initialized AST node object.</returns>
 		public virtual AST create(int type, string txt)
 		{
-			AST newNode = createFromNodeType(type);
+			var newNode = createFromNodeType(type);
 			newNode.initialize(type, txt);
 			return newNode;
 		}
@@ -325,7 +324,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>An initialized AST node object.</returns>
 		public virtual AST create(int type, string txt, string ASTNodeTypeName)
 		{
-			AST newNode = createFromNodeName(ASTNodeTypeName);
+			var newNode = createFromNodeName(ASTNodeTypeName);
 			newNode.initialize(type, txt);
 			return newNode;
 		}
@@ -346,7 +345,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// </remarks>
 		public virtual AST create(IToken tok, string ASTNodeTypeName)
 		{
-			AST newNode = createFromNodeName(ASTNodeTypeName);
+			var newNode = createFromNodeName(ASTNodeTypeName);
 			newNode.initialize(tok);
 			return newNode;
 		}
@@ -411,7 +410,7 @@ namespace Solenoid.Expressions.Parser.antlr
 			if (t == null)
 				return null;
 
-			AST dup_edNode = createFromAST(t);
+			var dup_edNode = createFromAST(t);
 			dup_edNode.initialize(t);
 			return dup_edNode;
 		}
@@ -423,8 +422,8 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>Root node of new AST Node tree (or null if <c>t</c> is null).</returns>
 		public virtual AST dupList(AST t)
 		{
-			AST result = dupTree(t); // if t == null, then result==null
-			AST nt = result;
+			var result = dupTree(t); // if t == null, then result==null
+			var nt = result;
 			while (t != null)
 			{
 				// for each sibling of the root
@@ -442,7 +441,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// <returns>Root node of new AST Node tree (or null if <c>t</c> is null).</returns>
 		public virtual AST dupTree(AST t)
 		{
-			AST result = dup(t); // make copy of root
+			var result = dup(t); // make copy of root
 			// copy all children of root.
 			if (t != null)
 			{
@@ -464,14 +463,14 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			if (nodes == null || nodes.Length == 0)
 				return null;
-			AST root = nodes[0];
+			var root = nodes[0];
 			AST tail = null;
 			if (root != null)
 			{
 				root.setFirstChild(null); // don't leave any old pointers set
 			}
 			// link in children;
-			for (int i = 1; i < nodes.Length; i++)
+			for (var i = 1; i < nodes.Length; i++)
 			{
 				if (nodes[i] == null)
 					continue;
@@ -566,11 +565,11 @@ namespace Solenoid.Expressions.Parser.antlr
 		private static Type loadNodeTypeObject(string nodeTypeName)
 		{
 			Type	nodeTypeObject	= null;
-			bool	typeCreated		= false;
+			var	typeCreated		= false;
 
 			if (nodeTypeName != null)
 			{
-				foreach (Assembly assem in AppDomain.CurrentDomain.GetAssemblies())
+				foreach (var assem in AppDomain.CurrentDomain.GetAssemblies())
 				{
 					try
 					{
@@ -597,9 +596,9 @@ namespace Solenoid.Expressions.Parser.antlr
 		private AST createFromAST(AST node)
 		{
 			AST		newNode			= null;
-			Type	nodeAsTypeObj	= node.GetType();
+			var	nodeAsTypeObj	= node.GetType();
 
-			ASTNodeCreator creator = (ASTNodeCreator) typename2creator_[nodeAsTypeObj.FullName];
+			var creator = (ASTNodeCreator) typename2creator_[nodeAsTypeObj.FullName];
 			if (creator != null)
 			{
 				newNode = creator.Create();
@@ -619,7 +618,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			AST		newNode			= null;
 
-			ASTNodeCreator creator = (ASTNodeCreator) typename2creator_[nodeTypeName];
+			var creator = (ASTNodeCreator) typename2creator_[nodeTypeName];
 			if (creator != null)
 			{
 				newNode = creator.Create();
@@ -640,7 +639,7 @@ namespace Solenoid.Expressions.Parser.antlr
 			Debug.Assert((nodeTypeIndex >= 0) && (nodeTypeIndex <= heteroList_.Length), "Invalid AST node type!");
 			AST newNode = null;
 
-			FactoryEntry	entry = heteroList_[nodeTypeIndex];
+			var	entry = heteroList_[nodeTypeIndex];
 			if ((entry != null) && (entry.Creator != null))
 			{
 				newNode = entry.Creator.Create();

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -29,19 +25,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpMODULUS : BinaryOperator
+    public class OpModulous : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpMODULUS():base()
+        public OpModulous()
         {
         }
 
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpMODULUS(SerializationInfo info, StreamingContext context)
+        protected OpModulous(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -54,21 +50,18 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object leftVal = GetLeftValue(context, evalContext );
-            object rightVal = GetRightValue(context, evalContext );
+            var leftVal = GetLeftValue(context, evalContext );
+            var rightVal = GetRightValue(context, evalContext );
 
             if (NumberUtils.IsNumber(leftVal) && NumberUtils.IsNumber(rightVal))
             {
                 return NumberUtils.Modulus(leftVal, rightVal);
             }
-            else
-            {
-                throw new ArgumentException("Cannot calculate modulus for instances of '"
-                                            + leftVal.GetType().FullName
-                                            + "' and '"
-                                            + rightVal.GetType().FullName
-                                            + "'.");
-            }
+	        throw new ArgumentException("Cannot calculate modulus for instances of '"
+										+ leftVal.GetType().FullName
+										+ "' and '"
+										+ rightVal.GetType().FullName
+										+ "'.");
         }
     }
 }

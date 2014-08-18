@@ -20,15 +20,15 @@ namespace Solenoid.Expressions.Parser.antlr
 	[Serializable]
 	public class ANTLRException : Exception
 	{
-		public ANTLRException() : base() 
+		public ANTLRException()
 		{
 		}
 
-		public ANTLRException(string s) : base(s) 
+		public ANTLRException(string message) : base(message) 
 		{
 		}
 
-		public ANTLRException(string s, Exception inner) : base(s, inner)
+		public ANTLRException(string message, Exception inner) : base(message, inner)
 		{
 		}
 	}

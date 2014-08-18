@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,11 +14,8 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
@@ -31,15 +26,15 @@ namespace Solenoid.Expressions
     [Serializable]
     public class TernaryNode : BaseNode
     {
-        private bool initialized = false;
-        private BaseNode condition;
-        private BaseNode trueExp;
-        private BaseNode falseExp;
+        private bool _initialized = false;
+        private BaseNode _condition;
+        private BaseNode _trueExp;
+        private BaseNode _falseExp;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public TernaryNode():base()
+        public TernaryNode()
         {
         }
 
@@ -59,32 +54,29 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (!initialized)
+            if (!_initialized)
             {
                 lock (this)
                 {
-                    if (!initialized)
+                    if (!_initialized)
                     {
-                        AST node = this.getFirstChild();
-                        condition = (BaseNode) node;
+                        var node = getFirstChild();
+                        _condition = (BaseNode) node;
                         node = node.getNextSibling();
-                        trueExp = (BaseNode) node;
+                        _trueExp = (BaseNode) node;
                         node = node.getNextSibling();
-                        falseExp = (BaseNode) node;
+                        _falseExp = (BaseNode) node;
 
-                        initialized = true;
+                        _initialized = true;
                     }
                 }
             }
 
-            if (Convert.ToBoolean(GetValue(condition, context, evalContext)))
+            if (Convert.ToBoolean(GetValue(_condition, context, evalContext)))
             {
-                return GetValue(trueExp, context, evalContext);
+                return GetValue(_trueExp, context, evalContext);
             }
-            else
-            {
-                return GetValue(falseExp, context, evalContext);
-            }
+	        return GetValue(_falseExp, context, evalContext);
         }
     }
 }

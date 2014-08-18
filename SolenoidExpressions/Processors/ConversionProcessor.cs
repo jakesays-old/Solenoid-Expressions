@@ -54,7 +54,7 @@ namespace Solenoid.Expressions.Processors
                 return source;
             }
 
-            Type targetType = typeof(double);
+            var targetType = typeof(double);
             if (args == null || args.Length == 0)
             {
                 throw new ArgumentNullException("args", "convert() processor requires a Type value argument.");
@@ -75,10 +75,10 @@ namespace Solenoid.Expressions.Processors
                 throw new ArgumentException("Only a single argument can be specified for a convert() processor.");
             }        
     
-            ArrayList result = new ArrayList();
-            foreach(object val in source)
+            var result = new ArrayList();
+            foreach(var val in source)
             {
-                object newVal = TypeConversionUtils.ConvertValueIfNecessary(targetType, val, null);
+                var newVal = TypeConversionUtils.ConvertValueIfNecessary(targetType, val, null);
                 result.Add(newVal);                
             }
 

@@ -89,10 +89,10 @@ namespace Solenoid.Expressions.Support.Util
         {
             lock(s_moduleCache.SyncRoot)
             {
-                ModuleBuilder module = (ModuleBuilder) s_moduleCache[assemblyName];
+                var module = (ModuleBuilder) s_moduleCache[assemblyName];
                 if (module == null)
                 {
-                    AssemblyName an = new AssemblyName();
+                    var an = new AssemblyName();
                     an.Name = assemblyName;
                     
                     AssemblyBuilder assembly;
@@ -137,7 +137,7 @@ namespace Solenoid.Expressions.Support.Util
                 throw new ArgumentException(string.Format("'{0}' is not a valid dynamic assembly name", assemblyName), "assemblyName");
             }
 
-            AssemblyBuilder assembly = (AssemblyBuilder) module.Assembly;
+            var assembly = (AssemblyBuilder) module.Assembly;
             assembly.Save(assembly.GetName().Name + ".dll");            
         }
 

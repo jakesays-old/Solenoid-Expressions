@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright 2002-2010 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using NUnit.Framework;
 using Solenoid.Expressions;
@@ -33,7 +29,7 @@ namespace Spring.Expressions
         [Test]
         public void CanAddStrings()
         {
-            OpADD add = new OpADD();
+            OpAdd add = new OpAdd();
             add.addChild( new StringLiteralNode("20"));
             add.addChild( new StringLiteralNode("30"));
             object result = add.GetValue(null, null);
@@ -42,7 +38,7 @@ namespace Spring.Expressions
         [Test]
         public void CanAddNumbers()
         {
-            OpADD add = new OpADD();
+            OpAdd add = new OpAdd();
             add.addChild( new IntLiteralNode("20"));
             add.addChild( new IntLiteralNode("30"));
             object result = add.GetValue(null, null);

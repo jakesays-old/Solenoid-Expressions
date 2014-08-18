@@ -155,7 +155,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			get 
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 			
 				switch (mismatchType)
 				{
@@ -177,8 +177,8 @@ namespace Solenoid.Expressions.Parser.antlr
 				
 					case TokenTypeEnum.SetType: case TokenTypeEnum.NotSetType: 
 						sb.Append("expecting " + (mismatchType == TokenTypeEnum.NotSetType ? "NOT " : "") + "one of (");
-						int[] elems = bset.toArray();
-						for (int i = 0; i < elems.Length; i++)
+						var elems = bset.toArray();
+						for (var i = 0; i < elems.Length; i++)
 						{
 							sb.Append(" ");
 							sb.Append(tokenName(elems[i]));

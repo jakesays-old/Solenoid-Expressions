@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright 2002-2010 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -28,18 +24,18 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Erich Eichinger</author>
     [Serializable]
-    public class OpXOR : BinaryOperator
+    public class OpXor : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpXOR()
+        public OpXor()
         { }
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpXOR(BaseNode left, BaseNode right)
+        public OpXor(BaseNode left, BaseNode right)
             :base(left, right)
         {
         }
@@ -47,7 +43,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpXOR(SerializationInfo info, StreamingContext context)
+        protected OpXor(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -60,23 +56,24 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object l = GetLeftValue(context, evalContext);
-            object r = GetRightValue(context, evalContext);
+            var lhs = GetLeftValue(context, evalContext);
+            var rhs = GetRightValue(context, evalContext);
 
-            if (NumberUtils.IsInteger(l) && NumberUtils.IsInteger(r))
+            if (NumberUtils.IsInteger(lhs) && NumberUtils.IsInteger(rhs))
             {
-                return NumberUtils.BitwiseXor(l, r);
+                return NumberUtils.BitwiseXor(lhs, rhs);
             }
-            else if (l is Enum && l.GetType() == r.GetType())
-            {
-                Type enumType = l.GetType();
-                Type integralType = Enum.GetUnderlyingType(enumType);
-                l = Convert.ChangeType(l, integralType);
-                r = Convert.ChangeType(r, integralType);
-                object result = NumberUtils.BitwiseXor(l, r);
-                return Enum.ToObject(enumType, result);
-            }
-            return Convert.ToBoolean(l) ^ Convert.ToBoolean(r);
+	        if (lhs is Enum && lhs.GetType() == rhs.GetType())
+	        {
+		        var enumType = lhs.GetType();
+		        var integralType = Enum.GetUnderlyingType(enumType);
+		        lhs = Convert.ChangeType(lhs, integralType);
+		        rhs = Convert.ChangeType(rhs, integralType);
+		        var result = NumberUtils.BitwiseXor(lhs, rhs);
+
+		        return Enum.ToObject(enumType, result);
+	        }
+	        return Convert.ToBoolean(lhs) ^ Convert.ToBoolean(rhs);
         }
     }
 }

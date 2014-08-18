@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpIn():base()
+        public OpIn()
         {
         }
 
@@ -56,26 +52,23 @@ namespace Solenoid.Expressions
         /// </returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+            var lhs = GetLeftValue( context, evalContext );
+            var rhs = GetRightValue( context, evalContext );
 
-            if (right == null)
+            if (rhs == null)
             {
                 return false;
             }
-            else if (right is IList)
-            {
-                return ((IList) right).Contains(left);
-            }
-            else if (right is IDictionary)
-            {
-                return ((IDictionary) right).Contains(left);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    "Right hand parameter for 'in' operator has to be an instance of IList or IDictionary.");
-            }
+	        if (rhs is IList)
+	        {
+		        return ((IList) rhs).Contains(lhs);
+	        }
+	        if (rhs is IDictionary)
+	        {
+		        return ((IDictionary) rhs).Contains(lhs);
+	        }
+	        throw new ArgumentException(
+		        "Right hand parameter for 'in' operator has to be an instance of IList or IDictionary.");
         }
     }
 }

@@ -25,7 +25,6 @@ using System.Collections;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Remoting;
-using System.Runtime.Remoting.Proxies;
 
 #endregion
 
@@ -98,8 +97,8 @@ namespace Solenoid.Expressions.Support.Util
             Type targetType;
             if (RemotingServices.IsTransparentProxy(target))
             {
-                RealProxy rp = RemotingServices.GetRealProxy(target);
-                IRemotingTypeInfo rti = rp as IRemotingTypeInfo;
+                var rp = RemotingServices.GetRealProxy(target);
+                var rti = rp as IRemotingTypeInfo;
                 if (rti != null)
                 {
                     if (rti.CanCastTo(requiredType, target))

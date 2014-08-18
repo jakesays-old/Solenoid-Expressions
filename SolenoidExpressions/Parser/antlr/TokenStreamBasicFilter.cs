@@ -44,7 +44,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		}
 		public virtual IToken nextToken()
 		{
-			IToken tok = input.nextToken();
+			var tok = input.nextToken();
 			while (tok != null && discardMask.member(tok.Type))
 			{
 				tok = input.nextToken();

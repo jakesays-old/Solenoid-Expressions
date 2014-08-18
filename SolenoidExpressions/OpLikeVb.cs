@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,14 +14,8 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
-#if !MONO_2_0
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-#endif
 
 namespace Solenoid.Expressions
 {
@@ -37,7 +29,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpLike():base()
+        public OpLike()
         {
         }
 
@@ -60,10 +52,10 @@ namespace Solenoid.Expressions
         protected override object Get(object context, EvaluationContext evalContext)
         {
 #if !MONO_2_0
-			string text = GetLeftValue(context, evalContext) as string;
-			string pattern = GetRightValue(context, evalContext) as string;
+			var text = GetLeftValue(context, evalContext) as string;
+			var pattern = GetRightValue(context, evalContext) as string;
 
-			return LikeOperator.LikeString(text, pattern, CompareMethod.Text);
+			return Microsoft.VisualBasic.CompilerServices.LikeOperator.LikeString(text, pattern, CompareMethod.Text);
 #else
             throw new NotSupportedException("'like' operator is only supported in .NET 2.0 or higher.");
 #endif

@@ -85,7 +85,7 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static bool CanConvertToInteger(object number)
         {
-            TypeConverter converter = TypeDescriptor.GetConverter(number);
+            var converter = TypeDescriptor.GetConverter(number);
             return (converter.CanConvertTo(typeof(Int32))
                 || converter.CanConvertTo(typeof(Int16))
                 || converter.CanConvertTo(typeof(Int64))
@@ -105,7 +105,7 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static bool CanConvertToDecimal(object number)
         {
-            TypeConverter converter = TypeDescriptor.GetConverter(number);
+            var converter = TypeDescriptor.GetConverter(number);
             return (converter.CanConvertTo(typeof(Single))
                 || converter.CanConvertTo(typeof(Double))
                 || converter.CanConvertTo(typeof(Decimal))
@@ -289,9 +289,9 @@ namespace Solenoid.Expressions.Support.Util
 	        {
 		        if (SystemUtils.MonoRuntime)
 		        {
-			        SByte x = (sbyte) n;
-			        SByte y = (sbyte) m;
-			        int result = (int) x | (int) y;
+			        var x = (sbyte) n;
+			        var y = (sbyte) m;
+			        var result = (int) x | (int) y;
 			        return SByte.Parse(result.ToString());
 		        }
 		        return (SByte) ((SByte) m | (SByte) n);
@@ -519,8 +519,8 @@ namespace Solenoid.Expressions.Support.Util
         /// <param name="n">The left.</param>
         public static void CoerceTypes(ref object m, ref object n)
         {
-            TypeCode leftTypeCode = Convert.GetTypeCode(m);
-            TypeCode rightTypeCode = Convert.GetTypeCode(n);
+            var leftTypeCode = Convert.GetTypeCode(m);
+            var rightTypeCode = Convert.GetTypeCode(n);
 
             if (leftTypeCode > rightTypeCode)
             {

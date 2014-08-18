@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -36,11 +32,11 @@ namespace Solenoid.Expressions
     [Serializable]
     public class ConstructorNode : NodeWithArguments
     {
-        private SafeConstructor constructor;
-        private IDictionary namedArgs;
-        private bool isParamArray = false;
-        private Type paramArrayType;
-        private int argumentCount;
+        private SafeConstructor _constructor;
+        private IDictionary _namedArgs;
+        private bool _isParamArray = false;
+        private Type _paramArrayType;
+        private int _argumentCount;
 
         /// <summary>
         /// Create a new instance
@@ -73,22 +69,22 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object[] argValues = ResolveArguments(evalContext);
-            IDictionary namedArgValues = ResolveNamedArguments(evalContext);
+            var argValues = ResolveArguments(evalContext);
+            var namedArgValues = ResolveNamedArguments(evalContext);
 
-            if (constructor == null)
+            if (_constructor == null)
             {
                 lock(this)
                 {
-                    if (constructor == null)
+                    if (_constructor == null)
                     {
-                        constructor = InitializeNode(argValues, namedArgValues);
+                        _constructor = InitializeNode(argValues, namedArgValues);
                     }
                 }
             }
 
-            object[] paramValues = (isParamArray ? ReflectionUtils.PackageParamArray(argValues, argumentCount, paramArrayType) : argValues);
-            object instance = constructor.Invoke(paramValues);
+            var paramValues = (_isParamArray ? ReflectionUtils.PackageParamArray(argValues, _argumentCount, _paramArrayType) : argValues);
+            var instance = _constructor.Invoke(paramValues);
             if (namedArgValues != null)
             {
                 SetNamedArguments(instance, namedArgValues);
@@ -122,10 +118,10 @@ namespace Solenoid.Expressions
         private SafeConstructor InitializeNode(object[] argValues, IDictionary namedArgValues)
         {
             SafeConstructor ctor = null;
-            Type objectType = GetObjectType(this.getText().Trim());
+            var objectType = GetObjectType(getText().Trim());
                 
             // cache constructor info
-            ConstructorInfo ci = GetBestConstructor(objectType, argValues);
+            var ci = GetBestConstructor(objectType, argValues);
             if (ci == null)
             {
                 throw new ArgumentException(
@@ -133,29 +129,26 @@ namespace Solenoid.Expressions
                                   "number and types of arguments does not exist.",
                                   objectType.FullName));
             }
-            else 
-            {
-                ParameterInfo[] parameters = ci.GetParameters();
-                if (parameters.Length > 0)
-                {
-                    ParameterInfo lastParameter = parameters[parameters.Length - 1];
-                    isParamArray = lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
-                    if (isParamArray)
-                    {
-                        paramArrayType = lastParameter.ParameterType.GetElementType();
-                        argumentCount = parameters.Length;
-                    }
-                }
-                ctor = new SafeConstructor(ci);
-            }
-                
-            // cache named args info
+	        var parameters = ci.GetParameters();
+	        if (parameters.Length > 0)
+	        {
+		        var lastParameter = parameters[parameters.Length - 1];
+		        _isParamArray = lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0;
+		        if (_isParamArray)
+		        {
+			        _paramArrayType = lastParameter.ParameterType.GetElementType();
+			        _argumentCount = parameters.Length;
+		        }
+	        }
+	        ctor = new SafeConstructor(ci);
+
+	        // cache named args info
             if (namedArgValues != null)
             {
-                namedArgs = new Hashtable(namedArgValues.Count);
+                _namedArgs = new Hashtable(namedArgValues.Count);
                 foreach (string name in namedArgValues.Keys)
                 {
-                    this.namedArgs[name] = Expression.ParseProperty(name);
+                    _namedArgs[name] = Expression.ParseProperty(name);
                 }
             }
 
@@ -171,14 +164,14 @@ namespace Solenoid.Expressions
         {
             foreach (string name in namedArgValues.Keys)
             {
-                IExpression property = (IExpression) namedArgs[name];
+                var property = (IExpression) _namedArgs[name];
                 property.SetValue(instance, namedArgValues[name]);
             }
         }
 
         private static ConstructorInfo GetBestConstructor(Type type, object[] argValues)
         {
-            IList<ConstructorInfo> candidates = GetCandidateConstructors(type, argValues.Length);
+            var candidates = GetCandidateConstructors(type, argValues.Length);
             if (candidates.Count > 0)
             {
                 return ReflectionUtils.GetConstructorByArgumentValues(candidates, argValues);
@@ -188,19 +181,19 @@ namespace Solenoid.Expressions
 
         private static IList<ConstructorInfo> GetCandidateConstructors(Type type, int argCount)
         {
-            ConstructorInfo[] ctors = type.GetConstructors(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic);
-            List<ConstructorInfo> matches = new List<ConstructorInfo>();
+            var ctors = type.GetConstructors(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic);
+            var matches = new List<ConstructorInfo>();
 
-            foreach (ConstructorInfo ctor in ctors)
+            foreach (var ctor in ctors)
             {
-                ParameterInfo[] parameters = ctor.GetParameters();
+                var parameters = ctor.GetParameters();
                 if (parameters.Length == argCount)
                 {
                     matches.Add(ctor);
                 }
                 else if (parameters.Length > 0)
                 {
-                    ParameterInfo lastParameter = parameters[parameters.Length - 1];
+                    var lastParameter = parameters[parameters.Length - 1];
                     if (lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0)
                     {
                         matches.Add(ctor);

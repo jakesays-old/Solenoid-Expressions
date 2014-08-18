@@ -51,7 +51,7 @@ namespace Solenoid.Expressions.Processors
                 return source;
             }
 
-            ArrayList list = new ArrayList(source);
+            var list = new ArrayList(source);
             list.Reverse();
 
             return list;            

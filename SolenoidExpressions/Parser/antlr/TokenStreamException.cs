@@ -27,7 +27,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		public TokenStreamException()
 		{
 		}
-		public TokenStreamException(string s) : base(s)
+		public TokenStreamException(string message) : base(message)
 		{
 		}
 	}

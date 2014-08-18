@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -29,19 +25,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpAND : BinaryOperator
+    public class OpAnd : BinaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpAND()
+        public OpAnd()
         {
         }
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpAND(BaseNode left, BaseNode right)
+        public OpAnd(BaseNode left, BaseNode right)
             :base(left, right)
         {
         }
@@ -49,7 +45,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpAND(SerializationInfo info, StreamingContext context)
+        protected OpAnd(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -62,31 +58,31 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object l = GetLeftValue(context, evalContext);
+            var lhs = GetLeftValue(context, evalContext);
 
-            if (NumberUtils.IsInteger(l))
+            if (NumberUtils.IsInteger(lhs))
             {
-                object r = GetRightValue(context, evalContext);
-                if (NumberUtils.IsInteger(r))
+                var rhs = GetRightValue(context, evalContext);
+                if (NumberUtils.IsInteger(rhs))
                 {
-                    return NumberUtils.BitwiseAnd(l, r);
+                    return NumberUtils.BitwiseAnd(lhs, rhs);
                 }
             }
-            else if (l is Enum)
+            else if (lhs is Enum)
             {
-                object r = GetRightValue(context, evalContext);
-                if (l.GetType() == r.GetType())
+                var rhs = GetRightValue(context, evalContext);
+                if (lhs.GetType() == rhs.GetType())
                 {
-                    Type enumType = l.GetType();
-                    Type integralType = Enum.GetUnderlyingType(enumType);
-                    l = Convert.ChangeType(l, integralType);
-                    r = Convert.ChangeType(r, integralType);
-                    object result = NumberUtils.BitwiseAnd(l, r);
+                    var enumType = lhs.GetType();
+                    var integralType = Enum.GetUnderlyingType(enumType);
+                    lhs = Convert.ChangeType(lhs, integralType);
+                    rhs = Convert.ChangeType(rhs, integralType);
+                    var result = NumberUtils.BitwiseAnd(lhs, rhs);
                     return Enum.ToObject(enumType, result);
                 }
             }
 
-            return Convert.ToBoolean(l) &&
+            return Convert.ToBoolean(lhs) &&
                 Convert.ToBoolean(GetRightValue(context, evalContext));
         }
     }

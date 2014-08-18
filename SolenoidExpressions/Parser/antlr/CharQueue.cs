@@ -75,11 +75,11 @@ namespace Solenoid.Expressions.Parser.antlr
 		/*Expand the token buffer by doubling its capacity */
 		private void  expand()
 		{
-			char[] newBuffer = new char[buffer.Length * 2];
+			var newBuffer = new char[buffer.Length * 2];
 			// Copy the contents to the new buffer
 			// Note that this will store the first logical item in the
 			// first physical array element.
-			 for (int i = 0; i < buffer.Length; i++)
+			 for (var i = 0; i < buffer.Length; i++)
 			{
 				newBuffer[i] = elementAt(i);
 			}

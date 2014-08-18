@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,11 +14,8 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
@@ -54,9 +49,9 @@ namespace Solenoid.Expressions
         /// <returns>Result of the last expression in a list</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object result = context;
+            var result = context;
 
-            AST node = this.getFirstChild();
+            var node = getFirstChild();
             while (node != null)
             {
                 result = GetValue(((BaseNode) node), context, evalContext);

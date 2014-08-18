@@ -586,7 +586,7 @@ namespace Solenoid.Expressions.Support.TypeResolution
             AssertUtils.ArgumentHasText(alias, "alias");
             AssertUtils.ArgumentHasText(typeName, "typeName");
 
-            Type type = TypeResolutionUtils.ResolveType(typeName);
+            var type = TypeResolutionUtils.ResolveType(typeName);
 
             if (type.IsGenericTypeDefinition)
                 alias += ("`" + type.GetGenericArguments().Length);

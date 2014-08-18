@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -31,12 +27,12 @@ namespace Solenoid.Expressions
     [Serializable]
     public class RealLiteralNode : BaseNode
     {
-        private object nodeValue;
+        private object _nodeValue;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public RealLiteralNode():base()
+        public RealLiteralNode()
         {
         }
 
@@ -56,39 +52,39 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (nodeValue == null)
+            if (_nodeValue == null)
             {
                 lock (this)
                 {
-                    if (nodeValue == null)
+                    if (_nodeValue == null)
                     {
-                        string n = this.getText();
-                        char lastChar = n.ToLower()[n.Length - 1];
+                        var n = getText();
+                        var lastChar = n.ToLower()[n.Length - 1];
                         if (Char.IsDigit(lastChar))
                         {
-                            nodeValue = Double.Parse(n, NumberFormatInfo.InvariantInfo);
+                            _nodeValue = Double.Parse(n, NumberFormatInfo.InvariantInfo);
                         }
                         else
                         {
                             n = n.Substring(0, n.Length - 1);
                             if (lastChar == 'm')
                             {
-                                nodeValue = Decimal.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = Decimal.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                             else if (lastChar == 'f')
                             {
-                                nodeValue = Single.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = Single.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                             else
                             {
-                                nodeValue = Double.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = Double.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                         }
                     }
                 }
             }
 
-            return nodeValue;
+            return _nodeValue;
         }
     }
 }

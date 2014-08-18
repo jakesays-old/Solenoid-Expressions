@@ -21,7 +21,7 @@ namespace Solenoid.Expressions.Parser.antlr
 	{
 		public override string getFormatString(string fileName, int line, int column)
 		{
-			StringBuilder buf = new StringBuilder();
+			var buf = new StringBuilder();
 			
 			if (fileName != null)
 				buf.Append(fileName + ":");

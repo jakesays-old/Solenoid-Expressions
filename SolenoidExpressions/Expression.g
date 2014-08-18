@@ -11,7 +11,7 @@ options {
 	codeGenBitsetTestThreshold = 4;
 	classHeaderPrefix = "internal"; 
 	buildAST=true;
-	ASTLabelType = "Solenoid.Expressions.SpringAST";
+	ASTLabelType = "Solenoid.Expressions.SerializableNode";
 	k = 2;
 }
 
@@ -85,11 +85,11 @@ expression	:	logicalOrExpression
 parenExpr
     : LPAREN! expression RPAREN!;
     
-logicalOrExpression : logicalXorExpression (OR^ <AST = Solenoid.Expressions.OpOR> logicalXorExpression)* ;
+logicalOrExpression : logicalXorExpression (OR^ <AST = Solenoid.Expressions.OpOr> logicalXorExpression)* ;
 
-logicalXorExpression : logicalAndExpression (XOR^ <AST = Solenoid.Expressions.OpXOR> logicalAndExpression)* ;
+logicalXorExpression : logicalAndExpression (XOR^ <AST = Solenoid.Expressions.OpXor> logicalAndExpression)* ;
                         
-logicalAndExpression : relationalExpression (AND^ <AST = Solenoid.Expressions.OpAND> relationalExpression)* ;                        
+logicalAndExpression : relationalExpression (AND^ <AST = Solenoid.Expressions.OpAnd> relationalExpression)* ;                        
 
 relationalExpression
     :   e1:sumExpr 
@@ -99,20 +99,20 @@ relationalExpression
     ;
 
 sumExpr  : prodExpr (
-                        (PLUS^ <AST = Solenoid.Expressions.OpADD> 
-                        | MINUS^ <AST = Solenoid.Expressions.OpSUBTRACT>) prodExpr)* ; 
+                        (PLUS^ <AST = Solenoid.Expressions.OpAdd> 
+                        | MINUS^ <AST = Solenoid.Expressions.OpSubtract>) prodExpr)* ; 
 
 prodExpr : powExpr (
-                        (STAR^ <AST = Solenoid.Expressions.OpMULTIPLY> 
-                        | DIV^ <AST = Solenoid.Expressions.OpDIVIDE> 
-                        | MOD^ <AST = Solenoid.Expressions.OpMODULUS>) powExpr)* ;
+                        (STAR^ <AST = Solenoid.Expressions.OpMultiply> 
+                        | DIV^ <AST = Solenoid.Expressions.OpDivide> 
+                        | MOD^ <AST = Solenoid.Expressions.OpModulous>) powExpr)* ;
 
-powExpr  : unaryExpression (POWER^ <AST = Solenoid.Expressions.OpPOWER> unaryExpression)? ;
+powExpr  : unaryExpression (POWER^ <AST = Solenoid.Expressions.OpPower> unaryExpression)? ;
 
 unaryExpression 
 	:	(PLUS^ <AST = Solenoid.Expressions.OpUnaryPlus> 
 	    | MINUS^ <AST = Solenoid.Expressions.OpUnaryMinus> 
-	    | BANG^ <AST = Solenoid.Expressions.OpNOT>) unaryExpression	
+	    | BANG^ <AST = Solenoid.Expressions.OpNot>) unaryExpression	
 	|	primaryExpression
 	;
 	

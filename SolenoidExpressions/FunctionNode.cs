@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -54,21 +50,21 @@ namespace Solenoid.Expressions
         /// <returns>Result of the function evaluation.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string name = this.getText();
+            var name = getText();
 
-            object[] argValues = ResolveArguments(evalContext);
+            var argValues = ResolveArguments(evalContext);
 
-            object function = evalContext.Variables[name];
+            var function = evalContext.Variables[name];
 
             // delegate?
-            Delegate callback = function as Delegate;
+            var callback = function as Delegate;
             if (callback != null)
             {
                 return InvokeDelegate(callback, argValues);
             }
 
             // lambda?
-            LambdaExpressionNode lambda = function as LambdaExpressionNode;
+            var lambda = function as LambdaExpressionNode;
             if (lambda != null)
             {
                 try

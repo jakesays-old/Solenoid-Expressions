@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,62 +14,60 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents logical MATCHES operator.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class OpMatches : BinaryOperator
-    {
-        private Regex regex;
-        
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public OpMatches():base()
-        {
-        }
+	/// <summary>
+	///     Represents logical MATCHES operator.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class OpMatches : BinaryOperator
+	{
+		private Regex _regex;
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected OpMatches(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        
-        /// <summary>
-        /// Returns a value for the logical MATCHES operator node.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>
-        /// true if the left operand matches the right operand, false otherwise.
-        /// </returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            if (regex == null)
-            {
-                lock (this)
-                {
-                    if (regex == null)
-                    {
-                        string pattern = GetRightValue( context, evalContext ) as string;
-                        regex = new Regex(pattern, RegexOptions.Compiled);
-                    }
-                }
-            }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public OpMatches()
+		{
+		}
 
-            string text = GetLeftValue( context, evalContext ) as string;
-            return regex.IsMatch(text);
-        }
-    }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected OpMatches(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
+
+		/// <summary>
+		///     Returns a value for the logical MATCHES operator node.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>
+		///     true if the left operand matches the right operand, false otherwise.
+		/// </returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			if (_regex == null)
+			{
+				lock (this)
+				{
+					if (_regex == null)
+					{
+						var pattern = GetRightValue(context, evalContext) as string;
+						_regex = new Regex(pattern, RegexOptions.Compiled);
+					}
+				}
+			}
+
+			var text = GetLeftValue(context, evalContext) as string;
+			return _regex.IsMatch(text);
+		}
+	}
 }

@@ -137,8 +137,8 @@ namespace Solenoid.Expressions.Support.Collections
         /// </returns>
         public override bool AddAll(ICollection collection)
         {
-            bool changed = false;
-            foreach (object o in collection)
+            var changed = false;
+            foreach (var o in collection)
             {
                 changed |= this.Add(o);
             }
@@ -183,7 +183,7 @@ namespace Solenoid.Expressions.Support.Collections
             {
                 return false;
             }
-            foreach (object o in collection)
+            foreach (var o in collection)
             {
                 if (!this.Contains(MaskNull(o)))
                 {
@@ -211,7 +211,7 @@ namespace Solenoid.Expressions.Support.Collections
         public override bool Remove(object element)
         {
             element = MaskNull(element);
-            bool contained = this.Contains(element);
+            var contained = this.Contains(element);
             if (contained)
             {
                 InternalDictionary.Remove(element);
@@ -230,8 +230,8 @@ namespace Solenoid.Expressions.Support.Collections
         /// </returns>
         public override bool RemoveAll(ICollection collection)
         {
-            bool changed = false;
-            foreach (object o in collection)
+            var changed = false;
+            foreach (var o in collection)
             {
                 changed |= this.Remove(o);
             }
@@ -257,7 +257,7 @@ namespace Solenoid.Expressions.Support.Collections
             //We are going to build a set of elements to remove.
             Set removeSet = new HybridSet();
 
-            foreach (object o in this)
+            foreach (var o in this)
             {
                 //If C does not contain O, then we need to remove O from our
                 //set.  We can't do this while iterating through our set, so
@@ -288,8 +288,8 @@ namespace Solenoid.Expressions.Support.Collections
         /// </param>
         public override void CopyTo(Array array, int index)
         {
-            int i = index;
-            foreach (object o in this)
+            var i = index;
+            foreach (var o in this)
             {
                 array.SetValue(UnmaskNull(o), i++);
             }

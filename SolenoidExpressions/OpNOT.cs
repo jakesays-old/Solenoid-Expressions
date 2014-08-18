@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
@@ -29,19 +25,19 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     [Serializable]
-    public class OpNOT : UnaryOperator
+    public class OpNot : UnaryOperator
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpNOT():base()
+        public OpNot()
         {
         }
 
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpNOT(BaseNode operand)
+        public OpNot(BaseNode operand)
             :base(operand)
         {
         }
@@ -49,7 +45,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance from SerializationInfo
         /// </summary>
-        protected OpNOT(SerializationInfo info, StreamingContext context)
+        protected OpNot(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -62,21 +58,20 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object operand = GetValue(Operand, context, evalContext);
+            var operand = GetValue(Operand, context, evalContext);
             if (NumberUtils.IsInteger(operand))
             {
                 return NumberUtils.BitwiseNot(operand);
             }
-            else if (operand is Enum)
-            {
-                Type enumType = operand.GetType();
-                Type integralType = Enum.GetUnderlyingType(enumType);
-                operand = Convert.ChangeType(operand, integralType);
-                object result = NumberUtils.BitwiseNot(operand);
-                return Enum.ToObject(enumType, result);
-            }
-            else
-                return !Convert.ToBoolean(operand);
+	        if (operand is Enum)
+	        {
+		        var enumType = operand.GetType();
+		        var integralType = Enum.GetUnderlyingType(enumType);
+		        operand = Convert.ChangeType(operand, integralType);
+		        var result = NumberUtils.BitwiseNot(operand);
+		        return Enum.ToObject(enumType, result);
+	        }
+	        return !Convert.ToBoolean(operand);
         }
     }
 }

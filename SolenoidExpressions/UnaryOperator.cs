@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System.Runtime.Serialization;
 
 namespace Solenoid.Expressions
@@ -26,13 +22,12 @@ namespace Solenoid.Expressions
     /// Base class for unary operators.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    //[Serializable]
     public abstract class UnaryOperator : BaseNode
     {
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public UnaryOperator():base()
+        public UnaryOperator()
         {
         }
 
@@ -41,7 +36,7 @@ namespace Solenoid.Expressions
         /// </summary>
         public UnaryOperator(BaseNode operand)
         {
-            this.addChild(operand);
+            addChild(operand);
         }
 
         /// <summary>
@@ -58,7 +53,7 @@ namespace Solenoid.Expressions
         /// <value>The operand.</value>
         public BaseNode Operand
         {
-            get { return (BaseNode) this.getFirstChild(); }
+            get { return (BaseNode) getFirstChild(); }
         }
     }
 }

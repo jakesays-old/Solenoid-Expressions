@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public SelectionFirstNode():base()
+        public SelectionFirstNode()
         {
         }
 
@@ -54,23 +50,23 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            IEnumerable enumerable = context as IEnumerable;
+            var enumerable = context as IEnumerable;
             if (enumerable == null)
             {
                 throw new ArgumentException(
                     "Selection can only be used on an instance of the type that implements IEnumerable.");
             }
 
-            BaseNode expression = (BaseNode) this.getFirstChild();
+            var expression = (BaseNode) this.getFirstChild();
             using (evalContext.SwitchThisContext())
             {
-                foreach (object o in enumerable)
+                foreach (var item in enumerable)
                 {
-                    evalContext.ThisContext = o;
-                    bool isMatch = (bool)GetValue(expression, o, evalContext);
+                    evalContext.ThisContext = item;
+                    var isMatch = (bool)GetValue(expression, item, evalContext);
                     if (isMatch)
                     {
-                        return o;
+                        return item;
                     }
                 }
             }

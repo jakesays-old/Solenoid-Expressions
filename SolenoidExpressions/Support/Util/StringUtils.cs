@@ -142,17 +142,17 @@ namespace Solenoid.Expressions.Support.Util
             }
             AssertUtils.IsTrue( quoteChars.Length % 2 == 0, "the number of quote characters must be even" );
             
-            char[] delimiterChars = delimiters.ToCharArray();
+            var delimiterChars = delimiters.ToCharArray();
 
             // scan separator positions
-            int[] delimiterPositions = new int[s.Length];
-            int count = MakeDelimiterPositionList(s, delimiterChars, quoteChars, delimiterPositions);
+            var delimiterPositions = new int[s.Length];
+            var count = MakeDelimiterPositionList(s, delimiterChars, quoteChars, delimiterPositions);
 
-            List<string> tokens = new List<string>(count+1);
-            int startIndex = 0;
-            for (int ixSep = 0; ixSep < count; ixSep++)
+            var tokens = new List<string>(count+1);
+            var startIndex = 0;
+            for (var ixSep = 0; ixSep < count; ixSep++)
             {
-                string token = s.Substring(startIndex, delimiterPositions[ixSep] - startIndex);
+                var token = s.Substring(startIndex, delimiterPositions[ixSep] - startIndex);
                 if (trimTokens)
                 {
                     token = token.Trim();
@@ -166,7 +166,7 @@ namespace Solenoid.Expressions.Support.Util
             // add remainder            
             if (startIndex < s.Length)
             {
-                string token = s.Substring(startIndex);
+                var token = s.Substring(startIndex);
                 if (trimTokens)
                 {
                     token = token.Trim();
@@ -189,16 +189,16 @@ namespace Solenoid.Expressions.Support.Util
 
         private static int MakeDelimiterPositionList(string s, char[] delimiters, string quoteChars, int[] delimiterPositions)
         {
-            int count = 0;
-            int quoteNestingDepth = 0;
-            char expectedQuoteOpenChar = '\0';
-            char expectedQuoteCloseChar = '\0';
+            var count = 0;
+            var quoteNestingDepth = 0;
+            var expectedQuoteOpenChar = '\0';
+            var expectedQuoteCloseChar = '\0';
 
-            for (int ixCurChar = 0; ixCurChar < s.Length; ixCurChar++)
+            for (var ixCurChar = 0; ixCurChar < s.Length; ixCurChar++)
             {
-                char curChar = s[ixCurChar];
+                var curChar = s[ixCurChar];
 
-                for (int ixCurDelim = 0; ixCurDelim < delimiters.Length; ixCurDelim++)
+                for (var ixCurDelim = 0; ixCurDelim < delimiters.Length; ixCurDelim++)
                 {
                     if (delimiters[ixCurDelim] == curChar)
                     {
@@ -213,7 +213,7 @@ namespace Solenoid.Expressions.Support.Util
                     if (quoteNestingDepth == 0)
                     {
                         // check, if we're facing an opening char
-                        for (int ixCurQuoteChar = 0; ixCurQuoteChar < quoteChars.Length; ixCurQuoteChar+=2)
+                        for (var ixCurQuoteChar = 0; ixCurQuoteChar < quoteChars.Length; ixCurQuoteChar+=2)
                         {
                             if (quoteChars[ixCurQuoteChar] == curChar)
                             {
@@ -315,8 +315,8 @@ namespace Solenoid.Expressions.Support.Util
             {
                 return "null";
             }
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
+            var sb = new StringBuilder();
+            var i = 0;
             foreach (object obj in c)
             {
                 if (i++ > 0)
@@ -518,13 +518,13 @@ namespace Solenoid.Expressions.Support.Util
         /// </exception>
         public static IList<string> GetAntExpressions(string text)
         {
-            List<string> expressions = new List<string>();
+            var expressions = new List<string>();
             if (HasText(text))
             {
-                int start = text.IndexOf(AntExpressionPrefix);
+                var start = text.IndexOf(AntExpressionPrefix);
                 while (start >= 0)
                 {
-                    int end = text.IndexOf(AntExpressionSuffix, start + 2);
+                    var end = text.IndexOf(AntExpressionSuffix, start + 2);
                     if (end == -1)
                     {
                         // terminator character not found, so let's quit...
@@ -532,7 +532,7 @@ namespace Solenoid.Expressions.Support.Util
                     }
                     else
                     {
-                        string exp = text.Substring(start + 2, end - start - 2);
+                        var exp = text.Substring(start + 2, end - start - 2);
                         if (IsNullOrEmpty(exp))
                         {
                             throw new FormatException(
@@ -655,8 +655,8 @@ namespace Solenoid.Expressions.Support.Util
         public static string ConvertEscapedCharacters(string inputString)
         {
             if (inputString == null) return null;
-            StringBuilder sb = new StringBuilder(inputString.Length);
-            for (int i = 0; i < inputString.Length; i++)
+            var sb = new StringBuilder(inputString.Length);
+            for (var i = 0; i < inputString.Length; i++)
             {
                 if (inputString[i].Equals('\\'))
                 {

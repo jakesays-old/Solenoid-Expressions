@@ -22,7 +22,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		protected internal IHiddenStreamToken hiddenBefore;
 		protected internal IHiddenStreamToken hiddenAfter;
 		
-		public CommonHiddenStreamToken() : base()
+		public CommonHiddenStreamToken()
 		{
 		}
 		

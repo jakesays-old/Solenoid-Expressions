@@ -45,7 +45,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		
 		/*Create a character buffer */
-		public CharBuffer(TextReader input_) : base()
+		public CharBuffer(TextReader input_)
 		{ 
 			input = input_;
 		}
@@ -57,14 +57,14 @@ namespace Solenoid.Expressions.Parser.antlr
 			{
 				syncConsume();
 				// Fill the buffer sufficiently to hold needed characters
-				int charsToRead = (amount + markerOffset) - queue.Count;
+				var charsToRead = (amount + markerOffset) - queue.Count;
 				int c;
 
 				while (charsToRead > 0)
 				{
 					// Read a few characters
 					c = input.Read(buf, 0, BUF_SIZE);
-					for (int i = 0; i < c; i++)
+					for (var i = 0; i < c; i++)
 					{
 						// Append the next character
 						queue.Add(buf[i]);

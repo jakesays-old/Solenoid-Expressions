@@ -311,13 +311,13 @@
     <Compile Include="NullLiteralNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpADD.cs">
+    <Compile Include="OpAdd.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpAND.cs">
+    <Compile Include="OpAnd.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpDIVIDE.cs">
+    <Compile Include="OpDivide.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OpEqual.cs">
@@ -335,25 +335,25 @@
     <Compile Include="OpLessOrEqual.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpMODULUS.cs">
+    <Compile Include="OpModulous.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpMULTIPLY.cs">
+    <Compile Include="OpMultiply.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpNOT.cs">
+    <Compile Include="OpNot.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OpNotEqual.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpOR.cs">
+    <Compile Include="OpOr.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpPOWER.cs">
+    <Compile Include="OpPower.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpSUBTRACT.cs">
+    <Compile Include="OpSubtract.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OpUnaryMinus.cs">
@@ -371,7 +371,7 @@
     <Compile Include="RealLiteralNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpringAST.cs" />
+    <Compile Include="SerializableNode.cs" />
     <Compile Include="StringLiteralNode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -447,13 +447,13 @@
     <Content Include="Parser\ExpressionParserTokenTypes.txt" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseAlternateLikeImplementation)' == 'true'">
-      <Compile Include="LikeOperatorImplementation.cs" />
+    <Compile Include="LikeOperatorImplementation.cs" />
     <Compile Include="OpLike.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseAlternateLikeImplementation)' != 'true'">
     <Compile Include="OpLikeVb.cs" />
   </ItemGroup>
-    <ItemGroup />
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>$(ProjectDir)..\BuildTools\antlr-2.7.6\antlr-2.7.6.exe -o $(ProjectDir)Parser $(ProjectDir)Expression.g

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,48 +14,46 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 using Solenoid.Expressions.Support.Util;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents logical "less than" operator.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class OpLess : BinaryOperator
-    {
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public OpLess():base()
-        {
-        }
+	/// <summary>
+	///     Represents logical "less than" operator.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class OpLess : BinaryOperator
+	{
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public OpLess()
+		{
+		}
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected OpLess(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected OpLess(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-        /// <summary>
-        /// Returns a value for the logical "less than" operator node.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+		/// <summary>
+		///     Returns a value for the logical "less than" operator node.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			var lhs = GetLeftValue(context, evalContext);
+			var rhs = GetRightValue(context, evalContext);
 
-            return CompareUtils.Compare(left, right) < 0;
-        }
-    }
+			return CompareUtils.Compare(lhs, rhs) < 0;
+		}
+	}
 }

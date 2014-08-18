@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 
@@ -33,7 +29,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpIs():base()
+        public OpIs()
         {
         }
 
@@ -55,8 +51,8 @@ namespace Solenoid.Expressions
         /// </returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object instance = GetLeftValue( context, evalContext );
-            Type type = GetRightValue( context, evalContext ) as Type;
+            var instance = GetLeftValue( context, evalContext );
+            var type = GetRightValue( context, evalContext ) as Type;
 
             if (instance == null || type == null)
             {

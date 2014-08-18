@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -34,27 +30,14 @@ namespace Solenoid.Expressions
         private readonly string _expression;
 
 	    ///<summary>
-	    ///</summary>
-	    public int Line
-	    {
-	        get { return line; }
-	    }
-
-	    ///<summary>
-	    ///</summary>
-	    public int Column
-	    {
-	        get { return column; }
-	    }
-
-	    ///<summary>
 	    ///Gets a message that provides details on the syntax error.
 	    ///</summary>
 	    public override string Message
         {
             get
             {
-                return string.Format("Syntax Error on line {0}, column {1}: {2} in expression{3}'{4}'", Line, Column, base.Message, Environment.NewLine, _expression );
+                return string.Format("Syntax Error on line {0}, column {1}: {2} in expression{3}'{4}'", 
+					Line, Column, base.Message, Environment.NewLine, _expression );
             }
         }
 
@@ -66,9 +49,7 @@ namespace Solenoid.Expressions
 	        get { return _expression; }
 	    }
 
-	    #region Public Instance Constructors
-
-        /// <summary>
+		/// <summary>
         /// TODO
         /// </summary>
 		public SyntaxErrorException(string message, int line, int column, string expression)
@@ -77,18 +58,15 @@ namespace Solenoid.Expressions
             _expression = expression;
         }
 
-		#endregion Public Instance Constructors
-
-		#region Protected Instance Constructors
-
-        /// <summary>
+		/// <summary>
         /// TODO
         /// </summary>
-		protected SyntaxErrorException(SerializationInfo info, StreamingContext context) : base(info.GetString("Message"))
+		protected SyntaxErrorException(SerializationInfo info, StreamingContext context) 
+			: base(info.GetString("Message"))
         {
-            base.line = info.GetInt32("Line");
-            base.column = info.GetInt32("Column");
-            this._expression = info.GetString("Expression");
+            Line = info.GetInt32("Line");
+            Column = info.GetInt32("Column");
+            _expression = info.GetString("Expression");
         }
 
         /// <summary>
@@ -101,12 +79,10 @@ namespace Solenoid.Expressions
             // since RecognitionException does not implement .ctor(SerializationInfo info, StreamingContext context)
             // we need to do the serialization on our own... #§$%
             //base.GetObjectData( info, context );
-            info.AddValue("Line", base.line);
-            info.AddValue("Column", base.column);
-            info.AddValue("Message", base.Message);
-            info.AddValue("Expression", this._expression);
+            info.AddValue("Line", Line);
+            info.AddValue("Column", Column);
+            info.AddValue("Message", Message);
+            info.AddValue("Expression", _expression);
         }
-
-		#endregion Protected Instance Constructors
 	}
 }

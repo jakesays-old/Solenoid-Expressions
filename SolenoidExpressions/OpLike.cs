@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 
@@ -33,7 +29,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpLike():base()
+        public OpLike()
         {
         }
 
@@ -55,8 +51,8 @@ namespace Solenoid.Expressions
         /// </returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string text = GetLeftValue( context, evalContext ) as string;
-            string pattern = GetRightValue( context, evalContext ) as string;
+            var text = GetLeftValue( context, evalContext ) as string;
+            var pattern = GetRightValue( context, evalContext ) as string;
 
             return LikeOperatorImplementation.LikeString(text, pattern, CompareMethod.Text);
         }

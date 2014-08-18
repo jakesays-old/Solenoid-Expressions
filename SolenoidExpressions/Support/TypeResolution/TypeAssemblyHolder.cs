@@ -101,7 +101,7 @@ namespace Solenoid.Expressions.Support.TypeResolution
             // Spring.Objects.TestGenericObject`2[[System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]][] , Spring.Core.Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             //
             // start searching for assembly separator after the last bracket if any
-            int typeAssemblyIndex = originalTypeName.LastIndexOf(']');
+            var typeAssemblyIndex = originalTypeName.LastIndexOf(']');
             typeAssemblyIndex = originalTypeName.IndexOf(TypeAssemblySeparator, typeAssemblyIndex+1);
             if (typeAssemblyIndex < 0)
             {

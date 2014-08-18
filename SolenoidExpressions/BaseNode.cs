@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +26,7 @@ namespace Solenoid.Expressions
     /// </summary>
     /// <author>Aleksandar Seovic</author>
     //[Serializable]
-    public abstract class BaseNode : SpringAST, IExpression
+    public abstract class BaseNode : SerializableNode, IExpression
     {
         protected class ArgumentMismatchException : Exception
         {
@@ -39,53 +35,47 @@ namespace Solenoid.Expressions
             { }
         }
 
-        #region EvaluationContext class
-
-        /// <summary>
+	    /// <summary>
         /// Holds the state during evaluating an expression.
         /// </summary>
         protected class EvaluationContext
         {
-            #region Holder classes
-
-            private class ThisContextHolder : IDisposable
+		    private class ThisContextHolder : IDisposable
             {
-                private readonly EvaluationContext owner;
-                private readonly object savedThisContext;
+                private readonly EvaluationContext _owner;
+                private readonly object _savedThisContext;
 
                 public ThisContextHolder(EvaluationContext owner)
                 {
-                    this.owner = owner;
-                    this.savedThisContext = owner.ThisContext;
+                    _owner = owner;
+                    _savedThisContext = owner.ThisContext;
                 }
 
                 public void Dispose()
                 {
-                    owner.ThisContext = savedThisContext;
+                    _owner.ThisContext = _savedThisContext;
                 }
             }
 
             private class LocalVariablesHolder : IDisposable
             {
-                private readonly EvaluationContext owner;
-                private readonly IDictionary savedLocalVariables;
+                private readonly EvaluationContext _owner;
+                private readonly IDictionary _savedLocalVariables;
 
                 public LocalVariablesHolder(EvaluationContext owner, IDictionary newLocalVariables)
                 {
-                    this.owner = owner;
-                    this.savedLocalVariables = owner.LocalVariables;
+                    _owner = owner;
+                    _savedLocalVariables = owner.LocalVariables;
                     owner.LocalVariables = newLocalVariables;
                 }
 
                 public void Dispose()
                 {
-                    owner.LocalVariables = savedLocalVariables;
+                    _owner.LocalVariables = _savedLocalVariables;
                 }
             }
 
-            #endregion
-
-            /// <summary>
+		    /// <summary>
             /// Gets/Sets the root context of the current evaluation
             /// </summary>
             public object RootContext;
@@ -100,7 +90,7 @@ namespace Solenoid.Expressions
             /// <summary>
             /// Gets/Sets global variables of the current evaluation
             /// </summary>
-            public IDictionary<string, object> Variables;
+            public readonly IDictionary<string, object> Variables;
             /// <summary>
             /// Gets/Sets local variables of the current evaluation
             /// </summary>
@@ -113,9 +103,9 @@ namespace Solenoid.Expressions
             /// <param name="globalVariables">dictionary of global variables used during this evaluation</param>
             public EvaluationContext(object rootContext, IDictionary<string, object> globalVariables)
             {
-                this.RootContext = rootContext;
-                this.ThisContext = rootContext;
-                this.Variables = globalVariables;
+                RootContext = rootContext;
+                ThisContext = rootContext;
+                Variables = globalVariables;
             }
 
             /// <summary>
@@ -135,9 +125,7 @@ namespace Solenoid.Expressions
             }
         }
 
-        #endregion
-
-        /// <summary>
+	    /// <summary>
         /// Create a new instance
         /// </summary>
         public BaseNode()
@@ -178,7 +166,7 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         public object GetValue(object context, IDictionary<string, object> variables)
         {
-            EvaluationContext evalContext = new EvaluationContext(context, variables);
+            var evalContext = new EvaluationContext(context, variables);
             return Get(context, evalContext);
         }
 
@@ -193,7 +181,7 @@ namespace Solenoid.Expressions
         /// </summary>
         protected virtual object Get(object context, EvaluationContext evalContext, object[] arguments)
         {
-            throw new NotSupportedException("Node " + this.GetType() + " does not support evaluation with arguments");
+            throw new NotSupportedException("Node " + GetType() + " does not support evaluation with arguments");
         }
 
         /// <summary>
@@ -214,7 +202,7 @@ namespace Solenoid.Expressions
         /// <param name="newValue">New value for this node.</param>
         public void SetValue(object context, IDictionary<string, object> variables, object newValue)
         {
-            EvaluationContext evalContext = new EvaluationContext(context, variables);
+            var evalContext = new EvaluationContext(context, variables);
             Set(context, evalContext, newValue);
         }
 
@@ -233,7 +221,7 @@ namespace Solenoid.Expressions
         /// </remarks>
         protected virtual void Set(object context, EvaluationContext evalContext, object newValue)
         {
-            throw new NotSupportedException("You cannot set the value for the node of this type: [" + this.GetType().Name + "].");
+            throw new NotSupportedException("You cannot set the value for the node of this type: [" + GetType().Name + "].");
         }
 
         /// <summary>
@@ -241,7 +229,7 @@ namespace Solenoid.Expressions
         /// </summary>
         public override string ToString()
         {
-            return string.Format("{0}[{1}]", this.GetType().Name, base.GetHashCode());
+            return string.Format("{0}[{1}]", GetType().Name, base.GetHashCode());
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		public LLkParser(TokenStream lexer, int k_)
 		{
 			k = k_;
-			TokenBuffer tokenBuf = new TokenBuffer(lexer);
+			var tokenBuf = new TokenBuffer(lexer);
 			setTokenBuffer(tokenBuf);
 		}
 		/*Consume another token from the input stream.  Can only write sequentially!
@@ -70,7 +70,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			traceIndent();
 			Console.Out.Write(ee + rname + ((inputState.guessing > 0)?"; [guessing]":"; "));
-			 for (int i = 1; i <= k; i++)
+			 for (var i = 1; i <= k; i++)
 			{
 				if (i != 1)
 				{

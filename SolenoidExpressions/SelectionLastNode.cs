@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Collections;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public SelectionLastNode():base()
+        public SelectionLastNode()
         {
         }
 
@@ -54,7 +50,7 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            IList list = context as IList;
+            var list = context as IList;
 
             if (list == null)
             {
@@ -64,12 +60,12 @@ namespace Solenoid.Expressions
 
             using (evalContext.SwitchThisContext())
             {
-                BaseNode expression = (BaseNode) this.getFirstChild();
-                for (int i = list.Count - 1; i >= 0; i--)
+                var expression = (BaseNode) this.getFirstChild();
+                for (var i = list.Count - 1; i >= 0; i--)
                 {
-                    object listItem = list[i];
+                    var listItem = list[i];
                     evalContext.ThisContext = listItem;
-                    bool isMatch = (bool)GetValue(expression, listItem, evalContext );
+                    var isMatch = (bool)GetValue(expression, listItem, evalContext );
                     if (isMatch)
                     {
                         return listItem;

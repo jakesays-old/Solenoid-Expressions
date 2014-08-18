@@ -124,7 +124,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             AssertUtils.ArgumentNotNull(field, "You cannot create a dynamic field for a null value.");
 
             fieldInfo = field;
-            DynamicFieldCacheEntry fi = GetOrCreateDynamicField(field);
+            var fi = GetOrCreateDynamicField(field);
             getter = fi.Getter;
             setter = fi.Setter;
         }

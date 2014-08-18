@@ -44,7 +44,7 @@ namespace Solenoid.Expressions.Processors
         public object Process(ICollection source, object[] args)
         {
             object minItem = null;
-            foreach (object item in source)
+            foreach (var item in source)
             {
                 if ((minItem == null && item != null) || (CompareUtils.Compare(minItem, item) > 0))
                 {

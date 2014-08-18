@@ -44,7 +44,7 @@ namespace Solenoid.Expressions.Processors
         public object Process(ICollection source, object[] args)
         {
             object maxItem = null;
-            foreach (object item in source)
+            foreach (var item in source)
             {
                 if (CompareUtils.Compare(maxItem, item) < 0)
                 {

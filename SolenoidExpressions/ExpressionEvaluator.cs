@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System.Collections.Generic;
 
@@ -54,7 +50,7 @@ namespace Solenoid.Expressions
         /// <returns>Value of the last node in the expression.</returns>
         public static object GetValue(object root, string expression)
         {
-            IExpression exp = Expression.Parse(expression);
+            var exp = Expression.Parse(expression);
             return exp.GetValue(root, null);
         }
 
@@ -67,7 +63,7 @@ namespace Solenoid.Expressions
         /// <returns>Value of the last node in the expression.</returns>
         public static object GetValue(object root, string expression, IDictionary<string, object> variables)
         {
-            IExpression exp = Expression.Parse(expression);
+            var exp = Expression.Parse(expression);
             return exp.GetValue(root, variables);
         }
 
@@ -80,7 +76,7 @@ namespace Solenoid.Expressions
         /// <param name="newValue">Value to set last node to.</param>
         public static void SetValue(object root, string expression, object newValue)
         {
-            IExpression exp = Expression.Parse(expression);
+            var exp = Expression.Parse(expression);
             exp.SetValue(root, null, newValue);
         }
 
@@ -94,7 +90,7 @@ namespace Solenoid.Expressions
         /// <param name="newValue">Value to set last node to.</param>
         public static void SetValue(object root, string expression, IDictionary<string, object> variables, object newValue)
         {
-            IExpression exp = Expression.Parse(expression);
+            var exp = Expression.Parse(expression);
             exp.SetValue(root, variables, newValue);
         }
     }

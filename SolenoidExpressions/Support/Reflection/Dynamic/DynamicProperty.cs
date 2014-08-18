@@ -151,7 +151,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             AssertUtils.ArgumentNotNull(propertyInfo, "You cannot create a dynamic property for a null value.");
 
             this.propertyInfo = propertyInfo;
-            DynamicPropertyCacheEntry pi = GetOrCreateDynamicProperty(propertyInfo);
+            var pi = GetOrCreateDynamicProperty(propertyInfo);
             getter = pi.Getter;
             setter = pi.Setter;
         }

@@ -55,7 +55,7 @@ namespace Solenoid.Expressions.Support.Reflection.Dynamic
             il.Emit(OpCodes.Ldarg_1);
             if (targetType.IsValueType)
             {
-                LocalBuilder target = il.DeclareLocal(targetType);
+                var target = il.DeclareLocal(targetType);
             	il.Emit(OpCodes.Unbox, targetType);
             	il.Emit(OpCodes.Ldobj, targetType);
             	il.Emit(OpCodes.Stloc, target);

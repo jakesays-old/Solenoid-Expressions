@@ -477,7 +477,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		
 		public virtual void  traceIndent()
 		{
-			 for (int i = 0; i < traceDepth; i++)
+			 for (var i = 0; i < traceDepth; i++)
 				Console.Out.Write(" ");
 		}
 		public virtual void  traceIn(string rname)

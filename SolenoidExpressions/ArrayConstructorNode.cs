@@ -21,7 +21,6 @@
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 using Solenoid.Expressions.Support.TypeResolution;
 
 namespace Solenoid.Expressions
@@ -68,13 +67,13 @@ namespace Solenoid.Expressions
                 }
             }
 
-            AST rankRoot = getFirstChild();
-            int dimensions = rankRoot.getNumberOfChildren();
-            int[] ranks = new int[dimensions];
+            var rankRoot = getFirstChild();
+            var dimensions = rankRoot.getNumberOfChildren();
+            var ranks = new int[dimensions];
             if (dimensions > 0)
             {
-                int i = 0;
-                AST rankNode = rankRoot.getFirstChild();
+                var i = 0;
+                var rankNode = rankRoot.getFirstChild();
                 while (rankNode != null)
                 {
                     ranks[i++] = (int)GetValue((BaseNode)rankNode, context, evalContext);
@@ -84,10 +83,10 @@ namespace Solenoid.Expressions
             }
             else
             {
-                AST valuesRoot = getFirstChild().getNextSibling();
+                var valuesRoot = getFirstChild().getNextSibling();
                 if (valuesRoot != null)
                 {
-                    ArrayList values = (ArrayList)GetValue(((BaseNode)valuesRoot), context, evalContext);
+                    var values = (ArrayList)GetValue(((BaseNode)valuesRoot), context, evalContext);
                     return values.ToArray(arrayType);
                 }
             }

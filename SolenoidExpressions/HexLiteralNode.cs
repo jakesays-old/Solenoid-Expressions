@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -31,7 +27,7 @@ namespace Solenoid.Expressions
     [Serializable]
     public class HexLiteralNode : BaseNode
     {
-        private object nodeValue;
+        private object _nodeValue;
 
         /// <summary>
         /// Create a new instance
@@ -56,26 +52,26 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (nodeValue == null)
+            if (_nodeValue == null)
             {
                 lock (this)
                 {
-                    if (nodeValue == null)
+                    if (_nodeValue == null)
                     {
-                        string n = this.getText();
+                        var n = getText();
                         try
                         {
-                            nodeValue = Int32.Parse(n.Substring(2), NumberStyles.HexNumber);
+                            _nodeValue = Int32.Parse(n.Substring(2), NumberStyles.HexNumber);
                         }
                         catch (OverflowException)
                         {
-                            nodeValue = Int64.Parse(n.Substring(2), NumberStyles.HexNumber);
+                            _nodeValue = Int64.Parse(n.Substring(2), NumberStyles.HexNumber);
                         }
                     }
                 }
             }
 
-            return nodeValue;
+            return _nodeValue;
         }
     }
 }

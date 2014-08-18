@@ -47,8 +47,8 @@ namespace Solenoid.Expressions.Processors
                 return null;
             }
 
-            ArrayList list = new ArrayList();
-            foreach (object item in source)
+            var list = new ArrayList();
+            foreach (var item in source)
             {
                 if (item != null)
                 {

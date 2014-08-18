@@ -31,7 +31,7 @@ namespace Solenoid.Expressions.Processors
     {
         public object Process(object context, object[] args)
         {
-            int argc = args != null ? args.Length : 0;
+            var argc = args != null ? args.Length : 0;
             switch (argc)
             {
                 case 1:

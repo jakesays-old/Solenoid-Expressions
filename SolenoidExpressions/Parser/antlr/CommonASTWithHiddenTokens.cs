@@ -28,7 +28,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		protected internal IHiddenStreamToken hiddenBefore, hiddenAfter; // references to hidden tokens
 		
-		public CommonASTWithHiddenTokens() : base()
+		public CommonASTWithHiddenTokens()
 		{
 		}
 		
@@ -62,7 +62,7 @@ namespace Solenoid.Expressions.Parser.antlr
 
 		override public void initialize(IToken tok)
 		{
-			IHiddenStreamToken t = (IHiddenStreamToken) tok;
+			var t = (IHiddenStreamToken) tok;
 			base.initialize(t);
 			hiddenBefore = t.getHiddenBefore();
 			hiddenAfter  = t.getHiddenAfter();

@@ -58,8 +58,8 @@ namespace Solenoid.Expressions.Support.TypeConversion
         /// <returns></returns>
         public Nullable<TimeSpan> Match(string value) 
         {
-            string regex = @"^(\d+)" + Specifier + "$";
-            Match match = Regex.Match(value, regex, ParsingOptions);
+            var regex = @"^(\d+)" + Specifier + "$";
+            var match = Regex.Match(value, regex, ParsingOptions);
 
             if (!match.Success) return new Nullable<TimeSpan>();
 
@@ -242,16 +242,16 @@ namespace Solenoid.Expressions.Support.TypeConversion
             ITypeDescriptorContext context,
             CultureInfo culture, object value)
         {
-            string stringValue = value as string;
+            var stringValue = value as string;
             if (stringValue!=null)
             {
                 try
                 {
                     stringValue = stringValue.Trim();
 
-                    foreach (SpecifierParser specifierParser in Specifiers) 
+                    foreach (var specifierParser in Specifiers) 
                     {
-                        Nullable<TimeSpan> res = specifierParser.Match(stringValue);
+                        var res = specifierParser.Match(stringValue);
                         if (res.HasValue) return res.Value;
                     }
                 }

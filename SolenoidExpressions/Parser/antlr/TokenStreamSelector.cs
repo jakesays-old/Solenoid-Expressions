@@ -35,7 +35,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/*Used to track stack of input streams */
 		protected internal Stack streamStack = new Stack();
 		
-		public TokenStreamSelector() : base()
+		public TokenStreamSelector()
 		{
 			inputStreamNames = new Hashtable();
 		}
@@ -52,7 +52,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		}
 		public virtual TokenStream getStream(string sname)
 		{
-			TokenStream stream = (TokenStream) inputStreamNames[sname];
+			var stream = (TokenStream) inputStreamNames[sname];
 			if (stream == null)
 			{
 				throw new System.ArgumentException("TokenStream " + sname + " not found");
@@ -78,7 +78,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		}
 		public virtual TokenStream pop()
 		{
-			TokenStream stream = (TokenStream) streamStack.Pop();
+			var stream = (TokenStream) streamStack.Pop();
 			select(stream);
 			return stream;
 		}

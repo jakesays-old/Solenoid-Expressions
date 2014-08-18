@@ -167,7 +167,7 @@ namespace Solenoid.Expressions.Parser
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST expr_AST = null;
+		Solenoid.Expressions.SerializableNode expr_AST = null;
 		
 		try {      // for error handling
 			expression();
@@ -176,7 +176,7 @@ namespace Solenoid.Expressions.Parser
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			match(Token.EOF_TYPE);
-			expr_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			expr_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -198,7 +198,7 @@ namespace Solenoid.Expressions.Parser
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST expression_AST = null;
+		Solenoid.Expressions.SerializableNode expression_AST = null;
 		
 		try {      // for error handling
 			logicalOrExpression();
@@ -276,7 +276,7 @@ namespace Solenoid.Expressions.Parser
 				}
 				 }
 			}
-			expression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			expression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -298,7 +298,7 @@ namespace Solenoid.Expressions.Parser
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST exprList_AST = null;
+		Solenoid.Expressions.SerializableNode exprList_AST = null;
 		
 		try {      // for error handling
 			match(LPAREN);
@@ -332,8 +332,8 @@ _loop4_breakloop:				;
 			match(RPAREN);
 			if (0==inputState.guessing)
 			{
-				exprList_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				exprList_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"expressionList","Solenoid.Expressions.ExpressionListNode"), (AST)exprList_AST);
+				exprList_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				exprList_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"expressionList","Solenoid.Expressions.ExpressionListNode"), (AST)exprList_AST);
 				currentAST.root = exprList_AST;
 				if ( (null != exprList_AST) && (null != exprList_AST.getFirstChild()) )
 					currentAST.child = exprList_AST.getFirstChild();
@@ -341,7 +341,7 @@ _loop4_breakloop:				;
 					currentAST.child = exprList_AST;
 				currentAST.advanceChildToEnd();
 			}
-			exprList_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			exprList_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -363,7 +363,7 @@ _loop4_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST logicalOrExpression_AST = null;
+		Solenoid.Expressions.SerializableNode logicalOrExpression_AST = null;
 		
 		try {      // for error handling
 			logicalXorExpression();
@@ -376,8 +376,8 @@ _loop4_breakloop:				;
 				{
 					if ((LA(1)==OR))
 					{
-						Solenoid.Expressions.OpOR tmp9_AST = null;
-						tmp9_AST = (Solenoid.Expressions.OpOR) astFactory.create(LT(1), "Solenoid.Expressions.OpOR");
+						Solenoid.Expressions.OpOr tmp9_AST = null;
+						tmp9_AST = (Solenoid.Expressions.OpOr) astFactory.create(LT(1), "Solenoid.Expressions.OpOr");
 						astFactory.makeASTRoot(ref currentAST, (AST)tmp9_AST);
 						match(OR);
 						logicalXorExpression();
@@ -394,7 +394,7 @@ _loop4_breakloop:				;
 				}
 _loop13_breakloop:				;
 			}    // ( ... )*
-			logicalOrExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			logicalOrExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -416,7 +416,7 @@ _loop13_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST parenExpr_AST = null;
+		Solenoid.Expressions.SerializableNode parenExpr_AST = null;
 		
 		try {      // for error handling
 			match(LPAREN);
@@ -426,7 +426,7 @@ _loop13_breakloop:				;
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			match(RPAREN);
-			parenExpr_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			parenExpr_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -448,7 +448,7 @@ _loop13_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST logicalXorExpression_AST = null;
+		Solenoid.Expressions.SerializableNode logicalXorExpression_AST = null;
 		
 		try {      // for error handling
 			logicalAndExpression();
@@ -461,8 +461,8 @@ _loop13_breakloop:				;
 				{
 					if ((LA(1)==XOR))
 					{
-						Solenoid.Expressions.OpXOR tmp12_AST = null;
-						tmp12_AST = (Solenoid.Expressions.OpXOR) astFactory.create(LT(1), "Solenoid.Expressions.OpXOR");
+						Solenoid.Expressions.OpXor tmp12_AST = null;
+						tmp12_AST = (Solenoid.Expressions.OpXor) astFactory.create(LT(1), "Solenoid.Expressions.OpXor");
 						astFactory.makeASTRoot(ref currentAST, (AST)tmp12_AST);
 						match(XOR);
 						logicalAndExpression();
@@ -479,7 +479,7 @@ _loop13_breakloop:				;
 				}
 _loop16_breakloop:				;
 			}    // ( ... )*
-			logicalXorExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			logicalXorExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -501,7 +501,7 @@ _loop16_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST logicalAndExpression_AST = null;
+		Solenoid.Expressions.SerializableNode logicalAndExpression_AST = null;
 		
 		try {      // for error handling
 			relationalExpression();
@@ -514,8 +514,8 @@ _loop16_breakloop:				;
 				{
 					if ((LA(1)==AND))
 					{
-						Solenoid.Expressions.OpAND tmp13_AST = null;
-						tmp13_AST = (Solenoid.Expressions.OpAND) astFactory.create(LT(1), "Solenoid.Expressions.OpAND");
+						Solenoid.Expressions.OpAnd tmp13_AST = null;
+						tmp13_AST = (Solenoid.Expressions.OpAnd) astFactory.create(LT(1), "Solenoid.Expressions.OpAnd");
 						astFactory.makeASTRoot(ref currentAST, (AST)tmp13_AST);
 						match(AND);
 						relationalExpression();
@@ -532,7 +532,7 @@ _loop16_breakloop:				;
 				}
 _loop19_breakloop:				;
 			}    // ( ... )*
-			logicalAndExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			logicalAndExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -554,16 +554,16 @@ _loop19_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST relationalExpression_AST = null;
-		Solenoid.Expressions.SpringAST e1_AST = null;
-		Solenoid.Expressions.SpringAST op_AST = null;
-		Solenoid.Expressions.SpringAST e2_AST = null;
+		Solenoid.Expressions.SerializableNode relationalExpression_AST = null;
+		Solenoid.Expressions.SerializableNode e1_AST = null;
+		Solenoid.Expressions.SerializableNode op_AST = null;
+		Solenoid.Expressions.SerializableNode e2_AST = null;
 		
 		try {      // for error handling
 			sumExpr();
 			if (0 == inputState.guessing)
 			{
-				e1_AST = (Solenoid.Expressions.SpringAST)returnAST;
+				e1_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			{
@@ -572,18 +572,18 @@ _loop19_breakloop:				;
 					relationalOperator();
 					if (0 == inputState.guessing)
 					{
-						op_AST = (Solenoid.Expressions.SpringAST)returnAST;
+						op_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 					}
 					sumExpr();
 					if (0 == inputState.guessing)
 					{
-						e2_AST = (Solenoid.Expressions.SpringAST)returnAST;
+						e2_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 						astFactory.addASTChild(ref currentAST, (AST)returnAST);
 					}
 					if (0==inputState.guessing)
 					{
-						relationalExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-						relationalExpression_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,op_AST.getText(),GetRelationalOperatorNodeType(op_AST.getText())), (AST)relationalExpression_AST);
+						relationalExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+						relationalExpression_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,op_AST.getText(),GetRelationalOperatorNodeType(op_AST.getText())), (AST)relationalExpression_AST);
 						currentAST.root = relationalExpression_AST;
 						if ( (null != relationalExpression_AST) && (null != relationalExpression_AST.getFirstChild()) )
 							currentAST.child = relationalExpression_AST.getFirstChild();
@@ -600,7 +600,7 @@ _loop19_breakloop:				;
 				}
 				
 			}
-			relationalExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			relationalExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -622,7 +622,7 @@ _loop19_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST sumExpr_AST = null;
+		Solenoid.Expressions.SerializableNode sumExpr_AST = null;
 		
 		try {      // for error handling
 			prodExpr();
@@ -638,14 +638,14 @@ _loop19_breakloop:				;
 						{
 							if ((LA(1)==PLUS))
 							{
-								Solenoid.Expressions.OpADD tmp14_AST = null;
-								tmp14_AST = (Solenoid.Expressions.OpADD) astFactory.create(LT(1), "Solenoid.Expressions.OpADD");
+								Solenoid.Expressions.OpAdd tmp14_AST = null;
+								tmp14_AST = (Solenoid.Expressions.OpAdd) astFactory.create(LT(1), "Solenoid.Expressions.OpAdd");
 								astFactory.makeASTRoot(ref currentAST, (AST)tmp14_AST);
 								match(PLUS);
 							}
 							else if ((LA(1)==MINUS)) {
-								Solenoid.Expressions.OpSUBTRACT tmp15_AST = null;
-								tmp15_AST = (Solenoid.Expressions.OpSUBTRACT) astFactory.create(LT(1), "Solenoid.Expressions.OpSUBTRACT");
+								Solenoid.Expressions.OpSubtract tmp15_AST = null;
+								tmp15_AST = (Solenoid.Expressions.OpSubtract) astFactory.create(LT(1), "Solenoid.Expressions.OpSubtract");
 								astFactory.makeASTRoot(ref currentAST, (AST)tmp15_AST);
 								match(MINUS);
 							}
@@ -669,7 +669,7 @@ _loop19_breakloop:				;
 				}
 _loop25_breakloop:				;
 			}    // ( ... )*
-			sumExpr_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			sumExpr_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -691,108 +691,108 @@ _loop25_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST relationalOperator_AST = null;
+		Solenoid.Expressions.SerializableNode relationalOperator_AST = null;
 		
 		try {      // for error handling
 			switch ( LA(1) )
 			{
 			case EQUAL:
 			{
-				Solenoid.Expressions.SpringAST tmp16_AST = null;
-				tmp16_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp16_AST = null;
+				tmp16_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp16_AST);
 				match(EQUAL);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case NOT_EQUAL:
 			{
-				Solenoid.Expressions.SpringAST tmp17_AST = null;
-				tmp17_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp17_AST = null;
+				tmp17_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp17_AST);
 				match(NOT_EQUAL);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case LESS_THAN:
 			{
-				Solenoid.Expressions.SpringAST tmp18_AST = null;
-				tmp18_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp18_AST = null;
+				tmp18_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp18_AST);
 				match(LESS_THAN);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case LESS_THAN_OR_EQUAL:
 			{
-				Solenoid.Expressions.SpringAST tmp19_AST = null;
-				tmp19_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp19_AST = null;
+				tmp19_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp19_AST);
 				match(LESS_THAN_OR_EQUAL);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case GREATER_THAN:
 			{
-				Solenoid.Expressions.SpringAST tmp20_AST = null;
-				tmp20_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp20_AST = null;
+				tmp20_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp20_AST);
 				match(GREATER_THAN);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case GREATER_THAN_OR_EQUAL:
 			{
-				Solenoid.Expressions.SpringAST tmp21_AST = null;
-				tmp21_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp21_AST = null;
+				tmp21_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp21_AST);
 				match(GREATER_THAN_OR_EQUAL);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case IN:
 			{
-				Solenoid.Expressions.SpringAST tmp22_AST = null;
-				tmp22_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp22_AST = null;
+				tmp22_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp22_AST);
 				match(IN);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case IS:
 			{
-				Solenoid.Expressions.SpringAST tmp23_AST = null;
-				tmp23_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp23_AST = null;
+				tmp23_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp23_AST);
 				match(IS);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case BETWEEN:
 			{
-				Solenoid.Expressions.SpringAST tmp24_AST = null;
-				tmp24_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp24_AST = null;
+				tmp24_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp24_AST);
 				match(BETWEEN);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case LIKE:
 			{
-				Solenoid.Expressions.SpringAST tmp25_AST = null;
-				tmp25_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp25_AST = null;
+				tmp25_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp25_AST);
 				match(LIKE);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case MATCHES:
 			{
-				Solenoid.Expressions.SpringAST tmp26_AST = null;
-				tmp26_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp26_AST = null;
+				tmp26_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp26_AST);
 				match(MATCHES);
-				relationalOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				relationalOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			default:
@@ -821,7 +821,7 @@ _loop25_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST prodExpr_AST = null;
+		Solenoid.Expressions.SerializableNode prodExpr_AST = null;
 		
 		try {      // for error handling
 			powExpr();
@@ -839,24 +839,24 @@ _loop25_breakloop:				;
 							{
 							case STAR:
 							{
-								Solenoid.Expressions.OpMULTIPLY tmp27_AST = null;
-								tmp27_AST = (Solenoid.Expressions.OpMULTIPLY) astFactory.create(LT(1), "Solenoid.Expressions.OpMULTIPLY");
+								Solenoid.Expressions.OpMultiply tmp27_AST = null;
+								tmp27_AST = (Solenoid.Expressions.OpMultiply) astFactory.create(LT(1), "Solenoid.Expressions.OpMultiply");
 								astFactory.makeASTRoot(ref currentAST, (AST)tmp27_AST);
 								match(STAR);
 								break;
 							}
 							case DIV:
 							{
-								Solenoid.Expressions.OpDIVIDE tmp28_AST = null;
-								tmp28_AST = (Solenoid.Expressions.OpDIVIDE) astFactory.create(LT(1), "Solenoid.Expressions.OpDIVIDE");
+								Solenoid.Expressions.OpDivide tmp28_AST = null;
+								tmp28_AST = (Solenoid.Expressions.OpDivide) astFactory.create(LT(1), "Solenoid.Expressions.OpDivide");
 								astFactory.makeASTRoot(ref currentAST, (AST)tmp28_AST);
 								match(DIV);
 								break;
 							}
 							case MOD:
 							{
-								Solenoid.Expressions.OpMODULUS tmp29_AST = null;
-								tmp29_AST = (Solenoid.Expressions.OpMODULUS) astFactory.create(LT(1), "Solenoid.Expressions.OpMODULUS");
+								Solenoid.Expressions.OpModulous tmp29_AST = null;
+								tmp29_AST = (Solenoid.Expressions.OpModulous) astFactory.create(LT(1), "Solenoid.Expressions.OpModulous");
 								astFactory.makeASTRoot(ref currentAST, (AST)tmp29_AST);
 								match(MOD);
 								break;
@@ -881,7 +881,7 @@ _loop25_breakloop:				;
 				}
 _loop29_breakloop:				;
 			}    // ( ... )*
-			prodExpr_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			prodExpr_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -903,7 +903,7 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST powExpr_AST = null;
+		Solenoid.Expressions.SerializableNode powExpr_AST = null;
 		
 		try {      // for error handling
 			unaryExpression();
@@ -914,8 +914,8 @@ _loop29_breakloop:				;
 			{
 				if ((LA(1)==POWER))
 				{
-					Solenoid.Expressions.OpPOWER tmp30_AST = null;
-					tmp30_AST = (Solenoid.Expressions.OpPOWER) astFactory.create(LT(1), "Solenoid.Expressions.OpPOWER");
+					Solenoid.Expressions.OpPower tmp30_AST = null;
+					tmp30_AST = (Solenoid.Expressions.OpPower) astFactory.create(LT(1), "Solenoid.Expressions.OpPower");
 					astFactory.makeASTRoot(ref currentAST, (AST)tmp30_AST);
 					match(POWER);
 					unaryExpression();
@@ -932,7 +932,7 @@ _loop29_breakloop:				;
 				}
 				
 			}
-			powExpr_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			powExpr_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -954,7 +954,7 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST unaryExpression_AST = null;
+		Solenoid.Expressions.SerializableNode unaryExpression_AST = null;
 		
 		try {      // for error handling
 			if ((LA(1)==PLUS||LA(1)==MINUS||LA(1)==BANG))
@@ -980,8 +980,8 @@ _loop29_breakloop:				;
 					}
 					case BANG:
 					{
-						Solenoid.Expressions.OpNOT tmp33_AST = null;
-						tmp33_AST = (Solenoid.Expressions.OpNOT) astFactory.create(LT(1), "Solenoid.Expressions.OpNOT");
+						Solenoid.Expressions.OpNot tmp33_AST = null;
+						tmp33_AST = (Solenoid.Expressions.OpNot) astFactory.create(LT(1), "Solenoid.Expressions.OpNot");
 						astFactory.makeASTRoot(ref currentAST, (AST)tmp33_AST);
 						match(BANG);
 						break;
@@ -997,7 +997,7 @@ _loop29_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				unaryExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				unaryExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((tokenSet_12_.member(LA(1)))) {
 				primaryExpression();
@@ -1005,7 +1005,7 @@ _loop29_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				unaryExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				unaryExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -1033,7 +1033,7 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST primaryExpression_AST = null;
+		Solenoid.Expressions.SerializableNode primaryExpression_AST = null;
 		
 		try {      // for error handling
 			startNode();
@@ -1060,8 +1060,8 @@ _loop29_breakloop:				;
 			}
 			if (0==inputState.guessing)
 			{
-				primaryExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				primaryExpression_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"expression","Solenoid.Expressions.Expression"), (AST)primaryExpression_AST);
+				primaryExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				primaryExpression_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"expression","Solenoid.Expressions.Expression"), (AST)primaryExpression_AST);
 				currentAST.root = primaryExpression_AST;
 				if ( (null != primaryExpression_AST) && (null != primaryExpression_AST.getFirstChild()) )
 					currentAST.child = primaryExpression_AST.getFirstChild();
@@ -1069,7 +1069,7 @@ _loop29_breakloop:				;
 					currentAST.child = primaryExpression_AST;
 				currentAST.advanceChildToEnd();
 			}
-			primaryExpression_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			primaryExpression_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -1091,36 +1091,36 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST unaryOperator_AST = null;
+		Solenoid.Expressions.SerializableNode unaryOperator_AST = null;
 		
 		try {      // for error handling
 			switch ( LA(1) )
 			{
 			case PLUS:
 			{
-				Solenoid.Expressions.SpringAST tmp34_AST = null;
-				tmp34_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp34_AST = null;
+				tmp34_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp34_AST);
 				match(PLUS);
-				unaryOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				unaryOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case MINUS:
 			{
-				Solenoid.Expressions.SpringAST tmp35_AST = null;
-				tmp35_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp35_AST = null;
+				tmp35_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp35_AST);
 				match(MINUS);
-				unaryOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				unaryOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case BANG:
 			{
-				Solenoid.Expressions.SpringAST tmp36_AST = null;
-				tmp36_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp36_AST = null;
+				tmp36_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp36_AST);
 				match(BANG);
-				unaryOperator_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				unaryOperator_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			default:
@@ -1149,7 +1149,7 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST startNode_AST = null;
+		Solenoid.Expressions.SerializableNode startNode_AST = null;
 		
 		try {      // for error handling
 			{
@@ -1339,7 +1339,7 @@ _loop29_breakloop:				;
 				}
 				break; }
 			}
-			startNode_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			startNode_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -1361,7 +1361,7 @@ _loop29_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST node_AST = null;
+		Solenoid.Expressions.SerializableNode node_AST = null;
 		
 		try {      // for error handling
 			{ // ( ... )+
@@ -1447,7 +1447,7 @@ _loop29_breakloop:				;
 				}
 _loop43_breakloop:				;
 			}    // ( ... )+
-			node_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			node_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -1469,7 +1469,7 @@ _loop43_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST methodOrProperty_AST = null;
+		Solenoid.Expressions.SerializableNode methodOrProperty_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched56 = false;
@@ -1502,7 +1502,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				methodOrProperty_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				methodOrProperty_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==ID) && (tokenSet_2_.member(LA(2)))) {
 				property();
@@ -1510,7 +1510,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				methodOrProperty_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				methodOrProperty_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -1538,7 +1538,7 @@ _loop43_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST functionOrVar_AST = null;
+		Solenoid.Expressions.SerializableNode functionOrVar_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched46 = false;
@@ -1568,7 +1568,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				functionOrVar_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				functionOrVar_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==POUND) && (LA(2)==ID)) {
 				var();
@@ -1576,7 +1576,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				functionOrVar_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				functionOrVar_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -1604,7 +1604,7 @@ _loop43_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST localFunctionOrVar_AST = null;
+		Solenoid.Expressions.SerializableNode localFunctionOrVar_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched51 = false;
@@ -1634,7 +1634,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				localFunctionOrVar_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				localFunctionOrVar_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==DOLLAR) && (LA(2)==ID)) {
 				localVar();
@@ -1642,7 +1642,7 @@ _loop43_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				localFunctionOrVar_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				localFunctionOrVar_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -1670,10 +1670,10 @@ _loop43_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST reference_AST = null;
-		Solenoid.Expressions.SpringAST cn_AST = null;
-		Solenoid.Expressions.SpringAST id_AST = null;
-		Solenoid.Expressions.SpringAST localid_AST = null;
+		Solenoid.Expressions.SerializableNode reference_AST = null;
+		Solenoid.Expressions.SerializableNode cn_AST = null;
+		Solenoid.Expressions.SerializableNode id_AST = null;
+		Solenoid.Expressions.SerializableNode localid_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched64 = false;
@@ -1704,19 +1704,19 @@ _loop43_breakloop:				;
 				quotableName();
 				if (0 == inputState.guessing)
 				{
-					cn_AST = (Solenoid.Expressions.SpringAST)returnAST;
+					cn_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 				}
 				match(COLON);
 				quotableName();
 				if (0 == inputState.guessing)
 				{
-					id_AST = (Solenoid.Expressions.SpringAST)returnAST;
+					id_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 				}
 				match(RPAREN);
 				if (0==inputState.guessing)
 				{
-					reference_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-					reference_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"ref","Spring.Context.Support.ReferenceNode"), (AST)cn_AST, (AST)id_AST);
+					reference_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+					reference_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"ref","Spring.Context.Support.ReferenceNode"), (AST)cn_AST, (AST)id_AST);
 					currentAST.root = reference_AST;
 					if ( (null != reference_AST) && (null != reference_AST.getFirstChild()) )
 						currentAST.child = reference_AST.getFirstChild();
@@ -1724,7 +1724,7 @@ _loop43_breakloop:				;
 						currentAST.child = reference_AST;
 					currentAST.advanceChildToEnd();
 				}
-				reference_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				reference_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==AT) && (LA(2)==LPAREN)) {
 				match(AT);
@@ -1732,13 +1732,13 @@ _loop43_breakloop:				;
 				quotableName();
 				if (0 == inputState.guessing)
 				{
-					localid_AST = (Solenoid.Expressions.SpringAST)returnAST;
+					localid_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 				}
 				match(RPAREN);
 				if (0==inputState.guessing)
 				{
-					reference_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-					reference_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"ref","Spring.Context.Support.ReferenceNode"), (AST)null, (AST)localid_AST);
+					reference_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+					reference_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"ref","Spring.Context.Support.ReferenceNode"), (AST)null, (AST)localid_AST);
 					currentAST.root = reference_AST;
 					if ( (null != reference_AST) && (null != reference_AST.getFirstChild()) )
 						currentAST.child = reference_AST.getFirstChild();
@@ -1746,7 +1746,7 @@ _loop43_breakloop:				;
 						currentAST.child = reference_AST;
 					currentAST.advanceChildToEnd();
 				}
-				reference_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				reference_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -1774,7 +1774,7 @@ _loop43_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST indexer_AST = null;
+		Solenoid.Expressions.SerializableNode indexer_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.IndexerNode tmp46_AST = null;
@@ -1807,7 +1807,7 @@ _loop43_breakloop:				;
 _loop67_breakloop:				;
 			}    // ( ... )*
 			match(RBRACKET);
-			indexer_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			indexer_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -1829,7 +1829,7 @@ _loop67_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST literal_AST = null;
+		Solenoid.Expressions.SerializableNode literal_AST = null;
 		
 		try {      // for error handling
 			switch ( LA(1) )
@@ -1840,7 +1840,7 @@ _loop67_breakloop:				;
 				tmp49_AST = (Solenoid.Expressions.NullLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.NullLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp49_AST);
 				match(NULL_LITERAL);
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case INTEGER_LITERAL:
@@ -1849,7 +1849,7 @@ _loop67_breakloop:				;
 				tmp50_AST = (Solenoid.Expressions.IntLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.IntLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp50_AST);
 				match(INTEGER_LITERAL);
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case HEXADECIMAL_INTEGER_LITERAL:
@@ -1858,7 +1858,7 @@ _loop67_breakloop:				;
 				tmp51_AST = (Solenoid.Expressions.HexLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.HexLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp51_AST);
 				match(HEXADECIMAL_INTEGER_LITERAL);
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case REAL_LITERAL:
@@ -1867,7 +1867,7 @@ _loop67_breakloop:				;
 				tmp52_AST = (Solenoid.Expressions.RealLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.RealLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp52_AST);
 				match(REAL_LITERAL);
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case STRING_LITERAL:
@@ -1876,7 +1876,7 @@ _loop67_breakloop:				;
 				tmp53_AST = (Solenoid.Expressions.StringLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.StringLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp53_AST);
 				match(STRING_LITERAL);
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			case FALSE:
@@ -1887,7 +1887,7 @@ _loop67_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				literal_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				literal_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 				break;
 			}
 			default:
@@ -1916,21 +1916,21 @@ _loop67_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST type_AST = null;
-		Solenoid.Expressions.SpringAST tn_AST = null;
+		Solenoid.Expressions.SerializableNode type_AST = null;
+		Solenoid.Expressions.SerializableNode tn_AST = null;
 		
 		try {      // for error handling
 			match(TYPE);
 			name();
 			if (0 == inputState.guessing)
 			{
-				tn_AST = (Solenoid.Expressions.SpringAST)returnAST;
+				tn_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 			}
 			match(RPAREN);
 			if (0==inputState.guessing)
 			{
-				type_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				type_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,tn_AST.getText(),"Solenoid.Expressions.TypeNode"), (AST)type_AST);
+				type_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				type_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,tn_AST.getText(),"Solenoid.Expressions.TypeNode"), (AST)type_AST);
 				currentAST.root = type_AST;
 				if ( (null != type_AST) && (null != type_AST.getFirstChild()) )
 					currentAST.child = type_AST.getFirstChild();
@@ -1938,7 +1938,7 @@ _loop67_breakloop:				;
 					currentAST.child = type_AST;
 				currentAST.advanceChildToEnd();
 			}
-			type_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			type_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -1960,8 +1960,8 @@ _loop67_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST constructor_AST = null;
-		Solenoid.Expressions.SpringAST type_AST = null;
+		Solenoid.Expressions.SerializableNode constructor_AST = null;
+		Solenoid.Expressions.SerializableNode type_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched90 = false;
@@ -1990,7 +1990,7 @@ _loop67_breakloop:				;
 				qualifiedId();
 				if (0 == inputState.guessing)
 				{
-					type_AST = (Solenoid.Expressions.SpringAST)returnAST;
+					type_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 				}
 				ctorArgs();
 				if (0 == inputState.guessing)
@@ -1999,8 +1999,8 @@ _loop67_breakloop:				;
 				}
 				if (0==inputState.guessing)
 				{
-					constructor_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-					constructor_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,type_AST.getText(),"Solenoid.Expressions.ConstructorNode"), (AST)constructor_AST);
+					constructor_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+					constructor_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,type_AST.getText(),"Solenoid.Expressions.ConstructorNode"), (AST)constructor_AST);
 					currentAST.root = constructor_AST;
 					if ( (null != constructor_AST) && (null != constructor_AST.getFirstChild()) )
 						currentAST.child = constructor_AST.getFirstChild();
@@ -2008,7 +2008,7 @@ _loop67_breakloop:				;
 						currentAST.child = constructor_AST;
 					currentAST.advanceChildToEnd();
 				}
-				constructor_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				constructor_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==LITERAL_new) && (LA(2)==ID)) {
 				arrayConstructor();
@@ -2016,7 +2016,7 @@ _loop67_breakloop:				;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				constructor_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				constructor_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -2044,7 +2044,7 @@ _loop67_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST projection_AST = null;
+		Solenoid.Expressions.SerializableNode projection_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.ProjectionNode tmp57_AST = null;
@@ -2057,7 +2057,7 @@ _loop67_breakloop:				;
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			match(RCURLY);
-			projection_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			projection_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2079,7 +2079,7 @@ _loop67_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST selection_AST = null;
+		Solenoid.Expressions.SerializableNode selection_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.SelectionNode tmp59_AST = null;
@@ -2112,7 +2112,7 @@ _loop67_breakloop:				;
 _loop71_breakloop:				;
 			}    // ( ... )*
 			match(RCURLY);
-			selection_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			selection_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2134,7 +2134,7 @@ _loop71_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST firstSelection_AST = null;
+		Solenoid.Expressions.SerializableNode firstSelection_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.SelectionFirstNode tmp62_AST = null;
@@ -2147,7 +2147,7 @@ _loop71_breakloop:				;
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			match(RCURLY);
-			firstSelection_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			firstSelection_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2169,7 +2169,7 @@ _loop71_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST lastSelection_AST = null;
+		Solenoid.Expressions.SerializableNode lastSelection_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.SelectionLastNode tmp64_AST = null;
@@ -2182,7 +2182,7 @@ _loop71_breakloop:				;
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
 			match(RCURLY);
-			lastSelection_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			lastSelection_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2204,7 +2204,7 @@ _loop71_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST listInitializer_AST = null;
+		Solenoid.Expressions.SerializableNode listInitializer_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.ListInitializerNode tmp66_AST = null;
@@ -2237,7 +2237,7 @@ _loop71_breakloop:				;
 _loop99_breakloop:				;
 			}    // ( ... )*
 			match(RCURLY);
-			listInitializer_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			listInitializer_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2259,7 +2259,7 @@ _loop99_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST mapInitializer_AST = null;
+		Solenoid.Expressions.SerializableNode mapInitializer_AST = null;
 		
 		try {      // for error handling
 			match(POUND);
@@ -2293,7 +2293,7 @@ _loop99_breakloop:				;
 _loop102_breakloop:				;
 			}    // ( ... )*
 			match(RCURLY);
-			mapInitializer_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			mapInitializer_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2315,7 +2315,7 @@ _loop102_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST lambda_AST = null;
+		Solenoid.Expressions.SerializableNode lambda_AST = null;
 		
 		try {      // for error handling
 			match(LAMBDA);
@@ -2345,8 +2345,8 @@ _loop102_breakloop:				;
 			match(RCURLY);
 			if (0==inputState.guessing)
 			{
-				lambda_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				lambda_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"lambda","Solenoid.Expressions.LambdaExpressionNode"), (AST)lambda_AST);
+				lambda_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				lambda_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"lambda","Solenoid.Expressions.LambdaExpressionNode"), (AST)lambda_AST);
 				currentAST.root = lambda_AST;
 				if ( (null != lambda_AST) && (null != lambda_AST.getFirstChild()) )
 					currentAST.child = lambda_AST.getFirstChild();
@@ -2354,7 +2354,7 @@ _loop102_breakloop:				;
 					currentAST.child = lambda_AST;
 				currentAST.advanceChildToEnd();
 			}
-			lambda_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			lambda_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2376,8 +2376,8 @@ _loop102_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST attribute_AST = null;
-		Solenoid.Expressions.SpringAST tn_AST = null;
+		Solenoid.Expressions.SerializableNode attribute_AST = null;
+		Solenoid.Expressions.SerializableNode tn_AST = null;
 		
 		try {      // for error handling
 			match(AT);
@@ -2385,7 +2385,7 @@ _loop102_breakloop:				;
 			qualifiedId();
 			if (0 == inputState.guessing)
 			{
-				tn_AST = (Solenoid.Expressions.SpringAST)returnAST;
+				tn_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 			}
 			{
 				if ((LA(1)==LPAREN))
@@ -2407,8 +2407,8 @@ _loop102_breakloop:				;
 			match(RBRACKET);
 			if (0==inputState.guessing)
 			{
-				attribute_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				attribute_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,tn_AST.getText(),"Solenoid.Expressions.AttributeNode"), (AST)attribute_AST);
+				attribute_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				attribute_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,tn_AST.getText(),"Solenoid.Expressions.AttributeNode"), (AST)attribute_AST);
 				currentAST.root = attribute_AST;
 				if ( (null != attribute_AST) && (null != attribute_AST.getFirstChild()) )
 					currentAST.child = attribute_AST.getFirstChild();
@@ -2416,7 +2416,7 @@ _loop102_breakloop:				;
 					currentAST.child = attribute_AST;
 				currentAST.advanceChildToEnd();
 			}
-			attribute_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			attribute_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2438,7 +2438,7 @@ _loop102_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST function_AST = null;
+		Solenoid.Expressions.SerializableNode function_AST = null;
 		
 		try {      // for error handling
 			match(POUND);
@@ -2451,7 +2451,7 @@ _loop102_breakloop:				;
 			{
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
-			function_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			function_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2473,7 +2473,7 @@ _loop102_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST var_AST = null;
+		Solenoid.Expressions.SerializableNode var_AST = null;
 		
 		try {      // for error handling
 			match(POUND);
@@ -2481,7 +2481,7 @@ _loop102_breakloop:				;
 			tmp82_AST = (Solenoid.Expressions.VariableNode) astFactory.create(LT(1), "Solenoid.Expressions.VariableNode");
 			astFactory.makeASTRoot(ref currentAST, (AST)tmp82_AST);
 			match(ID);
-			var_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			var_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2503,7 +2503,7 @@ _loop102_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST methodArgs_AST = null;
+		Solenoid.Expressions.SerializableNode methodArgs_AST = null;
 		
 		try {      // for error handling
 			match(LPAREN);
@@ -2545,7 +2545,7 @@ _loop60_breakloop:						;
 				
 			}
 			match(RPAREN);
-			methodArgs_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			methodArgs_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2567,7 +2567,7 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST localFunction_AST = null;
+		Solenoid.Expressions.SerializableNode localFunction_AST = null;
 		
 		try {      // for error handling
 			match(DOLLAR);
@@ -2580,7 +2580,7 @@ _loop60_breakloop:						;
 			{
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
-			localFunction_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			localFunction_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2602,7 +2602,7 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST localVar_AST = null;
+		Solenoid.Expressions.SerializableNode localVar_AST = null;
 		
 		try {      // for error handling
 			match(DOLLAR);
@@ -2610,7 +2610,7 @@ _loop60_breakloop:						;
 			tmp89_AST = (Solenoid.Expressions.LocalVariableNode) astFactory.create(LT(1), "Solenoid.Expressions.LocalVariableNode");
 			astFactory.makeASTRoot(ref currentAST, (AST)tmp89_AST);
 			match(ID);
-			localVar_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			localVar_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2632,14 +2632,14 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST property_AST = null;
+		Solenoid.Expressions.SerializableNode property_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.PropertyOrFieldNode tmp90_AST = null;
 			tmp90_AST = (Solenoid.Expressions.PropertyOrFieldNode) astFactory.create(LT(1), "Solenoid.Expressions.PropertyOrFieldNode");
 			astFactory.addASTChild(ref currentAST, (AST)tmp90_AST);
 			match(ID);
-			property_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			property_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2661,7 +2661,7 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST argument_AST = null;
+		Solenoid.Expressions.SerializableNode argument_AST = null;
 		
 		try {      // for error handling
 			expression();
@@ -2669,7 +2669,7 @@ _loop60_breakloop:						;
 			{
 				astFactory.addASTChild(ref currentAST, (AST)returnAST);
 			}
-			argument_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			argument_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2691,7 +2691,7 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST quotableName_AST = null;
+		Solenoid.Expressions.SerializableNode quotableName_AST = null;
 		
 		try {      // for error handling
 			if ((LA(1)==STRING_LITERAL))
@@ -2700,7 +2700,7 @@ _loop60_breakloop:						;
 				tmp91_AST = (Solenoid.Expressions.QualifiedIdentifier) astFactory.create(LT(1), "Solenoid.Expressions.QualifiedIdentifier");
 				astFactory.makeASTRoot(ref currentAST, (AST)tmp91_AST);
 				match(STRING_LITERAL);
-				quotableName_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				quotableName_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==ID)) {
 				name();
@@ -2708,7 +2708,7 @@ _loop60_breakloop:						;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				quotableName_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				quotableName_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -2736,7 +2736,7 @@ _loop60_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST name_AST = null;
+		Solenoid.Expressions.SerializableNode name_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.QualifiedIdentifier tmp92_AST = null;
@@ -2749,8 +2749,8 @@ _loop60_breakloop:						;
 					if ((tokenSet_17_.member(LA(1))))
 					{
 						{
-							Solenoid.Expressions.SpringAST tmp93_AST = null;
-							tmp93_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+							Solenoid.Expressions.SerializableNode tmp93_AST = null;
+							tmp93_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 							astFactory.addASTChild(ref currentAST, (AST)tmp93_AST);
 							match(tokenSet_17_);
 						}
@@ -2763,7 +2763,7 @@ _loop60_breakloop:						;
 				}
 _loop78_breakloop:				;
 			}    // ( ... )*
-			name_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			name_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2785,7 +2785,7 @@ _loop78_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST qualifiedId_AST = null;
+		Solenoid.Expressions.SerializableNode qualifiedId_AST = null;
 		
 		try {      // for error handling
 			Solenoid.Expressions.QualifiedIdentifier tmp94_AST = null;
@@ -2797,12 +2797,12 @@ _loop78_breakloop:				;
 				{
 					if ((LA(1)==DOT))
 					{
-						Solenoid.Expressions.SpringAST tmp95_AST = null;
-						tmp95_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+						Solenoid.Expressions.SerializableNode tmp95_AST = null;
+						tmp95_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 						astFactory.addASTChild(ref currentAST, (AST)tmp95_AST);
 						match(DOT);
-						Solenoid.Expressions.SpringAST tmp96_AST = null;
-						tmp96_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+						Solenoid.Expressions.SerializableNode tmp96_AST = null;
+						tmp96_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 						astFactory.addASTChild(ref currentAST, (AST)tmp96_AST);
 						match(ID);
 					}
@@ -2814,7 +2814,7 @@ _loop78_breakloop:				;
 				}
 _loop114_breakloop:				;
 			}    // ( ... )*
-			qualifiedId_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			qualifiedId_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2836,7 +2836,7 @@ _loop114_breakloop:				;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST ctorArgs_AST = null;
+		Solenoid.Expressions.SerializableNode ctorArgs_AST = null;
 		
 		try {      // for error handling
 			match(LPAREN);
@@ -2878,7 +2878,7 @@ _loop107_breakloop:						;
 				
 			}
 			match(RPAREN);
-			ctorArgs_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			ctorArgs_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2900,12 +2900,12 @@ _loop107_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST argList_AST = null;
+		Solenoid.Expressions.SerializableNode argList_AST = null;
 		
 		try {      // for error handling
 			{
-				Solenoid.Expressions.SpringAST tmp100_AST = null;
-				tmp100_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+				Solenoid.Expressions.SerializableNode tmp100_AST = null;
+				tmp100_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 				astFactory.addASTChild(ref currentAST, (AST)tmp100_AST);
 				match(ID);
 				{    // ( ... )*
@@ -2914,8 +2914,8 @@ _loop107_breakloop:						;
 						if ((LA(1)==COMMA))
 						{
 							match(COMMA);
-							Solenoid.Expressions.SpringAST tmp102_AST = null;
-							tmp102_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+							Solenoid.Expressions.SerializableNode tmp102_AST = null;
+							tmp102_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 							astFactory.addASTChild(ref currentAST, (AST)tmp102_AST);
 							match(ID);
 						}
@@ -2930,8 +2930,8 @@ _loop87_breakloop:					;
 			}
 			if (0==inputState.guessing)
 			{
-				argList_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				argList_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"args"), (AST)argList_AST);
+				argList_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				argList_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"args"), (AST)argList_AST);
 				currentAST.root = argList_AST;
 				if ( (null != argList_AST) && (null != argList_AST.getFirstChild()) )
 					currentAST.child = argList_AST.getFirstChild();
@@ -2939,7 +2939,7 @@ _loop87_breakloop:					;
 					currentAST.child = argList_AST;
 				currentAST.advanceChildToEnd();
 			}
-			argList_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			argList_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -2961,15 +2961,15 @@ _loop87_breakloop:					;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST arrayConstructor_AST = null;
-		Solenoid.Expressions.SpringAST type_AST = null;
+		Solenoid.Expressions.SerializableNode arrayConstructor_AST = null;
+		Solenoid.Expressions.SerializableNode type_AST = null;
 		
 		try {      // for error handling
 			match(LITERAL_new);
 			qualifiedId();
 			if (0 == inputState.guessing)
 			{
-				type_AST = (Solenoid.Expressions.SpringAST)returnAST;
+				type_AST = (Solenoid.Expressions.SerializableNode)returnAST;
 			}
 			arrayRank();
 			if (0 == inputState.guessing)
@@ -2995,8 +2995,8 @@ _loop87_breakloop:					;
 			}
 			if (0==inputState.guessing)
 			{
-				arrayConstructor_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				arrayConstructor_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,type_AST.getText(),"Solenoid.Expressions.ArrayConstructorNode"), (AST)arrayConstructor_AST);
+				arrayConstructor_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				arrayConstructor_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,type_AST.getText(),"Solenoid.Expressions.ArrayConstructorNode"), (AST)arrayConstructor_AST);
 				currentAST.root = arrayConstructor_AST;
 				if ( (null != arrayConstructor_AST) && (null != arrayConstructor_AST.getFirstChild()) )
 					currentAST.child = arrayConstructor_AST.getFirstChild();
@@ -3004,7 +3004,7 @@ _loop87_breakloop:					;
 					currentAST.child = arrayConstructor_AST;
 				currentAST.advanceChildToEnd();
 			}
-			arrayConstructor_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			arrayConstructor_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -3026,11 +3026,11 @@ _loop87_breakloop:					;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST arrayRank_AST = null;
+		Solenoid.Expressions.SerializableNode arrayRank_AST = null;
 		
 		try {      // for error handling
-			Solenoid.Expressions.SpringAST tmp104_AST = null;
-			tmp104_AST = (Solenoid.Expressions.SpringAST) astFactory.create(LT(1));
+			Solenoid.Expressions.SerializableNode tmp104_AST = null;
+			tmp104_AST = (Solenoid.Expressions.SerializableNode) astFactory.create(LT(1));
 			astFactory.makeASTRoot(ref currentAST, (AST)tmp104_AST);
 			match(LBRACKET);
 			{
@@ -3071,7 +3071,7 @@ _loop96_breakloop:						;
 				
 			}
 			match(RBRACKET);
-			arrayRank_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			arrayRank_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -3093,7 +3093,7 @@ _loop96_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST mapEntry_AST = null;
+		Solenoid.Expressions.SerializableNode mapEntry_AST = null;
 		
 		try {      // for error handling
 			expression();
@@ -3109,8 +3109,8 @@ _loop96_breakloop:						;
 			}
 			if (0==inputState.guessing)
 			{
-				mapEntry_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
-				mapEntry_AST = (Solenoid.Expressions.SpringAST) astFactory.make((AST)(Solenoid.Expressions.SpringAST) astFactory.create(EXPR,"entry","Solenoid.Expressions.MapEntryNode"), (AST)mapEntry_AST);
+				mapEntry_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
+				mapEntry_AST = (Solenoid.Expressions.SerializableNode) astFactory.make((AST)(Solenoid.Expressions.SerializableNode) astFactory.create(EXPR,"entry","Solenoid.Expressions.MapEntryNode"), (AST)mapEntry_AST);
 				currentAST.root = mapEntry_AST;
 				if ( (null != mapEntry_AST) && (null != mapEntry_AST.getFirstChild()) )
 					currentAST.child = mapEntry_AST.getFirstChild();
@@ -3118,7 +3118,7 @@ _loop96_breakloop:						;
 					currentAST.child = mapEntry_AST;
 				currentAST.advanceChildToEnd();
 			}
-			mapEntry_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+			mapEntry_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 		}
 		catch (RecognitionException ex)
 		{
@@ -3140,7 +3140,7 @@ _loop96_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST namedArgument_AST = null;
+		Solenoid.Expressions.SerializableNode namedArgument_AST = null;
 		
 		try {      // for error handling
 			bool synPredMatched111 = false;
@@ -3174,7 +3174,7 @@ _loop96_breakloop:						;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				namedArgument_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				namedArgument_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((tokenSet_9_.member(LA(1))) && (tokenSet_22_.member(LA(2)))) {
 				argument();
@@ -3182,7 +3182,7 @@ _loop96_breakloop:						;
 				{
 					astFactory.addASTChild(ref currentAST, (AST)returnAST);
 				}
-				namedArgument_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				namedArgument_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -3210,7 +3210,7 @@ _loop96_breakloop:						;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		Solenoid.Expressions.SpringAST boolLiteral_AST = null;
+		Solenoid.Expressions.SerializableNode boolLiteral_AST = null;
 		
 		try {      // for error handling
 			if ((LA(1)==TRUE))
@@ -3219,14 +3219,14 @@ _loop96_breakloop:						;
 				tmp110_AST = (Solenoid.Expressions.BooleanLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.BooleanLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp110_AST);
 				match(TRUE);
-				boolLiteral_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				boolLiteral_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else if ((LA(1)==FALSE)) {
 				Solenoid.Expressions.BooleanLiteralNode tmp111_AST = null;
 				tmp111_AST = (Solenoid.Expressions.BooleanLiteralNode) astFactory.create(LT(1), "Solenoid.Expressions.BooleanLiteralNode");
 				astFactory.addASTChild(ref currentAST, (AST)tmp111_AST);
 				match(FALSE);
-				boolLiteral_AST = (Solenoid.Expressions.SpringAST)currentAST.root;
+				boolLiteral_AST = (Solenoid.Expressions.SerializableNode)currentAST.root;
 			}
 			else
 			{
@@ -3249,16 +3249,16 @@ _loop96_breakloop:						;
 		returnAST = boolLiteral_AST;
 	}
 	
-	public new Solenoid.Expressions.SpringAST getAST()
+	public new Solenoid.Expressions.SerializableNode getAST()
 	{
-		return (Solenoid.Expressions.SpringAST) returnAST;
+		return (Solenoid.Expressions.SerializableNode) returnAST;
 	}
 	
 	private void initializeFactory()
 	{
 		if (astFactory == null)
 		{
-			astFactory = new ASTFactory("Solenoid.Expressions.SpringAST");
+			astFactory = new ASTFactory("Solenoid.Expressions.SerializableNode");
 		}
 		initializeASTFactory( astFactory );
 	}

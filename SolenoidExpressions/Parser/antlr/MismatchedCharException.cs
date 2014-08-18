@@ -29,7 +29,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		{
 			get 
 			{
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 			
 				switch (mismatchType)
 				{
@@ -60,8 +60,8 @@ namespace Solenoid.Expressions.Parser.antlr
 					case CharTypeEnum.SetType: 
 					case CharTypeEnum.NotSetType: 
 						sb.Append("expecting " + (mismatchType == CharTypeEnum.NotSetType ? "NOT " : "") + "one of (");
-						int[] elems = bset.toArray();
-						for (int i = 0; i < elems.Length; i++) 
+						var elems = bset.toArray();
+						for (var i = 0; i < elems.Length; i++) 
 						{
 							appendCharName(sb, elems[i]);
 						}

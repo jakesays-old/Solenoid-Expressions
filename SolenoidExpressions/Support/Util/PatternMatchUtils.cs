@@ -81,7 +81,7 @@ namespace Solenoid.Expressions.Support.Util
         {
             if (patterns != null)
             {
-                for (int i = 0; i < patterns.Length; i++)
+                for (var i = 0; i < patterns.Length; i++)
                 {
                     
                     if (SimpleMatch(patterns[i], str))

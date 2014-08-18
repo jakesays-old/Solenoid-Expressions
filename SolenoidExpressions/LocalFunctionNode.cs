@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,10 +14,7 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
-using System.Collections;
 using System.Runtime.Serialization;
 
 namespace Solenoid.Expressions
@@ -54,16 +49,16 @@ namespace Solenoid.Expressions
         /// <returns>Result of the function evaluation.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string name = this.getText();
-            IDictionary locals = evalContext.LocalVariables;
-            LambdaExpressionNode lambda = locals[name] as LambdaExpressionNode;
+            var name = getText();
+            var locals = evalContext.LocalVariables;
+            var lambda = locals[name] as LambdaExpressionNode;
             
             if (lambda == null)
             {
                 throw new InvalidOperationException("Function '" + name + "' is not defined.");
             }
 
-            object[] argValues = ResolveArguments(evalContext);
+            var argValues = ResolveArguments(evalContext);
 
             try
             {

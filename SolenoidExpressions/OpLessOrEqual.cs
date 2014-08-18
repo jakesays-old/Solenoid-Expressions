@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpLessOrEqual():base()
+        public OpLessOrEqual()
         {
         }
 
@@ -54,10 +50,10 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object left = GetLeftValue( context, evalContext );
-            object right = GetRightValue( context, evalContext );
+            var lhs = GetLeftValue( context, evalContext );
+            var rhs = GetRightValue( context, evalContext );
 
-            return CompareUtils.Compare(left, right) <= 0;
+            return CompareUtils.Compare(lhs, rhs) <= 0;
         }
     }
 }

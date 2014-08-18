@@ -55,7 +55,7 @@ namespace Solenoid.Expressions.Processors
                 return null;
             }
             
-            bool includeNulls = false;
+            var includeNulls = false;
             if (args.Length == 1)
             {
                 if (args[0] is bool)
@@ -72,7 +72,7 @@ namespace Solenoid.Expressions.Processors
                 throw new ArgumentException("Only a single argument can be specified for a distinct() processor.");
             }
 
-            HybridSet set = new HybridSet(source);
+            var set = new HybridSet(source);
             if (!includeNulls)
             {
                 set.Remove(null);

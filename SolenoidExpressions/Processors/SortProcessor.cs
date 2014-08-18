@@ -64,28 +64,28 @@ namespace Solenoid.Expressions.Processors
                 return source;
             }
 
-            bool sortAscending = true;
+            var sortAscending = true;
             if (args != null && args.Length == 1 && args[0] is bool)
             {
                 sortAscending = (bool) args[0];
             }
 
-            ArrayList list = new ArrayList(source);
+            var list = new ArrayList(source);
             list.Sort();
             if (!sortAscending)
             {
                 list.Reverse();
             }
 
-            Type elementType = DetermineElementType(list);
+            var elementType = DetermineElementType(list);
             return list.ToArray(elementType);
         }
 
         private Type DetermineElementType(IList list)
         {
-            for(int i=0;i<list.Count;i++)
+            for(var i=0;i<list.Count;i++)
             {
-                object element = list[i];
+                var element = list[i];
                 if (element != null) return element.GetType();
             }
             return typeof (object);

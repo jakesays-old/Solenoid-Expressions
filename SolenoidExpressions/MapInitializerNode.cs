@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,54 +14,52 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents parsed map initializer node in the navigation expression.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class MapInitializerNode : BaseNode
-    {
-        /// <summary>
-        /// Creates a new instance of <see cref="MapInitializerNode"/>.
-        /// </summary>
-        public MapInitializerNode()
-        {}
+	/// <summary>
+	///     Represents parsed map initializer node in the navigation expression.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class MapInitializerNode : BaseNode
+	{
+		/// <summary>
+		///     Creates a new instance of <see cref="MapInitializerNode" />.
+		/// </summary>
+		public MapInitializerNode()
+		{
+		}
 
-         /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected MapInitializerNode(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        
-        /// <summary>
-        /// Creates new instance of the map defined by this node.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            IDictionary entries = new Hashtable();
-            AST entryNode = this.getFirstChild();
-            while (entryNode != null)
-            {
-                DictionaryEntry entry = (DictionaryEntry) GetValue(((MapEntryNode)entryNode), evalContext.RootContext, evalContext );
-                entries[entry.Key] = entry.Value;
-                entryNode = entryNode.getNextSibling();
-            }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected MapInitializerNode(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-            return entries;
-        }
-    }
+		/// <summary>
+		///     Creates new instance of the map defined by this node.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			IDictionary entries = new Hashtable();
+			var entryNode = getFirstChild();
+			while (entryNode != null)
+			{
+				var entry = (DictionaryEntry) GetValue(((MapEntryNode) entryNode), evalContext.RootContext, evalContext);
+				entries[entry.Key] = entry.Value;
+				entryNode = entryNode.getNextSibling();
+			}
+
+			return entries;
+		}
+	}
 }

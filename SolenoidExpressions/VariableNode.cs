@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,8 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
 
@@ -33,7 +29,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public VariableNode():base()
+        public VariableNode()
         {
         }
 
@@ -53,16 +49,16 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            string varName = this.getText();
+            var varName = getText();
             if (varName == "this")
             {
                 return evalContext.ThisContext;
             }
-            else if (varName == "root")
-            {
-                return evalContext.RootContext;
-            }
-            return evalContext.Variables[varName];
+	        if (varName == "root")
+	        {
+		        return evalContext.RootContext;
+	        }
+	        return evalContext.Variables[varName];
         }
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace Solenoid.Expressions
         /// <param name="newValue">New value for this node.</param>
         protected override void Set(object context, EvaluationContext evalContext, object newValue)
         {
-            string varName = this.getText();
+            var varName = getText();
             if (varName == "this" || varName == "root")
             {
                 throw new ArgumentException("You cannot assign a value to intrinsic variable '" + varName + "'.");

@@ -23,7 +23,7 @@ namespace Solenoid.Expressions.Parser.antlr
 		/// </summary>
 	    int index;
 
-	    public TokenWithIndex() : base()
+	    public TokenWithIndex()
 	    {
 	    }
 

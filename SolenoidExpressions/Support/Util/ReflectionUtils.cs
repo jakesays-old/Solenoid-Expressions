@@ -82,10 +82,10 @@ namespace Solenoid.Expressions.Support.Util
         public static string GetSignature(
             Type type, string method, Type[] argumentTypes)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(type.FullName).Append("::").Append(method).Append("(");
-            string separator = "";
-            for (int i = 0; i < argumentTypes.Length; i++)
+            var separator = "";
+            for (var i = 0; i < argumentTypes.Length; i++)
             {
                 sb.Append(separator).Append(argumentTypes[i].FullName);
                 separator = ",";
@@ -151,20 +151,20 @@ namespace Solenoid.Expressions.Support.Util
             
             MethodInfo retMethod = null;
 
-            MethodInfo[] methods = targetType.GetMethods(ReflectionUtils.AllMembersCaseInsensitiveFlags);
+            var methods = targetType.GetMethods(ReflectionUtils.AllMembersCaseInsensitiveFlags);
 
-            foreach (MethodInfo candidate in methods)
+            foreach (var candidate in methods)
             {
                 if (candidate.Name.ToLower() == method.ToLower())
                 {
-                    Type[] parameterTypes = Array.ConvertAll<ParameterInfo, Type>(candidate.GetParameters(), delegate(ParameterInfo i) { return i.ParameterType; });
-                    bool typesMatch = false;
+                    var parameterTypes = Array.ConvertAll<ParameterInfo, Type>(candidate.GetParameters(), delegate(ParameterInfo i) { return i.ParameterType; });
+                    var typesMatch = false;
 
-                    bool zeroTypeArguments = null == argumentTypes || argumentTypes.Length == 0;
+                    var zeroTypeArguments = null == argumentTypes || argumentTypes.Length == 0;
 
                     if (!zeroTypeArguments && parameterTypes.Length == argumentTypes.Length)
                     {
-                        for (int i = 0; i < parameterTypes.Length; i++)
+                        for (var i = 0; i < parameterTypes.Length; i++)
                         {
                             typesMatch = parameterTypes[i] == argumentTypes[i];
                             if (!typesMatch)
@@ -195,7 +195,7 @@ namespace Solenoid.Expressions.Support.Util
             if (retMethod == null)
             {
                 // try explicit interface implementation...
-                int idx = method.LastIndexOf('.');
+                var idx = method.LastIndexOf('.');
                 if (idx > -1)
                 {
                     method = method.Substring(idx + 1);
@@ -220,12 +220,12 @@ namespace Solenoid.Expressions.Support.Util
             AssertUtils.ArgumentNotNull(implementingType, "implementingType");
             AssertUtils.IsTrue(methodInfo.DeclaringType.IsAssignableFrom(implementingType), "methodInfo and implementingType are unrelated");
 
-            MethodInfo concreteMethodInfo = methodInfo;
+            var concreteMethodInfo = methodInfo;
 
             if (methodInfo.DeclaringType.IsInterface)
             {
-                InterfaceMapping interfaceMapping = implementingType.GetInterfaceMap(methodInfo.DeclaringType);
-                int methodIndex = Array.IndexOf(interfaceMapping.InterfaceMethods, methodInfo);
+                var interfaceMapping = implementingType.GetInterfaceMap(methodInfo.DeclaringType);
+                var methodIndex = Array.IndexOf(interfaceMapping.InterfaceMethods, methodInfo);
                 concreteMethodInfo = interfaceMapping.TargetMethods[methodIndex];
             }
 
@@ -260,8 +260,8 @@ namespace Solenoid.Expressions.Support.Util
         public static Type[] GetParameterTypes(ParameterInfo[] args)
         {
             AssertUtils.ArgumentNotNull(args, "args");
-            Type[] types = new Type[args.Length];
-            for (int i = 0; i < args.Length; i++)
+            var types = new Type[args.Length];
+            for (var i = 0; i < args.Length; i++)
             {
                 types[i] = args[i].ParameterType;
             }
@@ -296,8 +296,8 @@ namespace Solenoid.Expressions.Support.Util
         public static string[] GetGenericParameterNames(Type[] args)
         {
             AssertUtils.ArgumentNotNull(args, "args");
-            string[] names = new string[args.Length];
-            for (int i = 0; i < args.Length; i++)
+            var names = new string[args.Length];
+            for (var i = 0; i < args.Length; i++)
             {
                 names[i] = args[i].Name;
             }
@@ -316,9 +316,9 @@ namespace Solenoid.Expressions.Support.Util
             else
             {
                 // Generic Method
-                MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 // Loop thru all Methods
-                foreach (MethodInfo method in methods)
+                foreach (var method in methods)
                 {
                     if (method.Name != methodName)
                     {
@@ -333,13 +333,13 @@ namespace Solenoid.Expressions.Support.Util
                     }
 
                     // Compare the Method Parameters
-                    bool paramsOk = false;
+                    var paramsOk = false;
                     if (method.GetParameters().Length == parameterTypes.Length)
                     {
                         // Count Matches
                         paramsOk = true;
                         // Check each Type
-                        for (int i = 0; i < method.GetParameters().Length; i++)
+                        for (var i = 0; i < method.GetParameters().Length; i++)
                         {
                             if (method.GetParameters()[i].ParameterType != parameterTypes[i])
                             {
@@ -356,7 +356,7 @@ namespace Solenoid.Expressions.Support.Util
                     }
 
                     // Check the Generic Arguments
-                    bool argsOk = false;
+                    var argsOk = false;
                     if (method.GetGenericArguments().Length == typeArguments.Length)
                     {
                         // Count Matches
@@ -404,20 +404,20 @@ namespace Solenoid.Expressions.Support.Util
         private static MethodBase GetMethodBaseByArgumentValues<T>(string methodTypeName, IEnumerable<T> methods, object[] argValues) where T : MethodBase
         {
             MethodBase match = null;
-            int matchCount = 0;
+            var matchCount = 0;
 
             foreach (MethodBase m in methods)
             {
-                ParameterInfo[] parameters = m.GetParameters();
-                bool isMatch = true;
-                bool isExactMatch = true;
-                object[] paramValues = (argValues == null) ? new object[0] : argValues;
+                var parameters = m.GetParameters();
+                var isMatch = true;
+                var isExactMatch = true;
+                var paramValues = (argValues == null) ? new object[0] : argValues;
 
                 try
                 {
                     if (parameters.Length > 0)
                     {
-                        ParameterInfo lastParameter = parameters[parameters.Length - 1];
+                        var lastParameter = parameters[parameters.Length - 1];
                         if (lastParameter.GetCustomAttributes(typeof(ParamArrayAttribute), false).Length > 0 && argValues.Length >= parameters.Length)
                         {
                             paramValues =
@@ -432,10 +432,10 @@ namespace Solenoid.Expressions.Support.Util
                     }
                     else
                     {
-                        for (int i = 0; i < parameters.Length; i++)
+                        for (var i = 0; i < parameters.Length; i++)
                         {
-                            Type paramType = parameters[i].ParameterType;
-                            object paramValue = paramValues[i];
+                            var paramType = parameters[i].ParameterType;
+                            var paramValue = paramValues[i];
 
                             if ((paramValue == null && paramType.IsValueType && !IsNullableType(paramType))
                                 || (paramValue != null && !paramType.IsAssignableFrom(paramValue.GetType())))
@@ -504,8 +504,8 @@ namespace Solenoid.Expressions.Support.Util
         /// <returns>Packaged arguments.</returns>
         public static object[] PackageParamArray(object[] argValues, int argCount, Type elementType)
         {
-            object[] values = new object[argCount];
-            int i = 0;
+            var values = new object[argCount];
+            var i = 0;
 
             // copy regular arguments
             while (i < argCount - 1)
@@ -515,8 +515,8 @@ namespace Solenoid.Expressions.Support.Util
             }
 
             // package param array into last argument
-            Array paramArray = Array.CreateInstance(elementType, argValues.Length - i);
-            int j = 0;
+            var paramArray = Array.CreateInstance(elementType, argValues.Length - i);
+            var j = 0;
             while (i < argValues.Length)
             {
                 paramArray.SetValue(argValues[i++], j++);
@@ -551,7 +551,7 @@ namespace Solenoid.Expressions.Support.Util
                                   intf.FullName));
             }
 
-            List<Type> interfaces = new List<Type>(intf.GetInterfaces());
+            var interfaces = new List<Type>(intf.GetInterfaces());
             interfaces.Add(intf);
 
             return interfaces;
@@ -576,11 +576,11 @@ namespace Solenoid.Expressions.Support.Util
         /// </exception>
         public static bool PropertyIsIndexer(string propertyName, Type type)
         {
-            DefaultMemberAttribute[] attribs =
+            var attribs =
                 (DefaultMemberAttribute[])type.GetCustomAttributes(typeof(DefaultMemberAttribute), true);
             if (attribs.Length != 0)
             {
-                foreach (DefaultMemberAttribute attrib in attribs)
+                foreach (var attrib in attribs)
                 {
                     if (attrib.MemberName.Equals(propertyName))
                     {
@@ -613,10 +613,10 @@ namespace Solenoid.Expressions.Support.Util
             {
                 return false;
             }
-            Type[] paramTypes = GetParameterTypes(method.GetParameters());
-            for (int i = 0; i < interfaces.Length; i++)
+            var paramTypes = GetParameterTypes(method.GetParameters());
+            for (var i = 0; i < interfaces.Length; i++)
             {
-                Type interfaceType = interfaces[i];
+                var interfaceType = interfaces[i];
                 AssertUtils.ArgumentNotNull(interfaceType, StringUtils.Surround("interfaces[", i, "]"));
                 if (!interfaceType.IsInterface)
                 {
@@ -624,7 +624,7 @@ namespace Solenoid.Expressions.Support.Util
                 }
                 try
                 {
-                    MethodInfo mi = interfaceType.GetMethod(
+                    var mi = interfaceType.GetMethod(
                         method.Name,
                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly,
                         null, paramTypes, null);
@@ -682,7 +682,7 @@ namespace Solenoid.Expressions.Support.Util
             }
             if (type.IsEnum)
             {
-                Array values = Enum.GetValues(type);
+                var values = Enum.GetValues(type);
                 if (values == null || values.Length == 0)
                 {
                     throw new ArgumentException("Bad 'enum' Type : cannot get default value because 'enum' has no values.");
@@ -710,8 +710,8 @@ namespace Solenoid.Expressions.Support.Util
         /// <seealso cref="ReflectionUtils.GetDefaultValue(Type)"/>
         public static object[] GetDefaultValues(Type[] types)
         {
-            object[] defaults = new object[types.Length];
-            for (int i = 0; i < types.Length; ++i)
+            var defaults = new object[types.Length];
+            for (var i = 0; i < types.Length; ++i)
             {
                 defaults[i] = GetDefaultValue(types[i]);
             }
@@ -742,13 +742,13 @@ namespace Solenoid.Expressions.Support.Util
 
             #endregion
 
-            Type[] candidatesParameterTypes
+            var candidatesParameterTypes
                 = ReflectionUtils.GetParameterTypes(candidate);
             if (candidatesParameterTypes.Length != parameterTypes.Length)
             {
                 return false;
             }
-            for (int i = 0; i < candidatesParameterTypes.Length; ++i)
+            for (var i = 0; i < candidatesParameterTypes.Length; ++i)
             {
                 if (!candidatesParameterTypes[i].Equals(parameterTypes[i]))
                 {
@@ -788,10 +788,10 @@ namespace Solenoid.Expressions.Support.Util
             {
                 return Type.EmptyTypes;
             }
-            Type[] paramsType = new Type[args.Length];
-            for (int i = 0; i < args.Length; ++i)
+            var paramsType = new Type[args.Length];
+            for (var i = 0; i < args.Length; ++i)
             {
-                object arg = args[i];
+                var arg = args[i];
                 paramsType[i] = (arg != null) ? args[i].GetType() : typeof(object);
             }
             return paramsType;
@@ -861,7 +861,7 @@ namespace Solenoid.Expressions.Support.Util
         {
             AssertUtils.ArgumentNotNull(type, "type", "Type must not be null");
             AssertUtils.ArgumentNotNull(name, "name", "Method name must not be null");
-            MemberInfo[] methods = type.FindMembers(
+            var methods = type.FindMembers(
                 MemberTypes.Method,
                 ReflectionUtils.AllMembersCaseInsensitiveFlags,
                 new MemberFilter(ReflectionUtils.MethodNameFilter),
@@ -871,8 +871,8 @@ namespace Solenoid.Expressions.Support.Util
 
         private static bool MethodNameFilter(MemberInfo member, object criteria)
         {
-            MethodInfo method = member as MethodInfo;
-            string name = criteria as string;
+            var method = member as MethodInfo;
+            var name = criteria as string;
             return String.Compare(method.Name, name, true, CultureInfo.InvariantCulture) == 0;
         }
 
@@ -923,7 +923,7 @@ namespace Solenoid.Expressions.Support.Util
 
             #endregion
 
-            ConstructorInfo ci = type.GetConstructor(ReflectionUtils.GetTypes(ctorArgs));
+            var ci = type.GetConstructor(ReflectionUtils.GetTypes(ctorArgs));
             if (ci == null && ctorArgs.Length == 0)
             {
                 ci = type.GetConstructors()[0];
@@ -945,7 +945,7 @@ namespace Solenoid.Expressions.Support.Util
                 IList getSetValues = new ArrayList();
                 IList<PropertyInfo> readOnlyProps = new List<PropertyInfo>();
                 IList readOnlyValues = new ArrayList();
-                foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+                foreach (var pi in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
                 {
                     if (pi.DeclaringType == typeof(Attribute))
                         continue;
@@ -954,10 +954,10 @@ namespace Solenoid.Expressions.Support.Util
                     {
                         if (pi.CanWrite)
                         {
-                            object propValue = pi.GetValue(sourceAttribute, null);
+                            var propValue = pi.GetValue(sourceAttribute, null);
                             if (defaultAttribute != null)
                             {
-                                object defaultValue = pi.GetValue(defaultAttribute, null);
+                                var defaultValue = pi.GetValue(defaultAttribute, null);
                                 if ((propValue == null && defaultValue == null) ||
                                     (propValue != null && propValue.Equals(defaultValue)))
                                     continue;
@@ -975,8 +975,8 @@ namespace Solenoid.Expressions.Support.Util
 
                 if (readOnlyProps.Count == 1)
                 {
-                    PropertyInfo pi = readOnlyProps[0];
-                    ConstructorInfo ciTemp = type.GetConstructor(new Type[1] { pi.PropertyType });
+                    var pi = readOnlyProps[0];
+                    var ciTemp = type.GetConstructor(new Type[1] { pi.PropertyType });
                     if (ciTemp != null)
                     {
                         ci = ciTemp;
@@ -993,10 +993,10 @@ namespace Solenoid.Expressions.Support.Util
                     }
                 }
 
-                PropertyInfo[] propertyInfos = new PropertyInfo[getSetProps.Count];
+                var propertyInfos = new PropertyInfo[getSetProps.Count];
                 getSetProps.CopyTo(propertyInfos, 0);
 
-                object[] propertyValues = new object[getSetValues.Count];
+                var propertyValues = new object[getSetValues.Count];
                 getSetValues.CopyTo(propertyValues, 0);
 
                 return new CustomAttributeBuilder(ci, ctorArgs, propertyInfos, propertyValues);
@@ -1078,23 +1078,23 @@ namespace Solenoid.Expressions.Support.Util
         /// <returns>A custom attribute builder.</returns>
         public static CustomAttributeBuilder CreateCustomAttribute(CustomAttributeData attributeData)
         {
-            object[] parameterValues = new object[attributeData.ConstructorArguments.Count];
-            Type[] parameterTypes = new Type[attributeData.ConstructorArguments.Count];
+            var parameterValues = new object[attributeData.ConstructorArguments.Count];
+            var parameterTypes = new Type[attributeData.ConstructorArguments.Count];
 
             IList namedParameterValues = new ArrayList();
             IList namedFieldValues = new ArrayList();
 
             // Fill arrays of the constructor parameters
-            for (int i = 0; i < attributeData.ConstructorArguments.Count; i++)
+            for (var i = 0; i < attributeData.ConstructorArguments.Count; i++)
             {
                 parameterTypes[i] = attributeData.ConstructorArguments[i].ArgumentType;
                 parameterValues[i] = ConvertConstructorArgsToObjectArrayIfNecessary(attributeData.ConstructorArguments[i].Value);
             }
 
-            Type attributeType = attributeData.Constructor.DeclaringType;
-            PropertyInfo[] attributeProperties = attributeType.GetProperties(
+            var attributeType = attributeData.Constructor.DeclaringType;
+            var attributeProperties = attributeType.GetProperties(
                 BindingFlags.Instance | BindingFlags.Public);
-            FieldInfo[] attributeFields = attributeType.GetFields(
+            var attributeFields = attributeType.GetFields(
                 BindingFlags.Instance | BindingFlags.Public);
 
             // Not using generics bellow as probably Spring.NET tries to keep 
@@ -1106,14 +1106,14 @@ namespace Solenoid.Expressions.Support.Util
             IList fieldsToSet = new ArrayList();
 
             // Fills arrays of the constructor named parameters
-            foreach (CustomAttributeNamedArgument namedArgument in attributeData.NamedArguments)
+            foreach (var namedArgument in attributeData.NamedArguments)
             {
-                bool noMatchingProperty = false;
+                var noMatchingProperty = false;
 
                 // Now iterate through all of the PropertyInfo, find the
                 // one with the corresponding to the NamedProperty name
                 // and add it to the array of properties to set.
-                for (int j = 0; j < attributeProperties.Length; j++)
+                for (var j = 0; j < attributeProperties.Length; j++)
                 {
                     if (attributeProperties[j].Name == namedArgument.MemberInfo.Name)
                     {
@@ -1140,7 +1140,7 @@ namespace Solenoid.Expressions.Support.Util
                 }
                 if (noMatchingProperty)
                 {
-                    for (int j = 0; j < attributeFields.Length; j++)
+                    for (var j = 0; j < attributeFields.Length; j++)
                     {
                         if (attributeFields[j].Name == namedArgument.MemberInfo.Name)
                         {
@@ -1164,12 +1164,12 @@ namespace Solenoid.Expressions.Support.Util
                 }
             }
             // Get constructor corresponding to the parameters and their types
-            ConstructorInfo constructor = attributeType.GetConstructor(parameterTypes);
+            var constructor = attributeType.GetConstructor(parameterTypes);
 
-            PropertyInfo[] namedProperties = new PropertyInfo[propertiesToSet.Count];
+            var namedProperties = new PropertyInfo[propertiesToSet.Count];
             propertiesToSet.CopyTo(namedProperties, 0);
 
-            object[] propertyValues = new object[namedParameterValues.Count];
+            var propertyValues = new object[namedParameterValues.Count];
             namedParameterValues.CopyTo(propertyValues, 0);
 
             if (fieldsToSet.Count == 0)
@@ -1179,10 +1179,10 @@ namespace Solenoid.Expressions.Support.Util
             }
             else
             {
-                FieldInfo[] namedFields = new FieldInfo[fieldsToSet.Count];
+                var namedFields = new FieldInfo[fieldsToSet.Count];
                 fieldsToSet.CopyTo(namedFields, 0);
 
-                object[] fieldValues = new object[namedFieldValues.Count];
+                var fieldValues = new object[namedFieldValues.Count];
                 namedFieldValues.CopyTo(fieldValues, 0);
 
                 return new CustomAttributeBuilder(
@@ -1198,14 +1198,14 @@ namespace Solenoid.Expressions.Support.Util
             if (value == null)
                 return value;
 
-            IList<CustomAttributeTypedArgument> constructorArguments = value as IList<CustomAttributeTypedArgument>;
+            var constructorArguments = value as IList<CustomAttributeTypedArgument>;
 
             if (constructorArguments == null)
                 return value;
 
-            object[] arguments = new object[constructorArguments.Count];
+            var arguments = new object[constructorArguments.Count];
 
-            for (int i = 0; i < constructorArguments.Count; i++)
+            for (var i = 0; i < constructorArguments.Count; i++)
             {
                 arguments[i] = constructorArguments[i].Value;
             }
@@ -1224,13 +1224,13 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static IList GetCustomAttributes(MemberInfo member)
         {
-            ArrayList attributes = new ArrayList();
+            var attributes = new ArrayList();
 
             // add attributes that apply to the target type or method
-            object[] attrs = member.GetCustomAttributes(false);
+            var attrs = member.GetCustomAttributes(false);
             try
             {
-                IList<CustomAttributeData> attrsData = CustomAttributeData.GetCustomAttributes(member);
+                var attrsData = CustomAttributeData.GetCustomAttributes(member);
 
                 if (attrs.Length != attrsData.Count)
                 {
@@ -1241,8 +1241,8 @@ namespace Solenoid.Expressions.Support.Util
                 {
                     if (SystemUtils.Clr4Runtime)
                     {
-                        bool hasSecurityAttribute = false;
-                        foreach (CustomAttributeData cad in attrsData)
+                        var hasSecurityAttribute = false;
+                        foreach (var cad in attrsData)
                         {
                             if (typeof(SecurityAttribute).IsAssignableFrom(cad.Constructor.DeclaringType))
                             {
@@ -1256,7 +1256,7 @@ namespace Solenoid.Expressions.Support.Util
                         }
                         else
                         {
-                            foreach (CustomAttributeData cad in attrsData)
+                            foreach (var cad in attrsData)
                             {
                                 attributes.Add(cad);
                             }
@@ -1264,7 +1264,7 @@ namespace Solenoid.Expressions.Support.Util
                     }
                     else
                     {
-                        foreach (CustomAttributeData cad in attrsData)
+                        foreach (var cad in attrsData)
                         {
                             attributes.Add(cad);
                         }
@@ -1306,13 +1306,13 @@ namespace Solenoid.Expressions.Support.Util
             AssertUtils.ArgumentNotNull(type, "type");
             AssertUtils.ArgumentNotNull(methods, "methods");
 
-            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+            var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
 
-            MethodInfo[] matched = new MethodInfo[methods.Length];
-            for (int i = 0; i < methods.Length; i++)
+            var matched = new MethodInfo[methods.Length];
+            for (var i = 0; i < methods.Length; i++)
             {
-                MethodInfo method = methods[i];
-                MethodInfo match = type.GetMethod(method.Name, flags, null, ReflectionUtils.GetParameterTypes(method), null);
+                var method = methods[i];
+                var match = type.GetMethod(method.Name, flags, null, ReflectionUtils.GetParameterTypes(method), null);
                 if ((match == null || match.ReturnType != method.ReturnType) && strict)
                 {
                     throw new Exception(
@@ -1426,7 +1426,7 @@ namespace Solenoid.Expressions.Support.Util
                     && (!type.IsNested || type.IsNestedPublic ||
                      (!type.IsNestedPrivate && (type.IsNestedAssembly || type.IsNestedFamORAssem))))
                 {
-                    object[] attrs = type.Assembly.GetCustomAttributes(typeof(InternalsVisibleToAttribute), false);
+                    var attrs = type.Assembly.GetCustomAttributes(typeof(InternalsVisibleToAttribute), false);
                     foreach (InternalsVisibleToAttribute ivta in attrs)
                     {
                         if (ivta.AssemblyName.Split(',')[0] == friendlyAssemblyName)
@@ -1456,7 +1456,7 @@ namespace Solenoid.Expressions.Support.Util
 
             if (type.IsInterface)
             {
-                List<Type> interfaces = new List<Type>();
+                var interfaces = new List<Type>();
                 interfaces.Add(type);
                 interfaces.AddRange(type.GetInterfaces());
                 return interfaces.ToArray();
@@ -1480,7 +1480,7 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static Exception GetExplicitBaseException(Exception ex)
         {
-            Exception innerEx = ex.InnerException;
+            var innerEx = ex.InnerException;
             while (innerEx != null &&
                 !(innerEx is NullReferenceException))
             {
@@ -1506,8 +1506,8 @@ namespace Solenoid.Expressions.Support.Util
         /// <exception cref="ArgumentException">If the object's types are not related</exception>
         public static void MemberwiseCopy(object fromObject, object toObject)
         {
-            Type fromType = fromObject.GetType();
-            Type toType = toObject.GetType();
+            var fromType = fromObject.GetType();
+            var toType = toObject.GetType();
 
             Type smallerType;
 
@@ -1542,7 +1542,7 @@ namespace Solenoid.Expressions.Support.Util
             if (StringUtils.IsNullOrEmpty(fieldName))
                 throw new ArgumentException("fieldName is null or empty.", "fieldName");
 
-            FieldInfo f = obj.GetType().GetField(fieldName, BindingFlags.SetField | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var f = obj.GetType().GetField(fieldName, BindingFlags.SetField | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             if (f != null)
                 return f.GetValue(obj);
             else
@@ -1568,7 +1568,7 @@ namespace Solenoid.Expressions.Support.Util
             if (fieldValue == null)
                 throw new ArgumentNullException("fieldValue", "fieldValue is null.");
 
-            FieldInfo f = obj.GetType().GetField(fieldName, BindingFlags.SetField | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            var f = obj.GetType().GetField(fieldName, BindingFlags.SetField | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
             if (f != null)
             {
@@ -1585,7 +1585,7 @@ namespace Solenoid.Expressions.Support.Util
 
         private static void MemberwiseCopyInternal(object fromObject, object toObject, Type smallerType)
         {
-            MemberwiseCopyHandler impl = GetImpl(smallerType);
+            var impl = GetImpl(smallerType);
             impl(fromObject, toObject);
         }
 
@@ -1608,11 +1608,11 @@ namespace Solenoid.Expressions.Support.Util
                     return handler;
                 }
 
-                FieldInfo[] fields = GetFields(type);
+                var fields = GetFields(type);
                 SecurityCritical.ExecutePrivileged(new PermissionSet(PermissionState.Unrestricted), delegate
                 {
-                    DynamicMethod dm = new DynamicMethod(type.FullName + ".ShallowCopy", null, new Type[] { typeof(object), typeof(object) }, type.Module, true);
-                    ILGenerator ilGen = dm.GetILGenerator();
+                    var dm = new DynamicMethod(type.FullName + ".ShallowCopy", null, new Type[] { typeof(object), typeof(object) }, type.Module, true);
+                    var ilGen = dm.GetILGenerator();
                     ilGen.DeclareLocal(type);
                     ilGen.DeclareLocal(type);
                     ilGen.Emit(OpCodes.Ldarg_0);
@@ -1622,7 +1622,7 @@ namespace Solenoid.Expressions.Support.Util
                     ilGen.Emit(OpCodes.Castclass, type);
                     ilGen.Emit(OpCodes.Stloc_1);
 
-                    foreach (FieldInfo field in fields)
+                    foreach (var field in fields)
                     {
                         ilGen.Emit(OpCodes.Ldloc_1);
                         ilGen.Emit(OpCodes.Ldloc_0);
@@ -1653,7 +1653,7 @@ namespace Solenoid.Expressions.Support.Util
                 FieldInfo[] fields;
                 if (!s_fieldCache.TryGetValue(type, out fields))
                 {
-                    List<FieldInfo> fieldList = new List<FieldInfo>();
+                    var fieldList = new List<FieldInfo>();
                     CollectFieldsRecursive(type, fieldList);
                     fields = fieldList.ToArray();
                     s_fieldCache[type] = fields;
@@ -1667,7 +1667,7 @@ namespace Solenoid.Expressions.Support.Util
             if (type == typeof(object))
                 return;
 
-            FieldInfo[] fields = type.GetFields(FIELDBINDINGS);
+            var fields = type.GetFields(FIELDBINDINGS);
             fieldList.AddRange(fields);
             CollectFieldsRecursive(type.BaseType, fieldList);
         }
@@ -1747,7 +1747,7 @@ namespace Solenoid.Expressions.Support.Util
             /// <param name="value">The property value.</param>
             public void AddPropertyValue(string name, object value)
             {
-                PropertyInfo propertyInfo = this.type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+                var propertyInfo = this.type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
                 if (propertyInfo == null)
                 {
                     throw new ArgumentException(
@@ -1764,8 +1764,8 @@ namespace Solenoid.Expressions.Support.Util
             /// <returns>The created <see cref="CustomAttributeBuilderBuilder"/>.</returns>
             public CustomAttributeBuilder Build()
             {
-                object[] caArray = (object[])this.constructorArgs.ToArray(typeof(object));
-                ConstructorInfo ci = this.type.GetConstructor(ReflectionUtils.GetTypes(caArray));
+                var caArray = (object[])this.constructorArgs.ToArray(typeof(object));
+                var ci = this.type.GetConstructor(ReflectionUtils.GetTypes(caArray));
                 if (ci == null && caArray.Length == 0)
                 {
                     ci = this.type.GetConstructors()[0];
@@ -1774,8 +1774,8 @@ namespace Solenoid.Expressions.Support.Util
 
                 if (namedProperties.Count > 0)
                 {
-                    PropertyInfo[] npArray = this.namedProperties.ToArray();
-                    object[] pvArray = this.propertyValues.ToArray();
+                    var npArray = this.namedProperties.ToArray();
+                    var pvArray = this.propertyValues.ToArray();
                     return new CustomAttributeBuilder(ci, caArray, npArray, pvArray);
                 }
                 else

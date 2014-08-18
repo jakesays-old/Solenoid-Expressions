@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,11 +14,8 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
@@ -31,13 +26,12 @@ namespace Solenoid.Expressions
     [Serializable]
     public class QualifiedIdentifier : BaseNode
     {
-        private string identifier;
+        private string _identifier;
 
         /// <summary>
         /// Create a new instance
         /// </summary>
         public QualifiedIdentifier()
-            : base()
         {
         }
 
@@ -57,18 +51,18 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            if (identifier == null)
+            if (_identifier == null)
             {
                 lock (this)
                 {
-                    if (identifier == null)
+                    if (_identifier == null)
                     {
-                        identifier = this.getText();
+                        _identifier = getText();
                     }
                 }
             }
 
-            return identifier;
+            return _identifier;
         }
 
         /// <summary>
@@ -80,12 +74,12 @@ namespace Solenoid.Expressions
         /// </returns>
         public override string getText()
         {
-            string tmp = base.getText();
+            var tmp = base.getText();
 //            if (tmp != null)
 //            {
 //                tmp = tmp.Replace(ESCAPE_CHAR, ""); // remove all occurrences of escape char
 //            }
-            AST node = this.getFirstChild();
+            var node = getFirstChild();
             while (node != null)
             {
                 tmp = string.Concat(tmp, node.getText());

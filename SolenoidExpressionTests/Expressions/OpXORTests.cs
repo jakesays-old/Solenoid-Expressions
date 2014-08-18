@@ -24,7 +24,7 @@ using Solenoid.Expressions;
 namespace Spring.Expressions
 {
     /// <summary>
-    /// Unit tests for the OpXOR class.
+    /// Unit tests for the OpXor class.
     /// </summary>
     /// <author>Erich Eichinger</author>
     [TestFixture]
@@ -33,17 +33,17 @@ namespace Spring.Expressions
         [Test]
         public void XorsNumbers()
         {
-            OpXOR bxor = new OpXOR(new IntLiteralNode("2"), new IntLiteralNode("3"));
+            OpXor bxor = new OpXor(new IntLiteralNode("2"), new IntLiteralNode("3"));
             Assert.AreEqual(2 ^ 3, bxor.GetValue(null, null));
         }
 
         [Test]
         public void XorsBooleans()
         {
-            OpXOR bxor1 = new OpXOR(new BooleanLiteralNode("true"), new BooleanLiteralNode("false"));
+            OpXor bxor1 = new OpXor(new BooleanLiteralNode("true"), new BooleanLiteralNode("false"));
             Assert.AreEqual(true ^ false, bxor1.GetValue(null, null));
 
-            OpXOR bxor2 = new OpXOR(new BooleanLiteralNode("true"), new BooleanLiteralNode("true"));
+            OpXor bxor2 = new OpXor(new BooleanLiteralNode("true"), new BooleanLiteralNode("true"));
             Assert.AreEqual(true ^ true, bxor2.GetValue(null, null));
         }
     }

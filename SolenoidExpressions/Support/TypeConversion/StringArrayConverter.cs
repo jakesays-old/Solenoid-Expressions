@@ -170,7 +170,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
 		public override object ConvertFrom(
 			ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			string values = value as string;
+			var values = value as string;
 			if (values != null)
 			{
 				return StringUtils.DelimitedListToStringArray(values, this.ListSeparator);

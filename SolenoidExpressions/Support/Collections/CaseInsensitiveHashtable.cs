@@ -43,7 +43,7 @@ namespace Solenoid.Expressions.Support.Collections
 
             if (d != null)
             {
-                IDictionaryEnumerator enumerator = d.GetEnumerator();
+                var enumerator = d.GetEnumerator();
                 while (enumerator.MoveNext())
                 {
                     this.Add(enumerator.Key, enumerator.Value);
@@ -59,7 +59,7 @@ namespace Solenoid.Expressions.Support.Collections
         /// <exception cref="T:System.ArgumentNullException">info is null. </exception>
         protected CaseInsensitiveHashtable(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            string cultureName = info.GetString("_cultureName");
+            var cultureName = info.GetString("_cultureName");
             _culture = new CultureInfo(cultureName);
             AssertUtils.ArgumentNotNull(_culture, "Culture");
         }

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -34,7 +30,7 @@ namespace Solenoid.Expressions
         /// <summary>
         /// Create a new instance
         /// </summary>
-        public OpUnaryPlus():base()
+        public OpUnaryPlus()
         {
         }
 
@@ -54,14 +50,14 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            object n = GetValue(Operand, context, evalContext);
+            var number = GetValue(Operand, context, evalContext);
 
-            if (!NumberUtils.IsNumber(n))
+            if (!NumberUtils.IsNumber(number))
             {
                 throw new ArgumentException(
                     "Specified operand is not a number. Only numbers support unary plus operator.");
             }
-            return n;
+            return number;
         }
     }
 }

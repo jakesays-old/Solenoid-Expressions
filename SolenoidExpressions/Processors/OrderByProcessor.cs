@@ -63,11 +63,11 @@ namespace Solenoid.Expressions.Processors
 
             public LambdaComparer(LambdaExpressionNode lambdaExpression)
             {
-                FunctionNode functionNode = new FunctionNode();
+                var functionNode = new FunctionNode();
                 functionNode.Text = "compare";
-                VariableNode x = new VariableNode();
+                var x = new VariableNode();
                 x.Text = "x";
-                VariableNode y = new VariableNode();
+                var y = new VariableNode();
                 y.Text = "y";
 
                 functionNode.addChild(x);
@@ -131,11 +131,11 @@ namespace Solenoid.Expressions.Processors
                 throw new ArgumentException("compare expression is a required argument for orderBy");
             }
 
-            object arg = args[0];
+            var arg = args[0];
             IComparer comparer = null;
             if (arg is string)
             {
-                IExpression expCompare = Expression.Parse((string) arg);
+                var expCompare = Expression.Parse((string) arg);
                 comparer = new SimpleExpressionComparer(expCompare);
             }
             else if (arg is IComparer)
@@ -144,7 +144,7 @@ namespace Solenoid.Expressions.Processors
             }
             else if (arg is LambdaExpressionNode)
             {
-                LambdaExpressionNode fnCompare = (LambdaExpressionNode)arg;
+                var fnCompare = (LambdaExpressionNode)arg;
                 if (fnCompare.ArgumentNames.Length != 2)
                 {
                     throw new ArgumentException("compare function must accept 2 arguments");
@@ -158,7 +158,7 @@ namespace Solenoid.Expressions.Processors
 
             AssertUtils.ArgumentNotNull(comparer, "comparer", "orderBy(comparer) argument 'comparer' does not evaluate to a supported type");
 
-            ArrayList list = new ArrayList(source);
+            var list = new ArrayList(source);
             list.Sort(comparer);
             return list;
         }

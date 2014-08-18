@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,13 +14,10 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Parser.antlr.collections;
 
 namespace Solenoid.Expressions
 {
@@ -33,8 +28,8 @@ namespace Solenoid.Expressions
     [Serializable]
     public abstract class NodeWithArguments : BaseNode
     {
-        private BaseNode[] args;
-        private IDictionary namedArgs;
+        private BaseNode[] _args;
+        private IDictionary _namedArgs;
 
         /// <summary>
         /// Create a new instance
@@ -48,7 +43,7 @@ namespace Solenoid.Expressions
         /// </summary>
         public NodeWithArguments(string text)
         {
-            this.setText(text);
+            setText(text);
         }
 
         /// <summary>
@@ -75,12 +70,12 @@ namespace Solenoid.Expressions
         {
             lock (this)
             {
-                if (args == null)
+                if (_args == null)
                 {
-                    List<BaseNode> argList = new List<BaseNode>();
-                    namedArgs = new Hashtable();
+                    var argList = new List<BaseNode>();
+                    _namedArgs = new Hashtable();
 
-                    AST node = this.getFirstChild();
+                    var node = getFirstChild();
 
                     while (node != null)
                     {
@@ -90,7 +85,7 @@ namespace Solenoid.Expressions
                         }
                         else if (node is NamedArgumentNode)
                         {
-                            namedArgs.Add(node.getText(), node);
+                            _namedArgs.Add(node.getText(), node);
                         }
                         else
                         {
@@ -99,7 +94,7 @@ namespace Solenoid.Expressions
                         node = node.getNextSibling();
                     }
 
-                    args = argList.ToArray();
+                    _args = argList.ToArray();
                 }
             }
         }
@@ -111,11 +106,11 @@ namespace Solenoid.Expressions
         protected void AssertArgumentCount(int requiredCount)
         {
             InitializeNode();
-            if (requiredCount != args.Length)
+            if (requiredCount != _args.Length)
             {
                 throw new ArgumentException("This expression node requires exactly " +
                                             requiredCount + " argument(s) and " +
-                                            args.Length + " were specified.");
+                                            _args.Length + " were specified.");
             }
         }
 
@@ -126,14 +121,14 @@ namespace Solenoid.Expressions
         /// <returns>An array of argument values</returns>
         protected object[] ResolveArguments(EvaluationContext evalContext)
         {
-            if (args == null)
+            if (_args == null)
             {
                 InitializeNode();
             }
 
-            int length = args.Length;
-            object[] values = new object[length];
-            for (int i = 0; i < length; i++)
+            var length = _args.Length;
+            var values = new object[length];
+            for (var i = 0; i < length; i++)
             {
                 values[i] = ResolveArgumentInternal(i, evalContext);
             }
@@ -147,18 +142,18 @@ namespace Solenoid.Expressions
         /// <returns>A dictionary of argument name to value mappings.</returns>
         protected IDictionary ResolveNamedArguments(EvaluationContext evalContext)
         {
-            if (args == null)
+            if (_args == null)
             {
                 InitializeNode();
             }
             
-            if (namedArgs.Count == 0)
+            if (_namedArgs.Count == 0)
             {
                 return null;
             }
 
-            IDictionary namesAndValues = new Hashtable(namedArgs.Count);
-            foreach (string name in namedArgs.Keys)
+            IDictionary namesAndValues = new Hashtable(_namedArgs.Count);
+            foreach (string name in _namedArgs.Keys)
             {
                 namesAndValues[name] = ResolveNamedArgument(name, evalContext);
             }
@@ -173,7 +168,7 @@ namespace Solenoid.Expressions
         /// <returns>Resolved argument value.</returns>
         protected object ResolveArgument(int position, EvaluationContext evalContext)
         {
-            if (args == null)
+            if (_args == null)
             {
                 InitializeNode();
             }
@@ -188,7 +183,7 @@ namespace Solenoid.Expressions
         /// <returns>Resolved argument value.</returns>
         private object ResolveArgumentInternal(int position, EvaluationContext evalContext)
         {
-            BaseNode arg = args[position];
+            var arg = _args[position];
             if (arg is LambdaExpressionNode)
             {
                 return arg;
@@ -204,8 +199,7 @@ namespace Solenoid.Expressions
         /// <returns>Resolved named argument value.</returns>
         private object ResolveNamedArgument(string name, EvaluationContext evalContext)
         {
-            return GetValue(((BaseNode)namedArgs[name]), evalContext.ThisContext, evalContext);
+            return GetValue(((BaseNode)_namedArgs[name]), evalContext.ThisContext, evalContext);
         }
-
     }
 }

@@ -23,8 +23,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
 using Solenoid.Expressions.Support.Util;
 
 #endregion
@@ -63,10 +61,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 if (requiredType != null && requiredType.IsArray)
                 {
                     // convert individual elements to array elements
-                    Type componentType = requiredType.GetElementType();
+                    var componentType = requiredType.GetElementType();
                     if (newValue is ICollection)
                     {
-                        ICollection elements = (ICollection)newValue;
+                        var elements = (ICollection)newValue;
                         return ToArrayWithTypeConversion(componentType, elements, propertyName);
                     }
                     else if (newValue is string)
@@ -77,15 +75,15 @@ namespace Solenoid.Expressions.Support.TypeConversion
                         }
                         else
                         {
-                            string[] elements = StringUtils.CommaDelimitedListToStringArray((string)newValue);
+                            var elements = StringUtils.CommaDelimitedListToStringArray((string)newValue);
                             return ToArrayWithTypeConversion(componentType, elements, propertyName);
                         }
                     }
                     else if (!newValue.GetType().IsArray)
                     {
                         // A plain value: convert it to an array with a single component.
-                        Array result = Array.CreateInstance(componentType, 1);
-                        object val = ConvertValueIfNecessary(componentType, newValue, propertyName);
+                        var result = Array.CreateInstance(componentType, 1);
+                        var val = ConvertValueIfNecessary(componentType, newValue, propertyName);
                         result.SetValue(val, 0);
                         return result;
                     }
@@ -95,10 +93,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 if (requiredType != null && requiredType.IsGenericType && TypeImplementsGenericInterface(requiredType, typeof(IList<>)))
                 {
                     // convert individual elements to array elements
-                    Type componentType = requiredType.GetGenericArguments()[0];
+                    var componentType = requiredType.GetGenericArguments()[0];
                     if (newValue is ICollection)
                     {
-                        ICollection elements = (ICollection)newValue;
+                        var elements = (ICollection)newValue;
                         return ToTypedCollectionWithTypeConversion(typeof(List<>), componentType, elements, propertyName);
                     }
                 }
@@ -106,23 +104,23 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 // if required type is some IDictionary<K,V>, convert all the elements
                 if (requiredType != null && requiredType.IsGenericType && TypeImplementsGenericInterface(requiredType, typeof(IDictionary<,>)))
                 {
-                    Type[] typeParameters = requiredType.GetGenericArguments();
-                    Type keyType = typeParameters[0];
-                    Type valueType = typeParameters[1];
+                    var typeParameters = requiredType.GetGenericArguments();
+                    var keyType = typeParameters[0];
+                    var valueType = typeParameters[1];
                     if (newValue is IDictionary)
                     {
-                        IDictionary elements = (IDictionary)newValue;
-                        Type targetCollectionType = typeof(Dictionary<,>);
-                        Type collectionType = targetCollectionType.MakeGenericType(new Type[] { keyType, valueType });
-                        object typedCollection = Activator.CreateInstance(collectionType);
+                        var elements = (IDictionary)newValue;
+                        var targetCollectionType = typeof(Dictionary<,>);
+                        var collectionType = targetCollectionType.MakeGenericType(new Type[] { keyType, valueType });
+                        var typedCollection = Activator.CreateInstance(collectionType);
 
-                        MethodInfo addMethod = collectionType.GetMethod("Add", new Type[] { keyType, valueType });
-                        int i = 0;
+                        var addMethod = collectionType.GetMethod("Add", new Type[] { keyType, valueType });
+                        var i = 0;
                         foreach (DictionaryEntry entry in elements)
                         {
-                            string propertyExpr = BuildIndexedPropertyName(propertyName, i);
-                            object key = ConvertValueIfNecessary(keyType, entry.Key, propertyExpr + ".Key");
-                            object value = ConvertValueIfNecessary(valueType, entry.Value, propertyExpr + ".Value");
+                            var propertyExpr = BuildIndexedPropertyName(propertyName, i);
+                            var key = ConvertValueIfNecessary(keyType, entry.Key, propertyExpr + ".Key");
+                            var value = ConvertValueIfNecessary(valueType, entry.Value, propertyExpr + ".Value");
                             addMethod.Invoke(typedCollection, new object[] { key, value });
                             i++;
                         }
@@ -134,10 +132,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 if (requiredType != null && requiredType.IsGenericType && TypeImplementsGenericInterface(requiredType, typeof(IEnumerable<>)))
                 {
                     // convert individual elements to array elements
-                    Type componentType = requiredType.GetGenericArguments()[0];
+                    var componentType = requiredType.GetGenericArguments()[0];
                     if (newValue is ICollection)
                     {
-                        ICollection elements = (ICollection)newValue;
+                        var elements = (ICollection)newValue;
                         return ToTypedCollectionWithTypeConversion(typeof(List<>), componentType, elements, propertyName);
                     }
                 }
@@ -145,7 +143,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 // try to convert using type converter
                 try
                 {
-                    TypeConverter typeConverter = TypeConverterRegistry.GetConverter(requiredType);
+                    var typeConverter = TypeConverterRegistry.GetConverter(requiredType);
                     if (typeConverter != null && typeConverter.CanConvertFrom(newValue.GetType()))
                     {
                         try
@@ -176,7 +174,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
                                     && (!(newValue is double))))
                             {
                                 // convert numeric value into enum's underlying type
-                                Type numericType = Enum.GetUnderlyingType(requiredType);
+                                var numericType = Enum.GetUnderlyingType(requiredType);
                                 newValue = Convert.ChangeType(newValue, numericType);
 
                                 if (Enum.IsDefined(requiredType, newValue))
@@ -218,11 +216,11 @@ namespace Solenoid.Expressions.Support.TypeConversion
 
         private static object ToArrayWithTypeConversion(Type componentType, ICollection elements, string propertyName)
         {
-            Array destination = Array.CreateInstance(componentType, elements.Count);
-            int i = 0;
-            foreach (object element in elements)
+            var destination = Array.CreateInstance(componentType, elements.Count);
+            var i = 0;
+            foreach (var element in elements)
             {
-                object value = ConvertValueIfNecessary(componentType, element, BuildIndexedPropertyName(propertyName, i));
+                var value = ConvertValueIfNecessary(componentType, element, BuildIndexedPropertyName(propertyName, i));
                 destination.SetValue(value, i);
                 i++;
             }
@@ -237,14 +235,14 @@ namespace Solenoid.Expressions.Support.TypeConversion
             }
 
 
-            Type collectionType = targetCollectionType.MakeGenericType(new Type[] { componentType });
+            var collectionType = targetCollectionType.MakeGenericType(new Type[] { componentType });
 
-            object typedCollection = Activator.CreateInstance(collectionType);
+            var typedCollection = Activator.CreateInstance(collectionType);
 
-            int i = 0;
-            foreach (object element in elements)
+            var i = 0;
+            foreach (var element in elements)
             {
-                object value = ConvertValueIfNecessary(componentType, element, BuildIndexedPropertyName(propertyName, i));
+                var value = ConvertValueIfNecessary(componentType, element, BuildIndexedPropertyName(propertyName, i));
                 collectionType.GetMethod("Add").Invoke(typedCollection, new object[] { value });
                 i++;
             }
@@ -308,9 +306,9 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 return true;
             }
 
-            bool match = false;
-            Type[] implementedInterfaces = candidateType.GetInterfaces();
-            foreach (Type interfaceType in implementedInterfaces)
+            var match = false;
+            var implementedInterfaces = candidateType.GetInterfaces();
+            foreach (var interfaceType in implementedInterfaces)
             {
                 if (IsMatchingGenericInterface(interfaceType, matchingInterface))
                 {

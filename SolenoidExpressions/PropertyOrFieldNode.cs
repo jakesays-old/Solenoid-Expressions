@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,13 +14,10 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
@@ -33,8 +28,6 @@ using Solenoid.Expressions.Support.TypeConversion;
 using Solenoid.Expressions.Support.TypeResolution;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
-
 namespace Solenoid.Expressions
 {
     /// <summary>
@@ -44,12 +37,12 @@ namespace Solenoid.Expressions
     [Serializable]
     public class PropertyOrFieldNode : BaseNode
     {
-        private const BindingFlags BINDING_FLAGS =
+        private const BindingFlags DefaultBindingFlags =
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static |
             BindingFlags.IgnoreCase;
 
-        private string memberName;
-        private IValueAccessor accessor;
+        private string _memberName;
+        private ValueAccessor _accessor;
 
         /// <summary>
         /// Create a new instance
@@ -72,36 +65,32 @@ namespace Solenoid.Expressions
         /// <param name="context">The parent.</param>
         private void InitializeNode(object context)
         {
-            Type contextType = (context == null || context is Type ? context as Type : context.GetType());
+            var contextType = (context == null || context is Type ? context as Type : context.GetType());
 
-            if (accessor == null || accessor.RequiresRefresh(contextType))
+            if (_accessor == null || _accessor.RequiresRefresh(contextType))
             {
-                memberName = this.getText();
+                _memberName = getText();
 
                 // clear cached member info if context type has changed (for example, when ASP.NET page is recompiled)
-                if (accessor != null && accessor.RequiresRefresh(contextType))
+                if (_accessor != null && _accessor.RequiresRefresh(contextType))
                 {
-                    accessor = null;
+                    _accessor = null;
                 }
 
                 // initialize this node if necessary
-                if (contextType != null && accessor == null)
+                if (contextType != null && _accessor == null)
                 {
                     // try to initialize node as ExpandoObject value
-#if NET_4_0
-                    if (contextType == typeof(System.Dynamic.ExpandoObject))
-#else
-                    if(context.ToString() == "System.Dynamic.ExpandoObject")
-#endif
+                    if (contextType == typeof(ExpandoObject))
                     {
-                        accessor = new ExpandoObjectValueAccessor(memberName);
+                        _accessor = new ExpandoObjectValueAccessor(_memberName);
                     }
-                    // try to initialize node as enum value first
                     else if (contextType.IsEnum)
                     {
-                        try
+						// try to initialize node as enum value first
+						try
                         {
-                            accessor = new EnumValueAccessor(Enum.Parse(contextType, memberName, true));
+                            _accessor = new EnumValueAccessor(Enum.Parse(contextType, _memberName, true));
                         }
                         catch (ArgumentException)
                         {
@@ -112,41 +101,38 @@ namespace Solenoid.Expressions
                     }
 
                     // then try to initialize node as property or field value
-                    if (accessor == null)
+                    if (_accessor == null)
                     {
                         // check the context type first
-                        accessor = GetPropertyOrFieldAccessor(contextType, memberName, BINDING_FLAGS);
+                        _accessor = GetPropertyOrFieldAccessor(contextType, _memberName, DefaultBindingFlags);
 
                         // if not found, probe the Type type
-                        if (accessor == null && context is Type)
+                        if (_accessor == null && context is Type)
                         {
-                            accessor = GetPropertyOrFieldAccessor(typeof(Type), memberName, BINDING_FLAGS);
+                            _accessor = GetPropertyOrFieldAccessor(typeof(Type), _memberName, DefaultBindingFlags);
                         }
                     }
                 }
 
                 // if there is still no match, try to initialize node as type accessor
-                if (accessor == null)
+                if (_accessor == null)
                 {
                     try
                     {
-                        accessor = new TypeValueAccessor(TypeResolutionUtils.ResolveType(memberName));
+                        _accessor = new TypeValueAccessor(TypeResolutionUtils.ResolveType(_memberName));
                     }
                     catch (TypeLoadException)
                     {
-                        if (context == null)
+	                    if (context == null)
                         {
                             throw new NullValueInNestedPathException("Cannot initialize property or field node '" +
-                                                                     memberName +
+                                                                     _memberName +
                                                                      "' because the specified context is null.");
                         }
-                        else
-                        {
-                            throw new InvalidPropertyException(contextType, memberName,
-                                                               "'" + memberName +
-                                                               "' node cannot be resolved for the specified context [" +
-                                                               context + "].");
-                        }
+	                    throw new InvalidPropertyException(contextType, _memberName,
+		                    "'" + _memberName +
+							"' node cannot be resolved for the specified context [" +
+							context + "].");
                     }
                 }
             }
@@ -168,14 +154,14 @@ namespace Solenoid.Expressions
         /// Resolved property or field accessor, or <c>null</c> 
         /// if specified <paramref name="memberName"/> cannot be resolved.
         /// </returns>
-        private static IValueAccessor GetPropertyOrFieldAccessor(Type contextType, string memberName, BindingFlags bindingFlags)
+        private static ValueAccessor GetPropertyOrFieldAccessor(Type contextType, string memberName, BindingFlags bindingFlags)
         {
             try
             {
-                PropertyInfo pi = contextType.GetProperty(memberName, bindingFlags);
+                var pi = contextType.GetProperty(memberName, bindingFlags);
                 if (pi == null)
                 {
-                    FieldInfo fi = contextType.GetField(memberName, bindingFlags);
+                    var fi = contextType.GetField(memberName, bindingFlags);
                     if (fi != null)
                     {
                         return new FieldValueAccessor(fi);
@@ -191,12 +177,13 @@ namespace Solenoid.Expressions
                 PropertyInfo pi = null;
 
                 // search type hierarchy
-                while (contextType != typeof(object))
+                while (contextType != typeof(object) &&
+					contextType != null)
                 {
                     pi = contextType.GetProperty(memberName, bindingFlags | BindingFlags.DeclaredOnly);
                     if (pi == null)
                     {
-                        FieldInfo fi = contextType.GetField(memberName, bindingFlags | BindingFlags.DeclaredOnly);
+                        var fi = contextType.GetField(memberName, bindingFlags | BindingFlags.DeclaredOnly);
                         if (fi != null)
                         {
                             return new FieldValueAccessor(fi);
@@ -225,20 +212,17 @@ namespace Solenoid.Expressions
             {
                 InitializeNode(context);
 
-                if (context == null && accessor.RequiresContext)
+                if (context == null && _accessor.RequiresContext)
                 {
                     throw new NullValueInNestedPathException(
-                        "Cannot retrieve the value of a field or property '" + this.memberName
+                        "Cannot retrieve the value of a field or property '" + _memberName
                         + "', because context for its resolution is null.");
                 }
                 if (IsProperty || IsField)
                 {
                     return GetPropertyOrFieldValue(context, evalContext);
                 }
-                else
-                {
-                    return accessor.Get(context);
-                }
+	            return _accessor.Get(context);
             }
         }
 
@@ -254,10 +238,10 @@ namespace Solenoid.Expressions
             {
                 InitializeNode(context);
 
-                if (context == null && accessor.RequiresContext)
+                if (context == null && _accessor.RequiresContext)
                 {
                     throw new NullValueInNestedPathException(
-                        "Cannot set the value of a field or property '" + this.memberName
+                        "Cannot set the value of a field or property '" + _memberName
                         + "', because context for its resolution is null.");
                 }
                 if (IsProperty || IsField)
@@ -266,7 +250,7 @@ namespace Solenoid.Expressions
                 }
                 else
                 {
-                    accessor.Set(context, newValue);
+                    _accessor.Set(context, newValue);
                 }
             }
         }
@@ -279,7 +263,7 @@ namespace Solenoid.Expressions
         /// </value>
         private bool IsProperty
         {
-            get { return accessor is PropertyValueAccessor; }
+            get { return _accessor is PropertyValueAccessor; }
         }
 
         /// <summary>
@@ -290,7 +274,7 @@ namespace Solenoid.Expressions
         /// </value>
         private bool IsField
         {
-            get { return accessor is FieldValueAccessor; }
+            get { return _accessor is FieldValueAccessor; }
         }
 
         /// <summary>
@@ -303,22 +287,22 @@ namespace Solenoid.Expressions
         {
             try
             {
-                return accessor.Get(context);
+                return _accessor.Get(context);
             }
             catch (InvalidOperationException)
             {
-                throw new NotReadablePropertyException(evalContext.RootContextType, this.memberName);
+                throw new NotReadablePropertyException(evalContext.RootContextType, _memberName);
             }
             catch (TargetInvocationException e)
             {
-                throw new InvalidPropertyException(evalContext.RootContextType, this.memberName,
-                                                   "Getter for property '" + this.memberName + "' threw an exception.",
+                throw new InvalidPropertyException(evalContext.RootContextType, _memberName,
+                                                   "Getter for property '" + _memberName + "' threw an exception.",
                                                    e);
             }
             catch (UnauthorizedAccessException e)
             {
-                throw new InvalidPropertyException(evalContext.RootContextType, this.memberName,
-                                                   "Illegal attempt to get value for the property '" + this.memberName +
+                throw new InvalidPropertyException(evalContext.RootContextType, _memberName,
+                                                   "Illegal attempt to get value for the property '" + _memberName +
                                                    "'.", e);
             }
         }
@@ -331,8 +315,8 @@ namespace Solenoid.Expressions
         /// <param name="newValue">New value for this node.</param>
         private void SetPropertyOrFieldValue(object context, EvaluationContext evalContext, object newValue)
         {
-            bool isWriteable = accessor.IsWriteable;
-            Type targetType = accessor.TargetType;
+            var isWriteable = _accessor.IsWriteable;
+            var targetType = _accessor.TargetType;
 
             try
             {
@@ -341,13 +325,13 @@ namespace Solenoid.Expressions
                     if (!AddToCollections(context, evalContext, newValue))
                     {
                         throw new NotWritablePropertyException(
-                            "Can't change the value of the read-only property or field '" + this.memberName + "'.");
+                            "Can't change the value of the read-only property or field '" + _memberName + "'.");
                     }
                 }
                 else if (targetType.IsPrimitive && (newValue == null || String.Empty.Equals(newValue)))
                 {
                     throw new ArgumentException("Invalid value [" + newValue + "] for property or field '" +
-                                                this.memberName + "' of primitive type ["
+                                                _memberName + "' of primitive type ["
                                                 + targetType + "]");
                 }
                 else if (newValue == null || ObjectUtils.IsAssignable(targetType, newValue)) // targetType.IsAssignableFrom(newValue.GetType())
@@ -359,33 +343,30 @@ namespace Solenoid.Expressions
                 {
                     if (!AddToCollections(context, evalContext, newValue))
                     {
-                        object tmpValue =
-                            TypeConversionUtils.ConvertValueIfNecessary(targetType, newValue, this.memberName);
+                        var tmpValue =
+                            TypeConversionUtils.ConvertValueIfNecessary(targetType, newValue, _memberName);
                         SetPropertyOrFieldValueInternal(context, tmpValue);
                     }
                 }
                 else
                 {
-                    object tmpValue = TypeConversionUtils.ConvertValueIfNecessary(targetType, newValue, this.memberName);
+                    var tmpValue = TypeConversionUtils.ConvertValueIfNecessary(targetType, newValue, _memberName);
                     SetPropertyOrFieldValueInternal(context, tmpValue);
                 }
             }
             catch (TargetInvocationException ex)
             {
-                PropertyChangeEventArgs propertyChangeEvent =
-                    new PropertyChangeEventArgs(this.memberName, null, newValue);
+                var propertyChangeEvent =
+                    new PropertyChangeEventArgs(_memberName, null, newValue);
                 if (ex.GetBaseException() is InvalidCastException)
                 {
                     throw new TypeMismatchException(propertyChangeEvent, targetType, ex.GetBaseException());
                 }
-                else
-                {
-                    throw new MethodInvocationException(ex.GetBaseException(), propertyChangeEvent);
-                }
+	            throw new MethodInvocationException(ex.GetBaseException(), propertyChangeEvent);
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new FatalReflectionException("Illegal attempt to set property '" + this.memberName + "'", ex);
+                throw new FatalReflectionException("Illegal attempt to set property '" + _memberName + "'", ex);
             }
             catch (NotWritablePropertyException)
             {
@@ -397,8 +378,8 @@ namespace Solenoid.Expressions
             }
             catch (ArgumentException ex)
             {
-                PropertyChangeEventArgs propertyChangeEvent =
-                    new PropertyChangeEventArgs(this.memberName, null, newValue);
+                var propertyChangeEvent =
+                    new PropertyChangeEventArgs(_memberName, null, newValue);
                 throw new TypeMismatchException(propertyChangeEvent, targetType, ex);
             }
         }
@@ -410,7 +391,7 @@ namespace Solenoid.Expressions
         /// <param name="newValue">New value for this node, converted to appropriate type.</param>
         private void SetPropertyOrFieldValueInternal(object context, object newValue)
         {
-            accessor.Set(context, newValue);
+            _accessor.Set(context, newValue);
         }
 
         /// <summary>
@@ -424,30 +405,30 @@ namespace Solenoid.Expressions
         private bool AddToCollections(object context, EvaluationContext evalContext, object newValue)
         {
             // short-circuit if accessor is not readable or if we have an array
-            if (!this.accessor.IsReadable || this.accessor.TargetType.IsArray)
+            if (!_accessor.IsReadable || _accessor.TargetType.IsArray)
             {
                 return false;
             }
 
-            bool added = false;
+            var added = false;
 
             // try adding values if property is a list...
             if (newValue is IList && !RemotingServices.IsTransparentProxy(newValue))
             {
-                IList currentValue = (IList)Get(context, evalContext);
+                var currentValue = (IList)Get(context, evalContext);
                 if (currentValue != null && !currentValue.IsFixedSize && !currentValue.IsReadOnly)
                 {
-                    foreach (object el in (IList)newValue)
+                    foreach (var el in (IList)newValue)
                     {
                         currentValue.Add(el);
                     }
                     added = true;
                 }
             }
-            // try adding values if property is a dictionary...
             else if (newValue is IDictionary && !RemotingServices.IsTransparentProxy(newValue))
             {
-                IDictionary currentValue = (IDictionary)Get(context, evalContext);
+				// try adding values if property is a dictionary...
+				var currentValue = (IDictionary) Get(context, evalContext);
                 if (currentValue != null && !currentValue.IsFixedSize && !currentValue.IsReadOnly)
                 {
                     foreach (DictionaryEntry entry in (IDictionary)newValue)
@@ -457,10 +438,10 @@ namespace Solenoid.Expressions
                     added = true;
                 }
             }
-            // try adding values if property is a set...
             else if (newValue is ISet && !RemotingServices.IsTransparentProxy(newValue))
             {
-                ISet currentValue = (ISet)Get(context, evalContext);
+				// try adding values if property is a set...
+				var currentValue = (ISet) Get(context, evalContext);
                 if (currentValue != null)
                 {
                     currentValue.AddAll((ICollection)newValue);
@@ -482,39 +463,10 @@ namespace Solenoid.Expressions
             {
                 InitializeNode(context);
             }
-            return accessor.MemberInfo;
-
-            //if (IsProperty)
-            //{
-            //    return (((PropertyValueAccessor) accessor).MemberInfo);
-            //}
-            //else
-            //{
-            //    throw new FatalObjectException(
-            //        "Cannot obtain PropertyInfo from an expression that does not resolve to a property.");
-            //}
+            return _accessor.MemberInfo;
         }
 
-        #region IValueAccessor interface
-
-        private interface IValueAccessor
-        {
-            object Get(object context);
-            void Set(object context, object value);
-
-            bool IsReadable { get; }
-            bool IsWriteable { get; }
-            bool RequiresContext { get; }
-            Type TargetType { get; }
-            MemberInfo MemberInfo { get; }
-            bool RequiresRefresh(Type contextType);
-        }
-
-        #endregion
-
-        #region BaseValueAccessor implementation
-
-        private abstract class BaseValueAccessor : IValueAccessor
+	    private abstract class ValueAccessor
         {
             public abstract object Get(object context);
 
@@ -551,55 +503,51 @@ namespace Solenoid.Expressions
             }
         }
 
-        #endregion
-
-        #region PropertyValueAccessor implementation
-
-        private class PropertyValueAccessor : BaseValueAccessor
+	    private class PropertyValueAccessor : ValueAccessor
         {
-            private SafeProperty property;
-            private string name;
-            private bool isReadable;
-            private bool isWriteable;
-            private Type targetType;
-            private Type contextType;
+            private readonly SafeProperty _property;
+            private readonly string _name;
+            private readonly bool _isReadable;
+            private readonly bool _isWriteable;
+            private readonly Type _targetType;
+            private readonly Type _contextType;
 
             public PropertyValueAccessor(PropertyInfo propertyInfo)
             {
-                this.name = propertyInfo.Name;
-                this.isReadable = propertyInfo.CanRead;
-                this.isWriteable = propertyInfo.CanWrite;
-                this.targetType = propertyInfo.PropertyType;
-                this.contextType = propertyInfo.DeclaringType;
-                this.property = new SafeProperty(propertyInfo);
+                _name = propertyInfo.Name;
+                _isReadable = propertyInfo.CanRead;
+                _isWriteable = propertyInfo.CanWrite;
+                _targetType = propertyInfo.PropertyType;
+                _contextType = propertyInfo.DeclaringType;
+                _property = new SafeProperty(propertyInfo);
             }
 
             public override object Get(object context)
             {
-                if (!isReadable)
+                if (!_isReadable)
                 {
-                    throw new NotReadablePropertyException("Cannot get a non-readable property [" + name + "]");
+                    throw new NotReadablePropertyException("Cannot get a non-readable property [" + _name + "]");
                 }
-                return property.GetValue(context);
+                return _property.GetValue(context);
             }
 
             public override void Set(object context, object value)
             {
-                if (!isWriteable)
+                if (!_isWriteable)
                 {
-                    throw new NotWritablePropertyException("Cannot set a read-only property [" + name + "]");
+                    throw new NotWritablePropertyException("Cannot set a read-only property [" + _name + "]");
                 }
-                property.SetValue(context, value);
+                _property.SetValue(context, value);
             }
 
             public override bool IsReadable
             {
-                get { return isReadable; }
+                get { return _isReadable; }
             }
 
             public override bool IsWriteable
             {
-                get { return isWriteable; }
+                get { return _isWriteable; }
             }
 
             public override bool RequiresContext
@@ -609,52 +557,48 @@ namespace Solenoid.Expressions
 
             public override Type TargetType
             {
-                get { return targetType; }
+                get { return _targetType; }
             }
 
             public override MemberInfo MemberInfo
             {
-                get { return property.PropertyInfo; }
+                get { return _property.PropertyInfo; }
             }
 
             public override bool RequiresRefresh(Type contextType)
             {
-                return this.contextType != contextType;
+                return _contextType != contextType;
             }
         }
 
-        #endregion
-
-        #region FieldValueAccessor implementation
-
-        private class FieldValueAccessor : BaseValueAccessor
+	    private class FieldValueAccessor : ValueAccessor
         {
-            private SafeField field;
-            private bool isWriteable;
-            private Type targetType;
-            private Type contextType;
+            private readonly SafeField _field;
+            private readonly bool _isWriteable;
+            private readonly Type _targetType;
+            private readonly Type _contextType;
 
             public FieldValueAccessor(FieldInfo fieldInfo)
             {
-                this.field = new SafeField(fieldInfo);
-                this.isWriteable = !(fieldInfo.IsInitOnly || fieldInfo.IsLiteral);
-                this.targetType = fieldInfo.FieldType;
-                this.contextType = fieldInfo.DeclaringType;
+                _field = new SafeField(fieldInfo);
+                _isWriteable = !(fieldInfo.IsInitOnly || fieldInfo.IsLiteral);
+                _targetType = fieldInfo.FieldType;
+                _contextType = fieldInfo.DeclaringType;
             }
 
             public override object Get(object context)
             {
-                return field.GetValue(context);
+                return _field.GetValue(context);
             }
 
             public override void Set(object context, object value)
             {
-                field.SetValue(context, value);
+                _field.SetValue(context, value);
             }
 
             public override bool IsWriteable
             {
-                get { return isWriteable; }
+                get { return _isWriteable; }
             }
 
             public override bool RequiresContext
@@ -664,36 +608,32 @@ namespace Solenoid.Expressions
 
             public override Type TargetType
             {
-                get { return targetType; }
+                get { return _targetType; }
             }
 
             public override MemberInfo MemberInfo
             {
-                get { return field.FieldInfo; }
+                get { return _field.FieldInfo; }
             }
 
             public override bool RequiresRefresh(Type contextType)
             {
-                return this.contextType != contextType;
+                return _contextType != contextType;
             }
         }
 
-        #endregion
-
-        #region EnumValueAccessor implementation
-
-        private class EnumValueAccessor : BaseValueAccessor
+	    private class EnumValueAccessor : ValueAccessor
         {
-            private object enumValue;
+            private readonly object _enumValue;
 
             public EnumValueAccessor(object enumValue)
             {
-                this.enumValue = enumValue;
+                _enumValue = enumValue;
             }
 
             public override object Get(object context)
             {
-                return enumValue;
+                return _enumValue;
             }
 
             public override void Set(object context, object value)
@@ -702,17 +642,13 @@ namespace Solenoid.Expressions
             }
         }
 
-        #endregion
-
-        #region ExpandoObjectValueAccessor implementation
-
-        private class ExpandoObjectValueAccessor : BaseValueAccessor
+	    private class ExpandoObjectValueAccessor : ValueAccessor
         {
-            private string memberName;
+            private readonly string _memberName;
 
             public ExpandoObjectValueAccessor(string memberName)
             {
-                this.memberName = memberName;
+                _memberName = memberName;
             }
 
             public override object Get(object context)
@@ -720,16 +656,15 @@ namespace Solenoid.Expressions
                 var dictionary = context as IDictionary<string, object>;
 
                 object value;
-                if (dictionary.TryGetValue(memberName, out value))
-                    return value;
-#if NET_4_0
-                throw new InvalidPropertyException(typeof(System.Dynamic.ExpandoObject), memberName,
-                                                  "'" + memberName +
+	            if (dictionary != null &&
+					dictionary.TryGetValue(_memberName, out value))
+	            {
+		            return value;
+	            }
+                throw new InvalidPropertyException(typeof(ExpandoObject), _memberName,
+                                                  "'" + _memberName +
                                                   "' node cannot be resolved for the specified context [" +
                                                   context + "].");
-#else
-                throw new InvalidPropertyException("'" + memberName + "' node cannot be resolved for the specified context [" + context + "].");
-#endif
             }
 
             public override void Set(object context, object value)
@@ -738,22 +673,18 @@ namespace Solenoid.Expressions
             }
         }
 
-        #endregion
-
-        #region TypeValueAccessor implementation
-
-        private class TypeValueAccessor : BaseValueAccessor
+	    private class TypeValueAccessor : ValueAccessor
         {
-            private Type type;
+            private readonly Type _type;
 
             public TypeValueAccessor(Type type)
             {
-                this.type = type;
+                _type = type;
             }
 
             public override object Get(object context)
             {
-                return type;
+                return _type;
             }
 
             public override void Set(object context, object value)
@@ -761,7 +692,5 @@ namespace Solenoid.Expressions
                 throw new NotSupportedException("Cannot set the value of a type.");
             }
         }
-
-        #endregion
     }
 }

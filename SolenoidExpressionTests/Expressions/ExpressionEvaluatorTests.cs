@@ -203,7 +203,7 @@ namespace Spring.Expressions
         }
 
         /// <summary>
-        /// <see cref="SpringAST"/> implements <see cref="ISerializable"/>.
+        /// <see cref="SerializableNode"/> implements <see cref="ISerializable"/>.
         /// Thus members in derived classes won't get automatically serialized.
         /// </summary>
         [Test]

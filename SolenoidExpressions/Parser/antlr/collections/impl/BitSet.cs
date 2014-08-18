@@ -73,7 +73,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		/*or this element into this set (grow as necessary to accommodate) */
 		public virtual void  add(int el)
 		{
-			int n = wordNumber(el);
+			var n = wordNumber(el);
 			if (n >= dataBits.Length)
 			{
 				growToInclude(el);
@@ -83,20 +83,20 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual BitSet and(BitSet a)
 		{
-			BitSet s = (BitSet) this.Clone();
+			var s = (BitSet) this.Clone();
 			s.andInPlace(a);
 			return s;
 		}
 		
 		public virtual void  andInPlace(BitSet a)
 		{
-			int min = (int) (Math.Min(dataBits.Length, a.dataBits.Length));
-			 for (int i = min - 1; i >= 0; i--)
+			var min = (int) (Math.Min(dataBits.Length, a.dataBits.Length));
+			 for (var i = min - 1; i >= 0; i--)
 			{
 				dataBits[i] &= a.dataBits[i];
 			}
 			// clear all bits in this not present in a (if this bigger than a).
-			 for (int i = min; i < dataBits.Length; i++)
+			 for (var i = min; i < dataBits.Length; i++)
 			{
 				dataBits[i] = 0;
 			}
@@ -104,13 +104,13 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		private static long bitMask(int bitNumber)
 		{
-			int bitPosition = bitNumber & MOD_MASK; // bitNumber mod BITS
+			var bitPosition = bitNumber & MOD_MASK; // bitNumber mod BITS
 			return 1L << bitPosition;
 		}
 		
 		public virtual void  clear()
 		{
-			 for (int i = dataBits.Length - 1; i >= 0; i--)
+			 for (var i = dataBits.Length - 1; i >= 0; i--)
 			{
 				dataBits[i] = 0;
 			}
@@ -118,7 +118,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual void  clear(int el)
 		{
-			int n = wordNumber(el);
+			var n = wordNumber(el);
 			if (n >= dataBits.Length)
 			{
 				// grow as necessary to accommodate
@@ -145,13 +145,13 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual int degree()
 		{
-			int deg = 0;
-			 for (int i = dataBits.Length - 1; i >= 0; i--)
+			var deg = 0;
+			 for (var i = dataBits.Length - 1; i >= 0; i--)
 			{
-				long word = dataBits[i];
+				var word = dataBits[i];
 				if (word != 0L)
 				{
-					 for (int bit = BITS - 1; bit >= 0; bit--)
+					 for (var bit = BITS - 1; bit >= 0; bit--)
 					{
 						if ((word & (1L << bit)) != 0)
 						{
@@ -173,10 +173,10 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		{
 			if ((obj != null) && (obj is BitSet))
 			{
-				BitSet bset = (BitSet) obj;
+				var bset = (BitSet) obj;
 				
-				int n = (int) (System.Math.Min(dataBits.Length, bset.dataBits.Length));
-				 for (int i = n; i-- > 0; )
+				var n = (int) (System.Math.Min(dataBits.Length, bset.dataBits.Length));
+				 for (var i = n; i-- > 0; )
 				{
 					if (dataBits[i] != bset.dataBits[i])
 					{
@@ -185,7 +185,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 				}
 				if (dataBits.Length > n)
 				{
-					 for (int i = (int) (dataBits.Length); i-- > n; )
+					 for (var i = (int) (dataBits.Length); i-- > n; )
 					{
 						if (dataBits[i] != 0)
 						{
@@ -195,7 +195,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 				}
 				else if (bset.dataBits.Length > n)
 				{
-					 for (int i = (int) (bset.dataBits.Length); i-- > n; )
+					 for (var i = (int) (bset.dataBits.Length); i-- > n; )
 					{
 						if (bset.dataBits[i] != 0)
 						{
@@ -214,15 +214,15 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		*/
 		public virtual void  growToInclude(int bit)
 		{
-			int newSize = (int) (System.Math.Max(dataBits.Length << 1, numWordsToHold(bit)));
-			long[] newbits = new long[newSize];
+			var newSize = (int) (System.Math.Max(dataBits.Length << 1, numWordsToHold(bit)));
+			var newbits = new long[newSize];
 			Array.Copy(dataBits, 0, newbits, 0, dataBits.Length);
 			dataBits = newbits;
 		}
 		
 		public virtual bool member(int el)
 		{
-			int n = wordNumber(el);
+			var n = wordNumber(el);
 			if (n >= dataBits.Length)
 				return false;
 			return (dataBits[n] & bitMask(el)) != 0;
@@ -230,7 +230,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual bool nil()
 		{
-			 for (int i = dataBits.Length - 1; i >= 0; i--)
+			 for (var i = dataBits.Length - 1; i >= 0; i--)
 			{
 				if (dataBits[i] != 0)
 					return false;
@@ -240,14 +240,14 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual BitSet not()
 		{
-			BitSet s = (BitSet) this.Clone();
+			var s = (BitSet) this.Clone();
 			s.notInPlace();
 			return s;
 		}
 		
 		public virtual void  notInPlace()
 		{
-			 for (int i = dataBits.Length - 1; i >= 0; i--)
+			 for (var i = dataBits.Length - 1; i >= 0; i--)
 			{
 				dataBits[i] = ~ dataBits[i];
 			}
@@ -264,9 +264,9 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		{
 			// make sure that we have room for maxBit
 			growToInclude(maxBit);
-			 for (int i = minBit; i <= maxBit; i++)
+			 for (var i = minBit; i <= maxBit; i++)
 			{
-				int n = wordNumber(i);
+				var n = wordNumber(i);
 				dataBits[n] ^= bitMask(i);
 			}
 		}
@@ -278,7 +278,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public static BitSet of(int el)
 		{
-			BitSet s = new BitSet(el + 1);
+			var s = new BitSet(el + 1);
 			s.add(el);
 			return s;
 		}
@@ -286,7 +286,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		/*return this | a in a new set */
 		public virtual BitSet or(BitSet a)
 		{
-			BitSet s = (BitSet) this.Clone();
+			var s = (BitSet) this.Clone();
 			s.orInPlace(a);
 			return s;
 		}
@@ -298,8 +298,8 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 			{
 				setSize((int) (a.dataBits.Length));
 			}
-			int min = (int) (System.Math.Min(dataBits.Length, a.dataBits.Length));
-			 for (int i = min - 1; i >= 0; i--)
+			var min = (int) (System.Math.Min(dataBits.Length, a.dataBits.Length));
+			 for (var i = min - 1; i >= 0; i--)
 			{
 				dataBits[i] |= a.dataBits[i];
 			}
@@ -308,7 +308,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		// remove this element from this set
 		public virtual void  remove(int el)
 		{
-			int n = wordNumber(el);
+			var n = wordNumber(el);
 			if (n >= dataBits.Length)
 			{
 				growToInclude(el);
@@ -322,8 +322,8 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		*/
 		private void  setSize(int nwords)
 		{
-			long[] newbits = new long[nwords];
-			int n = (int) (System.Math.Min(nwords, dataBits.Length));
+			var newbits = new long[nwords];
+			var n = (int) (System.Math.Min(nwords, dataBits.Length));
 			Array.Copy(dataBits, 0, newbits, 0, n);
 			dataBits = newbits;
 		}
@@ -357,7 +357,7 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 			if (a == null)
 				return ;
 			// for all words of 'a', turn off corresponding bits of 'this'
-			 for (int i = 0; i < dataBits.Length && i < a.dataBits.Length; i++)
+			 for (var i = 0; i < dataBits.Length && i < a.dataBits.Length; i++)
 			{
 				dataBits[i] &= ~ a.dataBits[i];
 			}
@@ -365,9 +365,9 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		
 		public virtual int[] toArray()
 		{
-			int[] elems = new int[degree()];
-			int en = 0;
-			 for (int i = 0; i < (dataBits.Length << LOG_BITS); i++)
+			var elems = new int[degree()];
+			var en = 0;
+			 for (var i = 0; i < (dataBits.Length << LOG_BITS); i++)
 			{
 				if (member(i))
 				{
@@ -393,8 +393,8 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		*/
 		public virtual string ToString(string separator)
 		{
-			string str = "";
-			 for (int i = 0; i < (dataBits.Length << LOG_BITS); i++)
+			var str = "";
+			 for (var i = 0; i < (dataBits.Length << LOG_BITS); i++)
 			{
 				if (member(i))
 				{
@@ -420,8 +420,8 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 			{
 				return ToString(separator);
 			}
-			string str = "";
-			 for (int i = 0; i < (dataBits.Length << LOG_BITS); i++)
+			var str = "";
+			 for (var i = 0; i < (dataBits.Length << LOG_BITS); i++)
 			{
 				if (member(i))
 				{
@@ -453,12 +453,12 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		*/
 		public virtual string toStringOfHalfWords()
 		{
-			string s = new string("".ToCharArray());
-			 for (int i = 0; i < dataBits.Length; i++)
+			var s = new string("".ToCharArray());
+			 for (var i = 0; i < dataBits.Length; i++)
 			{
 				if (i != 0)
 					s += ", ";
-				long tmp = dataBits[i];
+				var tmp = dataBits[i];
 				tmp &= 0xFFFFFFFFL;
 				s += (tmp + "UL");
 				s += ", ";
@@ -475,8 +475,8 @@ namespace Solenoid.Expressions.Parser.antlr.collections.impl
 		*/
 		public virtual string toStringOfWords()
 		{
-			string s = new string("".ToCharArray());
-			 for (int i = 0; i < dataBits.Length; i++)
+			var s = new string("".ToCharArray());
+			 for (var i = 0; i < dataBits.Length; i++)
 			{
 				if (i != 0)
 					s += ", ";
