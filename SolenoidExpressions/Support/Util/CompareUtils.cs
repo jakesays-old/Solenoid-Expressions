@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright 2002-2010 the original author or authors.
@@ -16,13 +15,10 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -46,12 +42,12 @@ namespace Solenoid.Expressions.Support.Util
             {
                 return (second == null ? 0 : -1);
             }
-            else if (second == null)
-            {
-                return 1;
-            }
+	        if (second == null)
+	        {
+		        return 1;
+	        }
 
-            if (!first.GetType().Equals(second.GetType()))
+	        if (!first.GetType().Equals(second.GetType()))
             {
                 if (!CoerceTypes(ref first, ref second))
                 {
@@ -67,12 +63,9 @@ namespace Solenoid.Expressions.Support.Util
             {
                 return ((IComparable)first).CompareTo(second);
             }
-            else
-            {
-                throw new ArgumentException("Cannot compare instances of the type ["
-                    + first.GetType().FullName
-                    + "] because it doesn't implement IComparable");
-            }
+	        throw new ArgumentException("Cannot compare instances of the type ["
+										+ first.GetType().FullName
+										+ "] because it doesn't implement IComparable");
         }
 
         private static bool CoerceTypes(ref object left, ref object right)

@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright  2002-2005 the original author or authors.
@@ -16,9 +15,7 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 //using Spring.Objects;
 using System;
@@ -29,7 +26,6 @@ using System.Runtime.Remoting;
 using Solenoid.Expressions.Support.Logging;
 using Solenoid.Expressions.Support.Reflection.Dynamic;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -51,7 +47,6 @@ namespace Solenoid.Expressions.Support.Util
         /// </summary>
         private static readonly ILog _log = LogManager.GetLogger(typeof(ObjectUtils));
 
-        #region Constants
 
         /// <summary>
         /// An empty object array.
@@ -60,22 +55,12 @@ namespace Solenoid.Expressions.Support.Util
 
         private static readonly MethodInfo _getHashCodeMethodInfo = null;
 
-        #endregion
 
         static ObjectUtils()
 		{
 			var type = typeof(object);
 			_getHashCodeMethodInfo = type.GetMethod("GetHashCode");
 		}
-        #region Constructor (s) / Destructor
-
-        // CLOVER:OFF
-
-	    // CLOVER:ON
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Instantiates the type using the assembly specified to load the type.
@@ -130,7 +115,7 @@ namespace Solenoid.Expressions.Support.Util
             AssertUtils.ArgumentNotNull(type, "type");
 
             var constructor = GetZeroArgConstructorInfo(type);
-            return ObjectUtils.InstantiateType(constructor, ObjectUtils.EmptyObjects);
+            return InstantiateType(constructor, EmptyObjects);
         }
 
         /// <summary>
@@ -427,7 +412,7 @@ namespace Solenoid.Expressions.Support.Util
         /// </exception>
         public static object EnumerateFirstElement(IEnumerator enumerator)
         {
-            return ObjectUtils.EnumerateElementAtIndex(enumerator, 0);
+            return EnumerateElementAtIndex(enumerator, 0);
         }
 
         /// <summary>
@@ -449,7 +434,7 @@ namespace Solenoid.Expressions.Support.Util
         public static object EnumerateFirstElement(IEnumerable enumerable)
         {
             AssertUtils.ArgumentNotNull(enumerable, "enumerable");
-            return ObjectUtils.EnumerateElementAtIndex(enumerable.GetEnumerator(), 0);
+            return EnumerateElementAtIndex(enumerable.GetEnumerator(), 0);
         }
 
         /// <summary>
@@ -521,10 +506,9 @@ namespace Solenoid.Expressions.Support.Util
         public static object EnumerateElementAtIndex(IEnumerable enumerable, int index)
         {
             AssertUtils.ArgumentNotNull(enumerable, "enumerable");
-            return ObjectUtils.EnumerateElementAtIndex(enumerable.GetEnumerator(), index);
+            return EnumerateElementAtIndex(enumerable.GetEnumerator(), index);
         }
 
-        #endregion
 
         /// <summary>
         /// Gets the qualified name of the given method, consisting of 

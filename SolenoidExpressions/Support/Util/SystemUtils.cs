@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright 2002-2010 the original author or authors.
@@ -16,16 +15,13 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {

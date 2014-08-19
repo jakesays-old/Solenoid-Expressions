@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,9 +15,7 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Collections;
@@ -27,7 +24,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Solenoid.Expressions.Support.Collections;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -60,20 +56,9 @@ namespace Solenoid.Expressions.Support.Util
     /// </code>
     /// </example>
     /// <author>Erich Eichinger</author>
-    /// <seealso cref="Spring.Reflection.Dynamic.DynamicReflectionManager"/>
-    /// <seealso cref="Spring.Proxy.DynamicProxyManager"/>
-    /// <seealso cref="Spring.Objects.Factory.Support.MethodInjectingInstantiationStrategy"/>
-    public sealed class DynamicCodeManager
+    public static class DynamicCodeManager
     {
-        private static readonly Hashtable s_moduleCache = new CaseInsensitiveHashtable(); //CollectionsUtil.CreateCaseInsensitiveHashtable();
-        
-        /// <summary>
-        /// prevent instantiation
-        /// </summary>
-        private DynamicCodeManager()
-        {
-            throw new InvalidOperationException();
-        }
+        private static readonly Hashtable _moduleCache = new CaseInsensitiveHashtable();
         
         /// <summary>
         /// Returns the <see cref="ModuleBuilder"/> for the dynamic module within the specified assembly.
@@ -87,9 +72,9 @@ namespace Solenoid.Expressions.Support.Util
         /// <returns>the <see cref="ModuleBuilder"/> that can be used to define new types within the specified assembly</returns>
         public static ModuleBuilder GetModuleBuilder( string assemblyName )
         {
-            lock(s_moduleCache.SyncRoot)
+            lock(_moduleCache.SyncRoot)
             {
-                var module = (ModuleBuilder) s_moduleCache[assemblyName];
+                var module = (ModuleBuilder) _moduleCache[assemblyName];
                 if (module == null)
                 {
                     var an = new AssemblyName();
@@ -108,7 +93,7 @@ namespace Solenoid.Expressions.Support.Util
 			        module = assembly.DefineDynamicModule(an.Name, false);
 #endif
 #endif
-                    s_moduleCache[assemblyName] = module;
+                    _moduleCache[assemblyName] = module;
                 }
                 return module;
             }
@@ -127,9 +112,9 @@ namespace Solenoid.Expressions.Support.Util
             AssertUtils.ArgumentHasText(assemblyName, "assemblyName");
             
             ModuleBuilder module = null;
-            lock(s_moduleCache.SyncRoot)
+            lock(_moduleCache.SyncRoot)
             {
-                module = (ModuleBuilder) s_moduleCache[assemblyName];
+                module = (ModuleBuilder) _moduleCache[assemblyName];
             }
             
             if(module == null)
@@ -146,9 +131,9 @@ namespace Solenoid.Expressions.Support.Util
         /// </summary>
         public static void Clear()
         {
-            lock (s_moduleCache.SyncRoot)
+            lock (_moduleCache.SyncRoot)
             {
-                s_moduleCache.Clear();
+                _moduleCache.Clear();
             }
         }
     }

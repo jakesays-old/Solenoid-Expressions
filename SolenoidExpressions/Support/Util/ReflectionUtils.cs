@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,11 +15,10 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,8 +28,8 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Text;
+using Microsoft.CSharp;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -43,7 +41,7 @@ namespace Solenoid.Expressions.Support.Util
     /// <author>Aleksandar Seovic (.NET)</author>
     /// <author>Stan Dvoychenko (.NET)</author>
     /// <author>Bruno Baia (.NET)</author>
-    public sealed class ReflectionUtils
+    public static class ReflectionUtils
     {
         /// <summary>
         /// Convenience <see cref="System.Reflection.BindingFlags"/> value that will
@@ -151,7 +149,7 @@ namespace Solenoid.Expressions.Support.Util
             
             MethodInfo retMethod = null;
 
-            var methods = targetType.GetMethods(ReflectionUtils.AllMembersCaseInsensitiveFlags);
+            var methods = targetType.GetMethods(AllMembersCaseInsensitiveFlags);
 
             foreach (var candidate in methods)
             {
@@ -199,7 +197,7 @@ namespace Solenoid.Expressions.Support.Util
                 if (idx > -1)
                 {
                     method = method.Substring(idx + 1);
-                    retMethod = ReflectionUtils.GetMethod(targetType, method, argumentTypes);
+                    retMethod = GetMethod(targetType, method, argumentTypes);
                 }
             }
             return retMethod;
@@ -214,7 +212,7 @@ namespace Solenoid.Expressions.Support.Util
         /// <param name="methodInfo">a <see cref="MethodInfo"/></param>
         /// <param name="implementingType">the type to lookup</param>
         /// <returns>the <see cref="MethodInfo"/> representing the actual implementation method of the specified <paramref name="methodInfo"/></returns>
-        public static MethodInfo MapInterfaceMethodToImplementationIfNecessary(MethodInfo methodInfo, System.Type implementingType)
+        public static MethodInfo MapInterfaceMethodToImplementationIfNecessary(MethodInfo methodInfo, Type implementingType)
         {
             AssertUtils.ArgumentNotNull(methodInfo, "methodInfo");
             AssertUtils.ArgumentNotNull(implementingType, "implementingType");
@@ -735,15 +733,13 @@ namespace Solenoid.Expressions.Support.Util
         public static bool ParameterTypesMatch(
             MethodInfo candidate, Type[] parameterTypes)
         {
-            #region Sanity Checks
 
             AssertUtils.ArgumentNotNull(candidate, "candidate");
             AssertUtils.ArgumentNotNull(parameterTypes, "parameterTypes");
 
-            #endregion
 
             var candidatesParameterTypes
-                = ReflectionUtils.GetParameterTypes(candidate);
+                = GetParameterTypes(candidate);
             if (candidatesParameterTypes.Length != parameterTypes.Length)
             {
                 return false;
@@ -817,7 +813,7 @@ namespace Solenoid.Expressions.Support.Util
             //TODO: investigate whether there is another equivalent manner of providing this functionality under MONO
             return type.ToString();
 #endif
-            return (new Microsoft.CSharp.CSharpCodeProvider()).GetTypeOutput(new System.CodeDom.CodeTypeReference(type));
+            return (new CSharpCodeProvider()).GetTypeOutput(new CodeTypeReference(type));
         }
 
 
@@ -863,8 +859,8 @@ namespace Solenoid.Expressions.Support.Util
             AssertUtils.ArgumentNotNull(name, "name", "Method name must not be null");
             var methods = type.FindMembers(
                 MemberTypes.Method,
-                ReflectionUtils.AllMembersCaseInsensitiveFlags,
-                new MemberFilter(ReflectionUtils.MethodNameFilter),
+                AllMembersCaseInsensitiveFlags,
+                new MemberFilter(MethodNameFilter),
                 name);
             return methods.Length;
         }
@@ -911,7 +907,6 @@ namespace Solenoid.Expressions.Support.Util
         public static CustomAttributeBuilder CreateCustomAttribute(
             Type type, object[] ctorArgs, Attribute sourceAttribute)
         {
-            #region Sanity Checks
 
             AssertUtils.ArgumentNotNull(type, "type");
             if (!typeof(Attribute).IsAssignableFrom(type))
@@ -921,9 +916,8 @@ namespace Solenoid.Expressions.Support.Util
                                   type.FullName));
             }
 
-            #endregion
 
-            var ci = type.GetConstructor(ReflectionUtils.GetTypes(ctorArgs));
+            var ci = type.GetConstructor(GetTypes(ctorArgs));
             if (ci == null && ctorArgs.Length == 0)
             {
                 ci = type.GetConstructors()[0];
@@ -1312,7 +1306,7 @@ namespace Solenoid.Expressions.Support.Util
             for (var i = 0; i < methods.Length; i++)
             {
                 var method = methods[i];
-                var match = type.GetMethod(method.Name, flags, null, ReflectionUtils.GetParameterTypes(method), null);
+                var match = type.GetMethod(method.Name, flags, null, GetParameterTypes(method), null);
                 if ((match == null || match.ReturnType != method.ReturnType) && strict)
                 {
                     throw new Exception(
@@ -1639,7 +1633,6 @@ namespace Solenoid.Expressions.Support.Util
             return handler;
         }
 
-        #region Field Cache Management for "MemberwiseCopy"
 
         private const BindingFlags FIELDBINDINGS =
             BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic;
@@ -1672,10 +1665,8 @@ namespace Solenoid.Expressions.Support.Util
             CollectFieldsRecursive(type.BaseType, fieldList);
         }
 
-        #endregion Field Cache Management for "MemberwiseCopy"
 
 
-        #region CustomAttributeBuilderBuilder inner class definition
 
         /// <summary>
         /// Creates a <see cref=" CustomAttributeBuilder"/>.
@@ -1683,16 +1674,13 @@ namespace Solenoid.Expressions.Support.Util
         /// <author>Bruno Baia</author>
         public class CustomAttributeBuilderBuilder
         {
-            #region Fields
 
-            private Type type;
-            private ArrayList constructorArgs;
-            private List<PropertyInfo> namedProperties;
-            private List<object> propertyValues;
+            private readonly Type _type;
+            private readonly ArrayList _constructorArgs;
+            private readonly List<PropertyInfo> _namedProperties;
+            private readonly List<object> _propertyValues;
 
-            #endregion
 
-            #region Constructor(s) / Destructor
 
             /// <summary>
             /// Creates a new instance of the 
@@ -1720,15 +1708,13 @@ namespace Solenoid.Expressions.Support.Util
                         string.Format("[{0}] does not derive from the [System.Attribute] class.",
                                       attributeType.FullName));
                 }
-                this.type = attributeType;
-                this.constructorArgs = new ArrayList(constructorArgs);
-                this.namedProperties = new List<PropertyInfo>();
-                this.propertyValues = new List<object>();
+                _type = attributeType;
+                _constructorArgs = new ArrayList(constructorArgs);
+                _namedProperties = new List<PropertyInfo>();
+                _propertyValues = new List<object>();
             }
 
-            #endregion
 
-            #region Public Methods
 
             /// <summary>
             /// Adds the specified values to the constructor argument list 
@@ -1737,7 +1723,7 @@ namespace Solenoid.Expressions.Support.Util
             /// <param name="values">An array of argument values.</param>
             public void AddContructorArgument(params object[] values)
             {
-                this.constructorArgs.AddRange(values);
+                _constructorArgs.AddRange(values);
             }
 
             /// <summary>
@@ -1747,15 +1733,15 @@ namespace Solenoid.Expressions.Support.Util
             /// <param name="value">The property value.</param>
             public void AddPropertyValue(string name, object value)
             {
-                var propertyInfo = this.type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
+                var propertyInfo = _type.GetProperty(name, BindingFlags.Instance | BindingFlags.Public);
                 if (propertyInfo == null)
                 {
                     throw new ArgumentException(
-                        String.Format("The property '{0}' does no exist in the attribute '{1}'.", name, this.type));
+                        String.Format("The property '{0}' does no exist in the attribute '{1}'.", name, _type));
                 }
 
-                this.namedProperties.Add(propertyInfo);
-                this.propertyValues.Add(value);
+                _namedProperties.Add(propertyInfo);
+                _propertyValues.Add(value);
             }
 
             /// <summary>
@@ -1764,30 +1750,22 @@ namespace Solenoid.Expressions.Support.Util
             /// <returns>The created <see cref="CustomAttributeBuilderBuilder"/>.</returns>
             public CustomAttributeBuilder Build()
             {
-                var caArray = (object[])this.constructorArgs.ToArray(typeof(object));
-                var ci = this.type.GetConstructor(ReflectionUtils.GetTypes(caArray));
+                var caArray = (object[])_constructorArgs.ToArray(typeof(object));
+                var ci = _type.GetConstructor(GetTypes(caArray));
                 if (ci == null && caArray.Length == 0)
                 {
-                    ci = this.type.GetConstructors()[0];
-                    caArray = ReflectionUtils.GetDefaultValues(ReflectionUtils.GetParameterTypes(ci.GetParameters()));
+                    ci = _type.GetConstructors()[0];
+                    caArray = GetDefaultValues(GetParameterTypes(ci.GetParameters()));
                 }
 
-                if (namedProperties.Count > 0)
+                if (_namedProperties.Count > 0)
                 {
-                    var npArray = this.namedProperties.ToArray();
-                    var pvArray = this.propertyValues.ToArray();
+                    var npArray = _namedProperties.ToArray();
+                    var pvArray = _propertyValues.ToArray();
                     return new CustomAttributeBuilder(ci, caArray, npArray, pvArray);
                 }
-                else
-                {
-                    return new CustomAttributeBuilder(ci, caArray);
-                }
-
+	            return new CustomAttributeBuilder(ci, caArray);
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,14 +15,11 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.ComponentModel;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -133,28 +129,50 @@ namespace Solenoid.Expressions.Support.Util
         /// </returns>
         public static bool IsZero(object number)
         {
-            if (number is Int32)
-                return ((Int32)number) == 0;
+	        if (number is Int32)
+	        {
+		        return ((Int32)number) == 0;
+	        }
 	        if (number is Int16)
+	        {
 		        return ((Int16)number) == 0;
+	        }
 	        if (number is Int64)
+	        {
 		        return ((Int64)number) == 0;
+	        }
 	        if (number is UInt16)
+	        {
 		        return ((UInt16)number) == 0;
+	        }
 	        if (number is UInt32)
+	        {
 		        return ((UInt32)number) == 0;
+	        }
 	        if (number is UInt64)
+	        {
 		        return (Convert.ToDecimal(number) == 0);
+	        }
 	        if (number is Byte)
+	        {
 		        return ((Byte)number) == 0;
+	        }
 	        if (number is SByte)
+	        {
 		        return ((SByte)number) == 0;
+	        }
 	        if (number is Single)
+	        {
 		        return ((Single)number) == 0f;
+	        }
 	        if (number is Double)
+	        {
 		        return ((Double)number) == 0d;
+	        }
 	        if (number is Decimal)
+	        {
 		        return ((Decimal)number) == 0m;
+	        }
 	        return false;
         }
 
@@ -169,27 +187,49 @@ namespace Solenoid.Expressions.Support.Util
         public static object Negate(object number)
         {
 	        if (number is Int32)
-                return -((Int32)number);
-	        if (number is Int16)
-		        return -((Int16)number);
-	        if (number is Int64)
-		        return -((Int64)number);
-	        if (number is UInt16)
+	        {
 		        return -((Int32)number);
-	        if (number is UInt32)
+	        }
+	        if (number is Int16)
+	        {
+		        return -((Int16)number);
+	        }
+	        if (number is Int64)
+	        {
 		        return -((Int64)number);
+	        }
+	        if (number is UInt16)
+	        {
+		        return -((Int32)number);
+	        }
+	        if (number is UInt32)
+	        {
+		        return -((Int64)number);
+	        }
 	        if (number is UInt64)
+	        {
 		        return -(Convert.ToDecimal(number));
+	        }
 	        if (number is Byte)
+	        {
 		        return -((Int16)number);
+	        }
 	        if (number is SByte)
+	        {
 		        return -((Int16)number);
+	        }
 	        if (number is Single)
+	        {
 		        return -((Single)number);
+	        }
 	        if (number is Double)
+	        {
 		        return -((Double)number);
+	        }
 	        if (number is Decimal)
+	        {
 		        return -((Decimal)number);
+	        }
 	        throw new ArgumentException(string.Format("'{0}' is not one of the supported numeric types.", number));
         }
 
@@ -204,23 +244,41 @@ namespace Solenoid.Expressions.Support.Util
         public static object BitwiseNot(object number)
 	    {
 		    if (number is bool)
-                return !((bool)number);
+		    {
+			    return !((bool)number);
+		    }
 		    if (number is Int32)
+		    {
 			    return ~((Int32)number);
+		    }
 		    if (number is Int16)
+		    {
 			    return ~((Int16)number);
+		    }
 		    if (number is Int64)
+		    {
 			    return ~((Int64)number);
+		    }
 		    if (number is UInt16)
+		    {
 			    return ~((UInt16)number);
+		    }
 		    if (number is UInt32)
+		    {
 			    return ~((UInt32)number);
+		    }
 		    if (number is UInt64)
+		    {
 			    return ~((UInt64)number);
+		    }
 		    if (number is Byte)
+		    {
 			    return ~((Byte)number);
+		    }
 		    if (number is SByte)
+		    {
 			    return ~((SByte)number);
+		    }
 		    throw new ArgumentException(string.Format("'{0}' is not one of the supported integer types.", number));
 	    }
 
@@ -236,24 +294,42 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is bool)
-                return (bool)m & (bool)n;
+		    if (n is bool)
+		    {
+			    return (bool)m & (bool)n;
+		    }
 		    if (n is Int32)
+		    {
 			    return (Int32)m & (Int32)n;
+		    }
 		    if (n is Int16)
+		    {
 			    return (Int16)m & (Int16)n;
+		    }
 		    if (n is Int64)
+		    {
 			    return (Int64)m & (Int64)n;
+		    }
 		    if (n is UInt16)
+		    {
 			    return (UInt16)m & (UInt16)n;
+		    }
 		    if (n is UInt32)
+		    {
 			    return (UInt32)m & (UInt32)n;
+		    }
 		    if (n is UInt64)
+		    {
 			    return (UInt64)m & (UInt64)n;
+		    }
 		    if (n is Byte)
+		    {
 			    return (Byte)m & (Byte)n;
+		    }
 		    if (n is SByte)
+		    {
 			    return (SByte)m & (SByte)n;
+		    }
 		    throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported integral types.", m, n));
         }
 
@@ -269,22 +345,38 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is bool)
-                return (bool)m | (bool)n;
+	        if (n is bool)
+	        {
+		        return (bool)m | (bool)n;
+	        }
 	        if (n is Int32)
+	        {
 		        return (Int32)m | (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m | (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m | (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m | (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m | (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m | (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m | (Byte)n;
+	        }
 	        if (n is SByte)
 	        {
 		        if (SystemUtils.MonoRuntime)
@@ -311,24 +403,42 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is bool)
-                return (bool)m ^ (bool)n;
+	        if (n is bool)
+	        {
+		        return (bool)m ^ (bool)n;
+	        }
 	        if (n is Int32)
+	        {
 		        return (Int32)m ^ (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m ^ (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m ^ (Int64)n;
+	        }
 	        if (n is UInt16)
-		        return (UInt16)m ^ (UInt16)n;
+	        {		        
+				return (UInt16)m ^ (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m ^ (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m ^ (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m ^ (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m ^ (SByte)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported integral types.", m, n));
         }
 
@@ -341,28 +451,50 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is Int32)
-                return (Int32)m + (Int32)n;
+	        if (n is Int32)
+	        {
+		        return (Int32)m + (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m + (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m + (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m + (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m + (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m + (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m + (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m + (SByte)n;
+	        }
 	        if (n is Single)
+	        {
 		        return (Single)m + (Single)n;
+	        }
 	        if (n is Double)
+	        {
 		        return (Double)m + (Double)n;
+	        }
 	        if (n is Decimal)
+	        {
 		        return (Decimal)m + (Decimal)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported numeric types.", m, n));
         }
 
@@ -375,28 +507,50 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is Int32)
-                return (Int32)m - (Int32)n;
+	        if (n is Int32)
+	        {
+		        return (Int32)m - (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m - (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m - (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m - (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m - (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m - (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m - (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m - (SByte)n;
+	        }
 	        if (n is Single)
+	        {
 		        return (Single)m - (Single)n;
+	        }
 	        if (n is Double)
+	        {
 		        return (Double)m - (Double)n;
+	        }
 	        if (n is Decimal)
+	        {
 		        return (Decimal)m - (Decimal)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported numeric types.", m, n));
         }
 
@@ -409,28 +563,50 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is Int32)
-                return (Int32)m * (Int32)n;
+	        if (n is Int32)
+	        {
+		        return (Int32)m * (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m * (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m * (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m * (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m * (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m * (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m * (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m * (SByte)n;
+	        }
 	        if (n is Single)
+	        {
 		        return (Single)m * (Single)n;
+	        }
 	        if (n is Double)
+	        {
 		        return (Double)m * (Double)n;
+	        }
 	        if (n is Decimal)
+	        {
 		        return (Decimal)m * (Decimal)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported numeric types.", m, n));
         }
 
@@ -443,28 +619,50 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is Int32)
-                return (Int32)m / (Int32)n;
+	        if (n is Int32)
+	        {
+		        return (Int32)m / (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m / (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m / (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m / (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m / (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m / (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m / (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m / (SByte)n;
+	        }
 	        if (n is Single)
+	        {
 		        return (Single)m / (Single)n;
+	        }
 	        if (n is Double)
+	        {
 		        return (Double)m / (Double)n;
+	        }
 	        if (n is Decimal)
+	        {
 		        return (Decimal)m / (Decimal)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported numeric types.", m, n));
         }
 
@@ -477,28 +675,50 @@ namespace Solenoid.Expressions.Support.Util
         {
             CoerceTypes(ref m, ref n);
 
-            if (n is Int32)
-                return (Int32)m % (Int32)n;
+	        if (n is Int32)
+	        {
+		        return (Int32)m % (Int32)n;
+	        }
 	        if (n is Int16)
+	        {
 		        return (Int16)m % (Int16)n;
+	        }
 	        if (n is Int64)
+	        {
 		        return (Int64)m % (Int64)n;
+	        }
 	        if (n is UInt16)
+	        {
 		        return (UInt16)m % (UInt16)n;
+	        }
 	        if (n is UInt32)
+	        {
 		        return (UInt32)m % (UInt32)n;
+	        }
 	        if (n is UInt64)
+	        {
 		        return (UInt64)m % (UInt64)n;
+	        }
 	        if (n is Byte)
+	        {
 		        return (Byte)m % (Byte)n;
+	        }
 	        if (n is SByte)
+	        {
 		        return (SByte)m % (SByte)n;
+	        }
 	        if (n is Single)
+	        {
 		        return (Single)m % (Single)n;
+	        }
 	        if (n is Double)
+	        {
 		        return (Double)m % (Double)n;
+	        }
 	        if (n is Decimal)
+	        {
 		        return (Decimal)m % (Decimal)n;
+	        }
 	        throw new ArgumentException(string.Format("'{0}' and/or '{1}' are not one of the supported numeric types.", m, n));
         }
 
@@ -531,13 +751,5 @@ namespace Solenoid.Expressions.Support.Util
                 m = Convert.ChangeType(m, rightTypeCode);
             }
         }
-
-        #region Constructor (s) / Destructor
-
-        // CLOVER:OFF
-
-	    // CLOVER:ON
-
-        #endregion
     }
 }

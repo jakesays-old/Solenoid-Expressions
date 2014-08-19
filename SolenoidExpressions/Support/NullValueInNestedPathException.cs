@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,9 +15,7 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Globalization;
@@ -26,7 +23,6 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
 
 namespace Solenoid.Expressions.Support
 {
@@ -37,15 +33,15 @@ namespace Solenoid.Expressions.Support
     [Serializable]
     public class NullValueInNestedPathException : FatalReflectionException
     {
-        private string property;
-        private Type type;
+        private readonly string _property;
+        private readonly Type _type;
 
         /// <summary>
         /// The name of the offending property.
         /// </summary>
         public string PropertyName
         {
-            get { return property; }
+            get { return _property; }
         }
 
         /// <summary>
@@ -53,10 +49,9 @@ namespace Solenoid.Expressions.Support
         /// </summary>
         public Type ObjectType
         {
-            get { return type; }
+            get { return _type; }
         }
 
-        #region Constructor (s) / Destructor
 
         /// <summary>
         /// Creates a new instance of the
@@ -118,8 +113,8 @@ namespace Solenoid.Expressions.Support
         public NullValueInNestedPathException(Type type, string theProperty, string message)
             : base(message)
         {
-            property = theProperty;
-            this.type = type;
+            _property = theProperty;
+            _type = type;
         }
 
         /// <summary>
@@ -137,13 +132,11 @@ namespace Solenoid.Expressions.Support
         protected NullValueInNestedPathException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            type = info.GetValue("ObjectType", typeof (Type)) as Type;
-            property = info.GetString("PropertyName");
+            _type = info.GetValue("ObjectType", typeof (Type)) as Type;
+            _property = info.GetString("PropertyName");
         }
 
-        #endregion
 
-        #region Methods
 
         /// <summary>
         /// Populates a <see cref="System.Runtime.Serialization.SerializationInfo"/> with
@@ -165,7 +158,5 @@ namespace Solenoid.Expressions.Support
             info.AddValue("ObjectType", ObjectType);
             info.AddValue("PropertyName", PropertyName);
         }
-
-        #endregion
     }
 }

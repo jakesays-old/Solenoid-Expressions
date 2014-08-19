@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,14 +15,11 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Runtime.Serialization;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -35,7 +31,6 @@ namespace Solenoid.Expressions.Support.Util
     [Serializable]
     public class ReflectionException : ApplicationException
     {
-        #region Constructor (s) / Destructor
         /// <summary>Creates a new instance of the ObjectsException class.</summary>
         public ReflectionException()
         {
@@ -82,6 +77,5 @@ namespace Solenoid.Expressions.Support.Util
             : base (info, context)
         {
         }
-        #endregion
     }
 }

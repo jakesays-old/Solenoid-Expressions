@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,13 +15,10 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Util
 {
@@ -92,6 +88,5 @@ namespace Solenoid.Expressions.Support.Util
             }
             return false;
         }
-
     }
 }

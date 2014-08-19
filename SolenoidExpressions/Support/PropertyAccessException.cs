@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,16 +15,13 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
 
 namespace Solenoid.Expressions.Support
 {
@@ -53,7 +49,6 @@ namespace Solenoid.Expressions.Support
 
         private PropertyChangeEventArgs _propertyChangeEventArgs;
 
-        #region Methods
 
         /// <summary>
         /// Populates a <see cref="System.Runtime.Serialization.SerializationInfo"/> with
@@ -75,7 +70,6 @@ namespace Solenoid.Expressions.Support
             info.AddValue("PropertyChangeArgs", PropertyChangeArgs);
         }
 
-        #endregion
 
         /// <summary>
         /// Create a new instance of the PropertyAccessException class.

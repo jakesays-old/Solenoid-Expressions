@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,14 +14,10 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
 
 using System;
 using System.ComponentModel;
 
-#endregion
 
 namespace Solenoid.Expressions.Support
 {
@@ -44,8 +38,8 @@ namespace Solenoid.Expressions.Support
     [Serializable]
     public class PropertyChangeEventArgs : PropertyChangedEventArgs
     {
-        private object oldValue;
-        private object newValue;
+        private readonly object _oldValue;
+        private readonly object _newValue;
 
         /// <summary>
         /// Create a new instance of the
@@ -58,8 +52,8 @@ namespace Solenoid.Expressions.Support
         public PropertyChangeEventArgs(
             string propertyName, object oldValue, object newValue) : base(propertyName)
         {
-            this.oldValue = oldValue;
-            this.newValue = newValue;
+            _oldValue = oldValue;
+            _newValue = newValue;
         }
 
         /// <summary>
@@ -68,7 +62,7 @@ namespace Solenoid.Expressions.Support
         /// <seealso cref="System.ComponentModel.PropertyChangedEventArgs.PropertyName"/>
         public object OldValue
         {
-            get { return oldValue; }
+            get { return _oldValue; }
         }
 
         /// <summary>
@@ -77,7 +71,7 @@ namespace Solenoid.Expressions.Support
         /// <seealso cref="System.ComponentModel.PropertyChangedEventArgs.PropertyName"/>
         public object NewValue
         {
-            get { return newValue; }
+            get { return _newValue; }
         }
     }
 }
