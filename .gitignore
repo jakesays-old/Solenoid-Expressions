@@ -174,3 +174,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 LikeOperatorImplementation.cs
+!SolenoidExpressions/Parser/antlr/debug/
