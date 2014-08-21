@@ -21,6 +21,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UseAlternateLikeImplementation Condition="Exists('$(ProjectDir)LikeOperatorImplementation.cs')">true</UseAlternateLikeImplementation>
+    <LikeDefine Condition="'$(UseAlternateLikeImplementation)' == 'true'">USE_ALTERNATE_LIKE_IMPLEMENTATION</LikeDefine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>.\bin\Debug\</OutputPath>
@@ -29,7 +30,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;NET_4_0;DEBUG_DYNAMIC_DISABLED</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_4_0;DEBUG_DYNAMIC_DISABLED;$(LikeDefine)</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -54,7 +55,7 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;NET_4_0</DefineConstants>
+    <DefineConstants>TRACE;NET_4_0;$(LikeDefine)</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -75,6 +76,49 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\antlr\debug\ANTLREventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingCharScanner.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingInputBuffer.cs" />
+    <Compile Include="Parser\antlr\debug\DebuggingParser.cs" />
+    <Compile Include="Parser\antlr\debug\GuessingEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ICharScannerDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\IDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferListener.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\InputBufferReporter.cs" />
+    <Compile Include="Parser\antlr\debug\IParserDebugSubject.cs" />
+    <Compile Include="Parser\antlr\debug\Listener.cs" />
+    <Compile Include="Parser\antlr\debug\LLkDebuggingParser.cs" />
+    <Compile Include="Parser\antlr\debug\MessageEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\MessageListener.cs" />
+    <Compile Include="Parser\antlr\debug\MessageListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\NewLineEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\NewLineListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserController.cs" />
+    <Compile Include="Parser\antlr\debug\ParserEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\ParserListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserMatchListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParserReporter.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenListener.cs" />
+    <Compile Include="Parser\antlr\debug\ParserTokenListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\ParseTreeDebugParser.cs" />
+    <Compile Include="Parser\antlr\debug\ScannerEventSupport.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateListener.cs" />
+    <Compile Include="Parser\antlr\debug\SemanticPredicateListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateListener.cs" />
+    <Compile Include="Parser\antlr\debug\SyntacticPredicateListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\TraceEventArgs.cs" />
+    <Compile Include="Parser\antlr\debug\TraceListener.cs" />
+    <Compile Include="Parser\antlr\debug\TraceListenerBase.cs" />
+    <Compile Include="Parser\antlr\debug\Tracer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -149,49 +193,6 @@
     <Compile Include="Parser\antlr\CommonASTWithHiddenTokens.cs" />
     <Compile Include="Parser\antlr\CommonHiddenStreamToken.cs" />
     <Compile Include="Parser\antlr\CommonToken.cs" />
-    <Compile Include="Parser\antlr\generated\ANTLREventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\DebuggingCharScanner.cs" />
-    <Compile Include="Parser\antlr\generated\DebuggingInputBuffer.cs" />
-    <Compile Include="Parser\antlr\generated\DebuggingParser.cs" />
-    <Compile Include="Parser\antlr\generated\GuessingEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\ICharScannerDebugSubject.cs" />
-    <Compile Include="Parser\antlr\generated\IDebugSubject.cs" />
-    <Compile Include="Parser\antlr\generated\InputBufferEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\InputBufferEventSupport.cs" />
-    <Compile Include="Parser\antlr\generated\InputBufferListener.cs" />
-    <Compile Include="Parser\antlr\generated\InputBufferListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\InputBufferReporter.cs" />
-    <Compile Include="Parser\antlr\generated\IParserDebugSubject.cs" />
-    <Compile Include="Parser\antlr\generated\Listener.cs" />
-    <Compile Include="Parser\antlr\generated\LLkDebuggingParser.cs" />
-    <Compile Include="Parser\antlr\generated\MessageEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\MessageListener.cs" />
-    <Compile Include="Parser\antlr\generated\MessageListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\NewLineEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\NewLineListener.cs" />
-    <Compile Include="Parser\antlr\generated\ParserController.cs" />
-    <Compile Include="Parser\antlr\generated\ParserEventSupport.cs" />
-    <Compile Include="Parser\antlr\generated\ParserListener.cs" />
-    <Compile Include="Parser\antlr\generated\ParserListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\ParserMatchEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\ParserMatchListener.cs" />
-    <Compile Include="Parser\antlr\generated\ParserMatchListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\ParserReporter.cs" />
-    <Compile Include="Parser\antlr\generated\ParserTokenEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\ParserTokenListener.cs" />
-    <Compile Include="Parser\antlr\generated\ParserTokenListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\ParseTreeDebugParser.cs" />
-    <Compile Include="Parser\antlr\generated\ScannerEventSupport.cs" />
-    <Compile Include="Parser\antlr\generated\SemanticPredicateEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\SemanticPredicateListener.cs" />
-    <Compile Include="Parser\antlr\generated\SemanticPredicateListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\SyntacticPredicateEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\SyntacticPredicateListener.cs" />
-    <Compile Include="Parser\antlr\generated\SyntacticPredicateListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\TraceEventArgs.cs" />
-    <Compile Include="Parser\antlr\generated\TraceListener.cs" />
-    <Compile Include="Parser\antlr\generated\TraceListenerBase.cs" />
-    <Compile Include="Parser\antlr\generated\Tracer.cs" />
     <Compile Include="Parser\antlr\DefaultFileLineFormatter.cs" />
     <Compile Include="Parser\antlr\DumpASTVisitor.cs" />
     <Compile Include="Parser\antlr\FileLineFormatter.cs" />
@@ -440,7 +441,9 @@
     <Compile Include="Support\Util\StringUtils.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OpLike.cs" />
     <None Include="Expression.g" />
+    <None Include="genparser.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Parser\antlr\README_ANTLR.txt" />
@@ -448,15 +451,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(UseAlternateLikeImplementation)' == 'true'">
     <Compile Include="LikeOperatorImplementation.cs" />
-    <Compile Include="OpLike.cs" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(UseAlternateLikeImplementation)' != 'true'">
-    <Compile Include="OpLikeVb.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent></PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>

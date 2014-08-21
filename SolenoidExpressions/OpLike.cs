@@ -54,7 +54,11 @@ namespace Solenoid.Expressions
             var text = GetLeftValue( context, evalContext ) as string;
             var pattern = GetRightValue( context, evalContext ) as string;
 
-            return LikeOperatorImplementation.LikeString(text, pattern, CompareMethod.Text);
+#if USE_ALTERNATE_LIKE_IMPLEMENTATION
+			return LikeOperatorImplementation.LikeString(text, pattern, CompareMethod.Text);
+#else
+			return Microsoft.VisualBasic.CompilerServices.LikeOperator.LikeString(text, pattern, Microsoft.VisualBasic.CompareMethod.Text);
+#endif
         }
     }
 }
