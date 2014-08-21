@@ -37,8 +37,10 @@ namespace Solenoid.Expressions
             | BindingFlags.Instance | BindingFlags.Static
             | BindingFlags.IgnoreCase;
 
-        private static readonly IDictionary _collectionProcessorMap = new Hashtable();
-        private static readonly IDictionary _extensionMethodProcessorMap = new Hashtable();
+        private static readonly Dictionary<string, ICollectionProcessor> _collectionProcessorMap = 
+			new Dictionary<string, ICollectionProcessor>();
+        private static readonly Dictionary<string, IMethodCallProcessor> _extensionMethodProcessorMap =
+			new Dictionary<string, IMethodCallProcessor>();
 
         private bool _initialized = false;
         private bool _cachedIsParamArray = false;
@@ -90,42 +92,50 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            var methodName = this.getText();
+            var methodName = getText();
             var argValues = ResolveArguments(evalContext);
-            ICollectionProcessor localCollectionProcessor = null;
-            IMethodCallProcessor methodCallProcessor = null;
 
-            // resolve method, if necessary
+	        // resolve method, if necessary
             lock (this)
             {
-                // check if it is a collection and the methodname denotes a collection processor
+				ICollectionProcessor localCollectionProcessor = null;
+				// check if it is a collection and the methodname denotes a collection processor
                 if ((context == null || context is ICollection))
                 {
                     // predefined collection processor?
-                    localCollectionProcessor = (ICollectionProcessor)_collectionProcessorMap[methodName];
-
-                    // user-defined collection processor?
-                    if (localCollectionProcessor == null && evalContext.Variables != null)
+					if (!_collectionProcessorMap.TryGetValue(methodName, out localCollectionProcessor) && 
+						evalContext.Variables != null)
                     {
-                        object temp;
+						// user-defined collection processor?
+						object temp;
                         evalContext.Variables.TryGetValue(methodName, out temp);
                         localCollectionProcessor = temp as ICollectionProcessor;
                     }
                 }
 
-                // try extension methods
-                methodCallProcessor = (IMethodCallProcessor)_extensionMethodProcessorMap[methodName];
-                {
-                    // user-defined extension method processor?
-                    if (methodCallProcessor == null && evalContext.Variables != null)
-                    {
-                        object temp;
-                        evalContext.Variables.TryGetValue(methodName, out temp);
-                        methodCallProcessor = temp as IMethodCallProcessor;
-                    }
-                }
+				if (localCollectionProcessor != null)
+				{
+					return localCollectionProcessor.Process((ICollection) context, argValues);
+				}
 
-                // try instance method
+                // try extension methods
+
+	            IMethodCallProcessor methodCallProcessor = null;
+	            if (!_extensionMethodProcessorMap.TryGetValue(methodName, out methodCallProcessor)
+					&& evalContext.Variables != null)
+	            {
+		            // user-defined extension method processor?
+		            object temp;
+		            evalContext.Variables.TryGetValue(methodName, out temp);
+		            methodCallProcessor = temp as IMethodCallProcessor;
+	            }
+
+				if (methodCallProcessor != null)
+				{
+					return methodCallProcessor.Process(context, argValues);
+				}
+
+	            // try instance method
                 if (context != null)
                 {
                     // calculate checksum, if the cached method matches the current context
@@ -143,14 +153,6 @@ namespace Solenoid.Expressions
                 }
             }
 
-            if (localCollectionProcessor != null)
-            {
-                return localCollectionProcessor.Process((ICollection)context, argValues);
-            }
-	        if (methodCallProcessor != null)
-	        {
-		        return methodCallProcessor.Process(context, argValues);
-	        }
 	        if (_cachedInstanceMethod != null)
 	        {
 		        var paramValues = (_cachedIsParamArray)
@@ -158,6 +160,7 @@ namespace Solenoid.Expressions
 			        : argValues;
 		        return _cachedInstanceMethod.Invoke(context, paramValues);
 	        }
+
 	        throw new ArgumentException(string.Format("Method '{0}' with the specified number and types of arguments does not exist.", methodName));
         }
 
