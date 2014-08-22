@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,250 +14,241 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
 
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-#endregion
-
 namespace Solenoid.Expressions.Support.TypeConversion
 {
-    #region Specifier parsers
-
-	
 	/// <summary>
-    /// Base parser for <see cref="TimeSpanConverter"/> custom specifiers.
-    /// </summary>
-    abstract class SpecifierParser 
-    {
-        const RegexOptions ParsingOptions = RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase;
+	///     Base parser for <see cref="TimeSpanConverter" /> custom specifiers.
+	/// </summary>
+	internal abstract class SpecifierParser
+	{
+		private const RegexOptions ParsingOptions =
+			RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase;
 
-        /// <summary>
-        /// Specifier
-        /// </summary>
-        public abstract string Specifier { get; }
+		/// <summary>
+		///     Specifier
+		/// </summary>
+		protected abstract string Specifier { get; }
 
-        /// <summary>
-        /// Convert int value to a Timespan based on the specifier
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public abstract TimeSpan Parse(int value);
+		/// <summary>
+		///     Convert int value to a Timespan based on the specifier
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		protected abstract TimeSpan Parse(int value);
 
-        /// <summary>
-        /// Check if the string contains the specifier and 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public Nullable<TimeSpan> Match(string value) 
-        {
-            var regex = @"^(\d+)" + Specifier + "$";
-            var match = Regex.Match(value, regex, ParsingOptions);
+		/// <summary>
+		///     Check if the string contains the specifier and
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public TimeSpan? Match(string value)
+		{
+			var regex = @"^(\d+)" + Specifier + "$";
+			var match = Regex.Match(value, regex, ParsingOptions);
 
-            if (!match.Success) return new Nullable<TimeSpan>();
+			if (!match.Success)
+			{
+				return new TimeSpan?();
+			}
 
-            return new Nullable<TimeSpan>(Parse(int.Parse(match.Groups[1].Value)));
-        }  
-      
-    }
+			return Parse(int.Parse(match.Groups[1].Value));
+		}
+	}
 
-    /// <summary>
-    /// Recognize 10d as ten days
-    /// </summary>
-    class DaySpecifier: SpecifierParser 
-    {
-        /// <summary>
-        /// Day specifier: d
-        /// </summary>
-        public override string Specifier 
-        {
-            get { return "d"; }
-        }
+	/// <summary>
+	///     Recognize 10d as ten days
+	/// </summary>
+	internal class DaySpecifier : SpecifierParser
+	{
+		/// <summary>
+		///     Day specifier: d
+		/// </summary>
+		protected override string Specifier
+		{
+			get { return "d"; }
+		}
 
-        /// <summary>
-        /// Parse value as days
-        /// </summary>
-        /// <param name="value">Timespan in days</param>
-        /// <returns></returns>
-        public override TimeSpan Parse(int value) 
-        {
-            return TimeSpan.FromDays(value);
-        }
-    }
+		/// <summary>
+		///     Parse value as days
+		/// </summary>
+		/// <param name="value">Timespan in days</param>
+		/// <returns></returns>
+		protected override TimeSpan Parse(int value)
+		{
+			return TimeSpan.FromDays(value);
+		}
+	}
 
-    /// <summary>
-    /// Recognize 10h as ten hours
-    /// </summary>
-    class HourSpecifier : SpecifierParser 
-    {
-        /// <summary>
-        /// Hour specifier: h
-        /// </summary>
-        public override string Specifier 
-        {
-            get { return "h"; }
-        }
+	/// <summary>
+	///     Recognize 10h as ten hours
+	/// </summary>
+	internal class HourSpecifier : SpecifierParser
+	{
+		/// <summary>
+		///     Hour specifier: h
+		/// </summary>
+		protected override string Specifier
+		{
+			get { return "h"; }
+		}
 
-        /// <summary>
-        /// Parse value as hours
-        /// </summary>
-        /// <param name="value">Timespan in hours</param>
-        /// <returns></returns>
-        public override TimeSpan Parse(int value)
-        {
-            return TimeSpan.FromHours(value);
-        }
-    }
+		/// <summary>
+		///     Parse value as hours
+		/// </summary>
+		/// <param name="value">Timespan in hours</param>
+		/// <returns></returns>
+		protected override TimeSpan Parse(int value)
+		{
+			return TimeSpan.FromHours(value);
+		}
+	}
 
-    /// <summary>
-    /// Recognize 10m as ten minutes
-    /// </summary>
-    class MinuteSpecifier : SpecifierParser 
-    {
-        /// <summary>
-        /// Minute specifier: m
-        /// </summary>
-        public override string Specifier 
-        {
-            get { return "m"; }
-        }
+	/// <summary>
+	///     Recognize 10m as ten minutes
+	/// </summary>
+	internal class MinuteSpecifier : SpecifierParser
+	{
+		/// <summary>
+		///     Minute specifier: m
+		/// </summary>
+		protected override string Specifier
+		{
+			get { return "m"; }
+		}
 
-        /// <summary>
-        /// Parse value as minutes
-        /// </summary>
-        /// <param name="value">Timespan in minutes</param>
-        /// <returns></returns>
-        public override TimeSpan Parse(int value) 
-        {
-            return TimeSpan.FromMinutes(value);
-        }
-    }
+		/// <summary>
+		///     Parse value as minutes
+		/// </summary>
+		/// <param name="value">Timespan in minutes</param>
+		/// <returns></returns>
+		protected override TimeSpan Parse(int value)
+		{
+			return TimeSpan.FromMinutes(value);
+		}
+	}
 
-    /// <summary>
-    /// Recognize 10s as ten seconds
-    /// </summary>
-    class SecondSpecifier : SpecifierParser 
-    {
-        /// <summary>
-        /// Second specifier: s
-        /// </summary>
-        public override string Specifier 
-        {
-            get { return "s"; }
-        }
+	/// <summary>
+	///     Recognize 10s as ten seconds
+	/// </summary>
+	internal class SecondSpecifier : SpecifierParser
+	{
+		/// <summary>
+		///     Second specifier: s
+		/// </summary>
+		protected override string Specifier
+		{
+			get { return "s"; }
+		}
 
-        /// <summary>
-        /// Parse value as seconds
-        /// </summary>
-        /// <param name="value">Timespan in seconds</param>
-        /// <returns></returns>
-        public override TimeSpan Parse(int value) 
-        {
-            return TimeSpan.FromSeconds(value);
-        }
-    }
+		/// <summary>
+		///     Parse value as seconds
+		/// </summary>
+		/// <param name="value">Timespan in seconds</param>
+		/// <returns></returns>
+		protected override TimeSpan Parse(int value)
+		{
+			return TimeSpan.FromSeconds(value);
+		}
+	}
 
-    /// <summary>
-    /// Recognize 10ms as ten milliseconds
-    /// </summary>
-    class MillisecondSpecifier : SpecifierParser 
-    {
-        /// <summary>
-        /// Millisecond specifier: ms
-        /// </summary>
-        public override string Specifier 
-        {
-            get { return "ms"; }
-        }
+	/// <summary>
+	///     Recognize 10ms as ten milliseconds
+	/// </summary>
+	internal class MillisecondSpecifier : SpecifierParser
+	{
+		/// <summary>
+		///     Millisecond specifier: ms
+		/// </summary>
+		protected override string Specifier
+		{
+			get { return "ms"; }
+		}
 
-        /// <summary>
-        /// Parse value as milliseconds
-        /// </summary>
-        /// <param name="value">Timespan in milliseconds</param>
-        /// <returns></returns>
-        public override TimeSpan Parse(int value) 
-        {
-            return TimeSpan.FromMilliseconds(value);
-        }
-    }
+		/// <summary>
+		///     Parse value as milliseconds
+		/// </summary>
+		/// <param name="value">Timespan in milliseconds</param>
+		/// <returns></returns>
+		protected override TimeSpan Parse(int value)
+		{
+			return TimeSpan.FromMilliseconds(value);
+		}
+	}
 
-    #endregion
 
-    /// <summary>
-    /// Converter for <see cref="System.TimeSpan"/> instances.
-    /// </summary>
-    /// <author>Bruno Baia</author>
-    /// <author>Roberto Paterlini</author>
-    public class TimeSpanConverter : System.ComponentModel.TimeSpanConverter
-    {
-        #region Constants
+	/// <summary>
+	///     Converter for <see cref="System.TimeSpan" /> instances.
+	/// </summary>
+	/// <author>Bruno Baia</author>
+	/// <author>Roberto Paterlini</author>
+	public class TimeSpanConverter : System.ComponentModel.TimeSpanConverter
+	{
+		private static readonly SpecifierParser[] _specifiers =
+		{
+			new DaySpecifier(),
+			new HourSpecifier(),
+			new MinuteSpecifier(),
+			new SecondSpecifier(),
+			new MillisecondSpecifier()
+		};
 
-        static readonly SpecifierParser[] Specifiers = {
-                                                  new DaySpecifier(), 
-                                                  new HourSpecifier(), 
-                                                  new MinuteSpecifier(), 
-                                                  new SecondSpecifier(),
-                                                  new MillisecondSpecifier()
-                                              };
 
-        #endregion
+		/// <summary>
+		///     Creates a new instance of the
+		///     <see cref="TimeSpanConverter" /> class.
+		/// </summary>
+		public TimeSpanConverter()
+		{
+		}
 
-        #region Constructor (s) / Destructor
 
-        /// <summary>
-        /// Creates a new instance of the
-        /// <see cref="TimeSpanConverter"/> class.
-        /// </summary>
-        public TimeSpanConverter() { }
+		/// <summary>
+		///     Convert from a string value to a <see cref="System.TimeSpan" /> instance.
+		/// </summary>
+		/// <param name="context">
+		///     A <see cref="System.ComponentModel.ITypeDescriptorContext" />
+		///     that provides a format context.
+		/// </param>
+		/// <param name="culture">
+		///     The <see cref="System.Globalization.CultureInfo" /> to use
+		///     as the current culture.
+		/// </param>
+		/// <param name="value">
+		///     The value that is to be converted.
+		/// </param>
+		/// <returns>
+		///     A <see cref="System.TimeSpan" /> if successful.
+		/// </returns>
+		public override object ConvertFrom(
+			ITypeDescriptorContext context,
+			CultureInfo culture, object value)
+		{
+			var stringValue = value as string;
+			if (stringValue != null)
+			{
+				try
+				{
+					stringValue = stringValue.Trim();
 
-        #endregion
+					foreach (var specifierParser in _specifiers)
+					{
+						var res = specifierParser.Match(stringValue);
+						if (res.HasValue) return res.Value;
+					}
+				}
+				catch
+				{
+					//
+				}
+			}
 
-        #region Methods
-
-        /// <summary>
-        /// Convert from a string value to a <see cref="System.TimeSpan"/> instance.
-        /// </summary>
-        /// <param name="context">
-        /// A <see cref="System.ComponentModel.ITypeDescriptorContext"/>
-        /// that provides a format context.
-        /// </param>
-        /// <param name="culture">
-        /// The <see cref="System.Globalization.CultureInfo"/> to use
-        /// as the current culture. 
-        /// </param>
-        /// <param name="value">
-        /// The value that is to be converted.
-        /// </param>
-        /// <returns>
-        /// A <see cref="System.TimeSpan"/> if successful. 
-        /// </returns>
-        public override object ConvertFrom(
-            ITypeDescriptorContext context,
-            CultureInfo culture, object value)
-        {
-            var stringValue = value as string;
-            if (stringValue!=null)
-            {
-                try
-                {
-                    stringValue = stringValue.Trim();
-
-                    foreach (var specifierParser in Specifiers) 
-                    {
-                        var res = specifierParser.Match(stringValue);
-                        if (res.HasValue) return res.Value;
-                    }
-                }
-                catch { }
-            }
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        #endregion
-    }
+			return base.ConvertFrom(context, culture, value);
+		}
+	}
 }
