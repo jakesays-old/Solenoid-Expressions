@@ -44,8 +44,7 @@ internal static class AssyInfo
 #endif
 #if DEBUG
 	internal const string BuildType = "Debug";
-#endif
-#if RELEASE
+#else
 	internal const string BuildType = "Release";
 #endif
 }
