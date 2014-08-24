@@ -25,7 +25,7 @@ using System.Reflection;
 
 #endregion
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
 	/// <summary>
 	/// Base class for tests that check standards compliance.
@@ -35,7 +35,7 @@ namespace Spring
         #region Constructor (s) / Destructor
         /// <summary>
         /// Creates a new instance of the
-        /// <see cref="Spring.StandardsComplianceTest"/> class.
+        /// <see cref="StandardsComplianceTest"/> class.
         /// </summary>
         /// <remarks>
         /// <para>

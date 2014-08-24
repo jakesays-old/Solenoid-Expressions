@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,30 +14,40 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System.Collections;
+using Solenoid.Expressions.Support.Util;
 
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
-    /// Defines an interface that should be implemented
-    /// by all collection processors and aggregators.
+    /// Implementation of the maximum aggregator.
     /// </summary>
-    public interface ICollectionProcessor
+    /// <author>Aleksandar Seovic</author>
+    public class MaxAggregator : ICollectionExtension
     {
         /// <summary>
-        /// Processes a list of source items and returns a result.
+        /// Returns the largest item in the source collection.
         /// </summary>
         /// <param name="source">
-        /// The source list to process.
+        /// The source collection to process.
         /// </param>
         /// <param name="args">
-        /// An optional processor arguments array.
+        /// Ignored.
         /// </param>
         /// <returns>
-        /// The processing result.
+        /// The largest item in the source collection.
         /// </returns>
-        object Process(ICollection source, object[] args);
+        public object Execute(ICollection source, object[] args)
+        {
+            object maxItem = null;
+            foreach (var item in source)
+            {
+                if (CompareUtils.Compare(maxItem, item) < 0)
+                {
+                    maxItem = item;
+                }
+            }
+            return maxItem;
+        }
     }
 }

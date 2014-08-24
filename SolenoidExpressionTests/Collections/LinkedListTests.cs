@@ -22,13 +22,12 @@
 
 using System;
 using System.Collections;
-
 using NUnit.Framework;
 using Solenoid.Expressions.Support.Collections;
 
 #endregion
 
-namespace Spring.Collections
+namespace Solenoid.Expressions.Tests.Collections
 {
 	/// <summary>
 	/// Set of tests for Spring.Util.LinkedList.

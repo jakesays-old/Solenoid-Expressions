@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,45 +14,36 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
-
 using System.Collections;
 
-#endregion
-
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
-    /// Reverts order of elements in the list
+    /// Implementation of the count aggregator.
     /// </summary>
-    /// <author>Erich Eichinger</author>
-    public class ReverseProcessor : ICollectionProcessor
+    /// <author>Aleksandar Seovic</author>
+    public class CountAggregator : ICollectionExtension
     {
         /// <summary>
-        /// Processes a list of source items and returns a result.
+        /// Returns the number of items in the source collection.
         /// </summary>
         /// <param name="source">
-        /// The source list to process.
+        /// The source collection to process.
         /// </param>
         /// <param name="args">
-        /// An optional processor arguments array.
+        /// Ignored.
         /// </param>
         /// <returns>
-        /// The processing result.
+        /// The number of items in the source collection, 
+        /// or zero if the collection is empty or <c>null</c>.
         /// </returns>
-        public object Process(ICollection source, object[] args)
+        public object Execute(ICollection source, object[] args)
         {
-            if (source == null || source.Count == 0)
+            if (source == null)
             {
-                return source;
+                return 0;
             }
-
-            var list = new ArrayList(source);
-            list.Reverse();
-
-            return list;            
+            return source.Count;
         }
     }
 }

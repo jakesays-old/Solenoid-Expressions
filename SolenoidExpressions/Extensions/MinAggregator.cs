@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,22 +14,19 @@
  * limitations under the License.
  */
 
-#endregion
-
-using System;
 using System.Collections;
 using Solenoid.Expressions.Support.Util;
 
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
-    /// Implementation of the sum aggregator.
+    /// Implementation of the minimum aggregator.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    public class SumAggregator : ICollectionProcessor
+    public class MinAggregator : ICollectionExtension
     {
         /// <summary>
-        /// Returns the sum of the numeric values in the source collection.
+        /// Returns the smallest item in the source collection.
         /// </summary>
         /// <param name="source">
         /// The source collection to process.
@@ -40,27 +35,20 @@ namespace Solenoid.Expressions.Processors
         /// Ignored.
         /// </param>
         /// <returns>
-        /// The sum of the numeric values in the source collection.
+        /// The smallest item in the source collection.
         /// </returns>
-        public object Process(ICollection source, object[] args)
+        public object Execute(ICollection source, object[] args)
         {
-            object total = 0d;
+            object minItem = null;
             foreach (var item in source)
             {
-                if (item != null)
+                if ((minItem == null && item != null) || 
+					(CompareUtils.Compare(minItem, item) > 0))
                 {
-                    if (NumberUtils.IsNumber(item))
-                    {
-                        total = NumberUtils.Add(total, item);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("Sum can only be calculated for a collection of numeric values.");
-                    }
+                    minItem = item;
                 }
             }
-            
-            return total;
+            return minItem;
         }
     }
 }

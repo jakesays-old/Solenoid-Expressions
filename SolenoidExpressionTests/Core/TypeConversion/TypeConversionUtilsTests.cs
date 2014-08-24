@@ -27,7 +27,7 @@ using Solenoid.Expressions.Support.TypeConversion;
 
 #endregion
 
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
     /// <summary>
     /// This class contains tests for TypeConversionUtils

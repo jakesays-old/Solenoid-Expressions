@@ -21,13 +21,12 @@
 #region Imports
 
 using System;
-
 using NUnit.Framework;
 using Solenoid.Expressions.Support.TypeConversion;
 
 #endregion
 
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
 	/// <summary>
 	/// Unit tests for the RuntimeTypeConverter class.

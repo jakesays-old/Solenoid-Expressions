@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright 2002-2010 the original author or authors.
  *
@@ -16,15 +14,13 @@
  * limitations under the License.
  */
 
-#endregion
-
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
     /// </summary>
     /// <author>Erich Eichinger</author>
-    public interface IMethodCallProcessor
+    public interface IMethodCallExtension
     {
-        object Process(object context, object[] args);
+        object Execute(object context, object[] args);
     }
 }

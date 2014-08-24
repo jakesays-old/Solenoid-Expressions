@@ -230,23 +230,23 @@
     <Compile Include="Parser\antlr\TokenWithIndex.cs" />
     <Compile Include="Parser\antlr\TreeParser.cs" />
     <Compile Include="Parser\antlr\TreeParserSharedInputState.cs" />
-    <Compile Include="Processors\DateConversionProcessor.cs" />
-    <Compile Include="Processors\IMethodCallProcessor.cs" />
+    <Compile Include="Extensions\DateConversionExtension.cs" />
+    <Compile Include="Extensions\IMethodCallExtension.cs" />
     <Compile Include="SyntaxErrorException.cs" />
     <Compile Include="Parser\ExpressionLexer.cs" />
     <Compile Include="Parser\ExpressionParser.cs" />
-    <Compile Include="Processors\AverageAggregator.cs" />
-    <Compile Include="Processors\ConversionProcessor.cs" />
-    <Compile Include="Processors\NonNullProcessor.cs" />
-    <Compile Include="Processors\OrderByProcessor.cs" />
-    <Compile Include="Processors\DistinctProcessor.cs" />
-    <Compile Include="Processors\ReverseProcessor.cs" />
-    <Compile Include="Processors\SortProcessor.cs" />
-    <Compile Include="Processors\CountAggregator.cs" />
-    <Compile Include="Processors\SumAggregator.cs" />
-    <Compile Include="Processors\MinAggregator.cs" />
-    <Compile Include="Processors\MaxAggregator.cs" />
-    <Compile Include="Processors\ICollectionProcessor.cs" />
+    <Compile Include="Extensions\AverageAggregator.cs" />
+    <Compile Include="Extensions\ConversionExtension.cs" />
+    <Compile Include="Extensions\NonNullExtension.cs" />
+    <Compile Include="Extensions\OrderByExtension.cs" />
+    <Compile Include="Extensions\DistinctExtension.cs" />
+    <Compile Include="Extensions\ReverseExtension.cs" />
+    <Compile Include="Extensions\SortExtension.cs" />
+    <Compile Include="Extensions\CountAggregator.cs" />
+    <Compile Include="Extensions\SumAggregator.cs" />
+    <Compile Include="Extensions\MinAggregator.cs" />
+    <Compile Include="Extensions\MaxAggregator.cs" />
+    <Compile Include="Extensions\ICollectionExtension.cs" />
     <Compile Include="ArrayConstructorNode.cs">
       <SubType>Code</SubType>
     </Compile>

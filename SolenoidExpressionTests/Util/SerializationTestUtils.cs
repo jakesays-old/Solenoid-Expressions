@@ -20,16 +20,15 @@
 
 #region Imports
 
-using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-using Spring.Objects;
+using Solenoid.Expressions.Tests.Objects;
 
 #endregion
 
-namespace Spring.Util
+namespace Solenoid.Expressions.Tests.Util
 {
 	/// <summary>
 	/// Utilities for testing serializability of objects.

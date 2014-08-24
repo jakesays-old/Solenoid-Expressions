@@ -20,6 +20,9 @@
 
 #region Imports
 
+//using Spring.Context.Support;
+//using Spring.Objects.Factory;
+//using Spring.Threading;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,31 +36,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web.Services;
 using NUnit.Framework;
-using Solenoid.Expressions;
+using Solenoid.Expressions.Extensions;
 using Solenoid.Expressions.Parser.antlr;
 using Solenoid.Expressions.Parser.antlr.collections;
-using Solenoid.Expressions.Processors;
 using Solenoid.Expressions.Support;
 using Solenoid.Expressions.Support.Collections;
 using Solenoid.Expressions.Support.TypeResolution;
 using Solenoid.Expressions.Support.Util;
-using Spring.Collections;
-//using Spring.Context.Support;
-using Spring.Core;
-using Spring.Expressions;
-using Spring.Expressions.Processors;
-using Spring.Objects;
-//using Spring.Objects.Factory;
-//using Spring.Threading;
-using Spring.Util;
-using Foo = Spring.Expressions.Foo;
+using Solenoid.Expressions.Tests.Objects;
 
 #endregion
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// This class contains tests for ExpressionEvaluator.
@@ -1768,14 +1760,14 @@ namespace Spring.Expressions
         {
             // Test for the purposes of creating documentation example.  
             Dictionary<string, object> vars = new Dictionary<string, object>();
-            vars["EvenSum"] = new IntEvenSumCollectionProcessor();
+            vars["EvenSum"] = new IntEvenSumCollectionExtension();
             Assert.AreEqual(6, ExpressionEvaluator.GetValue(null, "{1, 2, 3, 4}.EvenSum()", vars));
 
         }
 
-        private class IntEvenSumCollectionProcessor : ICollectionProcessor
+        private class IntEvenSumCollectionExtension : ICollectionExtension
         {
-            public object Process(ICollection source, object[] args)
+            public object Execute(ICollection source, object[] args)
             {
                 object total = 0d;
                 foreach (object item in source)

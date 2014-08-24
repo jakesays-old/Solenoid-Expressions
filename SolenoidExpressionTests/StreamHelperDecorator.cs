@@ -18,10 +18,9 @@
 
 #endregion
 
-using System;
 using System.IO;
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
     public delegate void StreamHelperCallback(out Stream stream);
 

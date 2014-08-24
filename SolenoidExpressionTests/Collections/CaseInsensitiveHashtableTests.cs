@@ -31,7 +31,7 @@ using Solenoid.Expressions.Support.Collections;
 
 #endregion
 
-namespace Spring.Collections
+namespace Solenoid.Expressions.Tests.Collections
 {
     /// <summary>
     /// 

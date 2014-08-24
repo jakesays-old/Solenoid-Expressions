@@ -28,11 +28,11 @@ using System.Runtime.Serialization;
 using System.Security.Policy;
 using NUnit.Framework;
 using Solenoid.Expressions.Support.Util;
-using Spring.Objects;
+using Solenoid.Expressions.Tests.Objects;
 
 #endregion
 
-namespace Spring.Util
+namespace Solenoid.Expressions.Tests.Util
 {
     /// <summary>
     /// Unit tests for the ObjectUtils class.

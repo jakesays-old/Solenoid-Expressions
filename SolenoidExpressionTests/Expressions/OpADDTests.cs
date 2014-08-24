@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-using System;
 using NUnit.Framework;
-using Solenoid.Expressions;
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// </summary>

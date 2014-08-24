@@ -20,15 +20,12 @@
 
 #region Imports
 
-using System;
-using System.Collections;
-
 using NUnit.Framework;
 using Solenoid.Expressions.Support.Util;
 
 #endregion
 
-namespace Spring.Util
+namespace Solenoid.Expressions.Tests.Util
 {
 	/// <summary>
 	/// Unit tests for the ArrayUtils class.

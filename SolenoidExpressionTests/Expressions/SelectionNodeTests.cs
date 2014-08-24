@@ -20,14 +20,12 @@
 
 #region Imports
 
-using System;
 using System.Collections;
 using NUnit.Framework;
-using Solenoid.Expressions;
 
 #endregion
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// 

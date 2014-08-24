@@ -20,16 +20,12 @@
 
 #region Imports
 
-using System;
-using System.Collections;
-using Solenoid.Expressions.Support.Collections;
-using Spring.Collections;
-
 using NUnit.Framework;
+using Solenoid.Expressions.Support.Collections;
 
 #endregion
 
-namespace Spring.Collections
+namespace Solenoid.Expressions.Tests.Collections
 {
 	/// <summary>
 	/// <b>Base</b> class for tests on the <see cref="ISet"/>

@@ -21,7 +21,7 @@
 using System;
 using System.Collections;
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
     public class Inventor
     {

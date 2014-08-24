@@ -16,7 +16,7 @@
  */
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	/// <summary>
 	/// Extends the normal test object to provide methods that are

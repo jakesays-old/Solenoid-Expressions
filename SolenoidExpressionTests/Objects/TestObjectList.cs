@@ -25,7 +25,7 @@ using System.Collections;
 
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	public interface ITestObjectCollection
 	{

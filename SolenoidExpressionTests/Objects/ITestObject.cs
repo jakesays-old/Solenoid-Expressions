@@ -1,4 +1,3 @@
-#region License
 /*
 * Copyright 2002-2010 the original author or authors.
 * 
@@ -14,12 +13,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-#endregion
 
 using System;
 using System.Collections;
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
     public interface ITestObject
     {

@@ -19,7 +19,7 @@
 #region Imports
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	/// <summary>
 	/// Alternate nonsense interface used for testing.

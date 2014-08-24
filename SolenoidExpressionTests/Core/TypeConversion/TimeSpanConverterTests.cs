@@ -16,14 +16,12 @@
  */
 
 
-
 using System;
 using NUnit.Framework;
 using Solenoid.Expressions.Support.TypeConversion;
 using Solenoid.Expressions.Support.Util;
 
-
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
 	/// <summary>
 	///     Unit tests for the TimeSpanConverter class.

@@ -30,7 +30,7 @@ using NUnit.Framework;
 
 #endregion
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
 	/// <summary>
 	/// Tests the various exception classes.

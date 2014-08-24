@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,20 +14,18 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System.Collections;
 
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
-    /// Implementation of the count aggregator.
+    /// Implementation of the non-null processor.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    public class CountAggregator : ICollectionProcessor
+    public class NonNullExtension : ICollectionExtension
     {
         /// <summary>
-        /// Returns the number of items in the source collection.
+        /// Returns non-null items from the collection.
         /// </summary>
         /// <param name="source">
         /// The source collection to process.
@@ -38,16 +34,24 @@ namespace Solenoid.Expressions.Processors
         /// Ignored.
         /// </param>
         /// <returns>
-        /// The number of items in the source collection, 
-        /// or zero if the collection is empty or <c>null</c>.
+        /// A collection containing non-null source collection elements.
         /// </returns>
-        public object Process(ICollection source, object[] args)
+        public object Execute(ICollection source, object[] args)
         {
             if (source == null)
             {
-                return 0;
+                return null;
             }
-            return source.Count;
+
+            var list = new ArrayList();
+            foreach (var item in source)
+            {
+                if (item != null)
+                {
+                    list.Add(item);
+                }
+            }
+            return list.ToArray();
         }
     }
 }

@@ -20,10 +20,9 @@
 
 using System;
 using NUnit.Framework;
-using Solenoid.Expressions;
-using Spring.Objects;
+using Solenoid.Expressions.Tests.Objects;
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// Tests the behavior of PropertyOrFieldNode expression node

@@ -26,11 +26,10 @@ using System.Threading;
 using NUnit.Framework;
 using Solenoid.Expressions.Support.TypeConversion;
 using Solenoid.Expressions.Support.Util;
-using Spring.Util;
 
 #endregion
 
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
 	/// <summary>
 	/// Unit tests for the StringArrayConverter class.

@@ -26,7 +26,7 @@ using Solenoid.Expressions.Support.Util;
 
 #endregion
 
-namespace Spring.Util
+namespace Solenoid.Expressions.Tests.Util
 {
 	/// <summary>
 	/// Unit tests for the NumberUtils class.

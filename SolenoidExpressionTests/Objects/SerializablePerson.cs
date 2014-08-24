@@ -19,11 +19,13 @@
 #endregion
 
 #region Imports
+
 using System;
 using System.Runtime.Serialization;
+
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	/// <summary>
 	/// Serializable implementation of the IPerson interface.

@@ -22,13 +22,12 @@
 
 using System;
 using System.Text.RegularExpressions;
-
 using NUnit.Framework;
 using Solenoid.Expressions.Support.TypeConversion;
 
 #endregion
 
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
     /// <summary>
     /// Unit tests for the RegexConverter class.

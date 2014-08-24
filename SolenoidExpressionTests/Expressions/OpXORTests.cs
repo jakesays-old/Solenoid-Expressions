@@ -19,9 +19,8 @@
 #endregion
 
 using NUnit.Framework;
-using Solenoid.Expressions;
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// Unit tests for the OpXor class.

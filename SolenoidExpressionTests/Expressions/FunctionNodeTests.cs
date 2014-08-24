@@ -20,17 +20,13 @@
 
 #region Imports
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
-using Solenoid.Expressions;
-using Spring.Collections;
 
 #endregion
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// 

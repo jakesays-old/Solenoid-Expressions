@@ -1,12 +1,10 @@
 using System;
-using System.Security;
-using System.Security.Permissions;
 using System.Threading;
 using System.Web;
 using NUnit.Framework;
 using Solenoid.Expressions.Support.Util;
 
-namespace Spring.Util
+namespace Solenoid.Expressions.Tests.Util
 {
 	/// <summary>
 	/// Summary description for TestMemberwiseCopy.

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,20 +14,20 @@
  * limitations under the License.
  */
 
-#endregion
-
+using System;
 using System.Collections;
+using Solenoid.Expressions.Support.Util;
 
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
-    /// Implementation of the non-null processor.
+    /// Implementation of the sum aggregator.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    public class NonNullProcessor : ICollectionProcessor
+    public class SumAggregator : ICollectionExtension
     {
         /// <summary>
-        /// Returns non-null items from the collection.
+        /// Returns the sum of the numeric values in the source collection.
         /// </summary>
         /// <param name="source">
         /// The source collection to process.
@@ -38,24 +36,27 @@ namespace Solenoid.Expressions.Processors
         /// Ignored.
         /// </param>
         /// <returns>
-        /// A collection containing non-null source collection elements.
+        /// The sum of the numeric values in the source collection.
         /// </returns>
-        public object Process(ICollection source, object[] args)
+        public object Execute(ICollection source, object[] args)
         {
-            if (source == null)
-            {
-                return null;
-            }
-
-            var list = new ArrayList();
+            object total = 0d;
             foreach (var item in source)
             {
                 if (item != null)
                 {
-                    list.Add(item);
+                    if (NumberUtils.IsNumber(item))
+                    {
+                        total = NumberUtils.Add(total, item);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Sum can only be calculated for a collection of numeric values.");
+                    }
                 }
             }
-            return list.ToArray();
+            
+            return total;
         }
     }
 }

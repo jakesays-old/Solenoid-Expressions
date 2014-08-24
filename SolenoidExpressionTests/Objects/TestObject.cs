@@ -31,11 +31,10 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Solenoid.Expressions.Support.Collections;
-using Spring.Collections;
 
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	/// <summary>
 	/// Simple test object used for testing object factories, AOP framework etc.

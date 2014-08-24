@@ -24,13 +24,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Solenoid.Expressions;
-using Solenoid.Expressions.Processors;
-using Spring.Expressions.Processors;
+using Solenoid.Expressions.Extensions;
 
 #endregion
 
-namespace Spring.Expressions
+namespace Solenoid.Expressions.Tests.Expressions
 {
     /// <summary>
     /// 
@@ -39,9 +37,9 @@ namespace Spring.Expressions
     [TestFixture]
     public class MethodNodeTests
     {
-        private class MyTestCollectionProcessor : ICollectionProcessor
+        private class MyTestCollectionExtension : ICollectionExtension
         {
-            public object Process(ICollection source, object[] args)
+            public object Execute(ICollection source, object[] args)
             {
                 return source;
             }
@@ -51,7 +49,7 @@ namespace Spring.Expressions
         public void CallCustomCollectionProcessor()
         {
             Dictionary<string, object> vars = new Dictionary<string, object>();
-            vars["myCollProc"] = new MyTestCollectionProcessor();
+            vars["myCollProc"] = new MyTestCollectionExtension();
 
             MethodNode mn = new MethodNode();
             mn.Text = "myCollProc";

@@ -28,7 +28,7 @@ using System.Globalization;
 
 #endregion
 
-namespace Spring.Objects
+namespace Solenoid.Expressions.Tests.Objects
 {
 	/// <summary>
 	/// Simple nested test object used for testing object factories, AOP framework etc.

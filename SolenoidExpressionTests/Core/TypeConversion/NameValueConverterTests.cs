@@ -22,14 +22,13 @@
 
 using System;
 using System.Collections.Specialized;
-
 using NUnit.Framework;
 using Solenoid.Expressions.Support.TypeConversion;
-using Spring.Objects;
+using Solenoid.Expressions.Tests.Objects;
 
 #endregion
 
-namespace Spring.Core.TypeConversion
+namespace Solenoid.Expressions.Tests.Core.TypeConversion
 {
 	/// <summary>
 	/// Unit tests for the NameValueConverter class.

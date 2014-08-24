@@ -24,7 +24,7 @@ using System;
 
 #endregion
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
     /// <summary>
     /// A simple StopWatch implemetion for use in Performance Tests

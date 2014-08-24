@@ -35,7 +35,7 @@ using System.Web.Configuration;
 
 #pragma warning disable 618
 
-namespace Spring
+namespace Solenoid.Expressions.Tests
 {
     /// <summary>
     /// Allows to invoke parts of your code within the context of a certain PermissionSet.

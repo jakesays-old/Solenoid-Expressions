@@ -19,7 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Solenoid.Expressions.Processors;
+using Solenoid.Expressions.Extensions;
 using Solenoid.Expressions.Support.Reflection.Dynamic;
 using Solenoid.Expressions.Support.Util;
 
@@ -37,10 +37,10 @@ namespace Solenoid.Expressions
             | BindingFlags.Instance | BindingFlags.Static
             | BindingFlags.IgnoreCase;
 
-        private static readonly Dictionary<string, ICollectionProcessor> _collectionProcessorMap = 
-			new Dictionary<string, ICollectionProcessor>();
-        private static readonly Dictionary<string, IMethodCallProcessor> _extensionMethodProcessorMap =
-			new Dictionary<string, IMethodCallProcessor>();
+        private static readonly Dictionary<string, ICollectionExtension> _collectionProcessorMap = 
+			new Dictionary<string, ICollectionExtension>();
+        private static readonly Dictionary<string, IMethodCallExtension> _extensionMethodProcessorMap =
+			new Dictionary<string, IMethodCallExtension>();
 
         private bool _initialized = false;
         private bool _cachedIsParamArray = false;
@@ -59,14 +59,14 @@ namespace Solenoid.Expressions
             _collectionProcessorMap.Add("max", new MaxAggregator());
             _collectionProcessorMap.Add("min", new MinAggregator());
             _collectionProcessorMap.Add("average", new AverageAggregator());
-            _collectionProcessorMap.Add("sort", new SortProcessor());
-            _collectionProcessorMap.Add("orderBy", new OrderByProcessor());
-            _collectionProcessorMap.Add("distinct", new DistinctProcessor());
-            _collectionProcessorMap.Add("nonNull", new NonNullProcessor());
-            _collectionProcessorMap.Add("reverse", new ReverseProcessor());
-            _collectionProcessorMap.Add("convert", new ConversionProcessor());
+            _collectionProcessorMap.Add("sort", new SortExtension());
+            _collectionProcessorMap.Add("orderBy", new OrderByExtension());
+            _collectionProcessorMap.Add("distinct", new DistinctExtension());
+            _collectionProcessorMap.Add("nonNull", new NonNullExtension());
+            _collectionProcessorMap.Add("reverse", new ReverseExtension());
+            _collectionProcessorMap.Add("convert", new ConversionExtension());
 
-            _extensionMethodProcessorMap.Add("date", new DateConversionProcessor());
+            _extensionMethodProcessorMap.Add("date", new DateConversionExtension());
         }
 
         /// <summary>
@@ -98,41 +98,41 @@ namespace Solenoid.Expressions
 	        // resolve method, if necessary
             lock (this)
             {
-				ICollectionProcessor localCollectionProcessor = null;
+				ICollectionExtension localCollectionExtension = null;
 				// check if it is a collection and the methodname denotes a collection processor
                 if ((context == null || context is ICollection))
                 {
                     // predefined collection processor?
-					if (!_collectionProcessorMap.TryGetValue(methodName, out localCollectionProcessor) && 
+					if (!_collectionProcessorMap.TryGetValue(methodName, out localCollectionExtension) && 
 						evalContext.Variables != null)
                     {
 						// user-defined collection processor?
 						object temp;
                         evalContext.Variables.TryGetValue(methodName, out temp);
-                        localCollectionProcessor = temp as ICollectionProcessor;
+                        localCollectionExtension = temp as ICollectionExtension;
                     }
                 }
 
-				if (localCollectionProcessor != null)
+				if (localCollectionExtension != null)
 				{
-					return localCollectionProcessor.Process((ICollection) context, argValues);
+					return localCollectionExtension.Execute((ICollection) context, argValues);
 				}
 
                 // try extension methods
 
-	            IMethodCallProcessor methodCallProcessor = null;
-	            if (!_extensionMethodProcessorMap.TryGetValue(methodName, out methodCallProcessor)
+	            IMethodCallExtension methodCallExtension = null;
+	            if (!_extensionMethodProcessorMap.TryGetValue(methodName, out methodCallExtension)
 					&& evalContext.Variables != null)
 	            {
 		            // user-defined extension method processor?
 		            object temp;
 		            evalContext.Variables.TryGetValue(methodName, out temp);
-		            methodCallProcessor = temp as IMethodCallProcessor;
+		            methodCallExtension = temp as IMethodCallExtension;
 	            }
 
-				if (methodCallProcessor != null)
+				if (methodCallExtension != null)
 				{
-					return methodCallProcessor.Process(context, argValues);
+					return methodCallExtension.Execute(context, argValues);
 				}
 
 	            // try instance method

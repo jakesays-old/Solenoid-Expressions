@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,19 +14,17 @@
  * limitations under the License.
  */
 
-#endregion
-
 using System;
 using System.Collections;
 using Solenoid.Expressions.Support.Collections;
 
-namespace Solenoid.Expressions.Processors
+namespace Solenoid.Expressions.Extensions
 {
     /// <summary>
     /// Implementation of the distinct processor.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    public class DistinctProcessor : ICollectionProcessor
+    public class DistinctExtension : ICollectionExtension
     {
         /// <summary>
         /// Returns distinct items from the collection.
@@ -48,7 +44,7 @@ namespace Solenoid.Expressions.Processors
         /// If there is more than one argument, or if the single optional argument 
         /// is not <b>Boolean</b>.
         /// </exception>
-        public object Process(ICollection source, object[] args)
+        public object Execute(ICollection source, object[] args)
         {
             if (source == null)
             {
