@@ -410,10 +410,6 @@ Type evalType = (Type) ExpressionEvaluator.GetValue(null, "T(Solenoid.Expression
 bool trueValue = (bool) ExpressionEvaluator.GetValue(tesla, "T(System.DateTime) == DOB.GetType()")
 ```
 
-> **Note**
->
-> The implementation delegates to Spring's `ObjectUtils.ResolveType` method for the actual type resolution, which means that the types used within expressions are resolved in the exactly the same way as the types specified in Spring configuration files.
-
 Type Registration
 -----------------
 
