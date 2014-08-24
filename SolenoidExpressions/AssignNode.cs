@@ -49,25 +49,25 @@ namespace Solenoid.Expressions
         /// <returns>Node's value.</returns>
         protected override object Get(object context, EvaluationContext evalContext)
         {
-            var left = getFirstChild();
-            var right = left.getNextSibling();
+            var lhs = getFirstChild();
+            var rhs = lhs.getNextSibling();
 
             object result;
 
-            if (right.getFirstChild() is LambdaExpressionNode)
+            if (rhs.getFirstChild() is LambdaExpressionNode)
             {
-                if (!(left.getFirstChild() is VariableNode))
+                if (!(lhs.getFirstChild() is VariableNode))
                 {
                     throw new ArgumentException("Lambda expression can only be assigned to a global variable.");
                 }
-                result = right.getFirstChild();
+                result = rhs.getFirstChild();
             }
             else
             {
-                result = GetValue(((BaseNode)right), context, evalContext);
+                result = GetValue(((BaseNode)rhs), context, evalContext);
             }
 
-            SetValue(((BaseNode)left), context, evalContext, result );
+            SetValue(((BaseNode)lhs), context, evalContext, result );
 
             return result;
         }

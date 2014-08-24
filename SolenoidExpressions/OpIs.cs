@@ -54,7 +54,8 @@ namespace Solenoid.Expressions
             var instance = GetLeftValue( context, evalContext );
             var type = GetRightValue( context, evalContext ) as Type;
 
-            if (instance == null || type == null)
+            if (instance == null ||
+				type == null)
             {
                 return false;
             }

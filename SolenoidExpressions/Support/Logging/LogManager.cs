@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2009 the original author or authors.
@@ -16,7 +15,8 @@
  * limitations under the License.
  */
 
-#endregion
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedParameter.Global
 
 using System;
 
@@ -95,7 +95,7 @@ namespace Solenoid.Expressions.Support.Logging
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("Adapter");
+                    throw new ArgumentNullException("value");
                 }
 
                 lock (_loadLock)

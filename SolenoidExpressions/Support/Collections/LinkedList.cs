@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  * 
@@ -16,33 +14,27 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
 
 using System;
 using System.Collections;
 
-#endregion
-
 namespace Solenoid.Expressions.Support.Collections
 {
 	/// <summary>
-	/// Simple linked list implementation.
+	///     Simple linked list implementation.
 	/// </summary>
 	/// <author>Simon White</author>
-    [Serializable]
-    public class LinkedList : IList
+	[Serializable]
+	public class LinkedList : IList
 	{
 		private int _nodeIndex;
 		private Node _rootNode;
 		private int _modId;
 
-		#region Constructors
 
 		/// <summary>
-		/// Creates a new instance of the
-		/// <see cref="LinkedList"/> class.
+		///     Creates a new instance of the
+		///     <see cref="LinkedList" /> class.
 		/// </summary>
 		public LinkedList()
 		{
@@ -52,27 +44,24 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Creates a new instance of the
-		/// <see cref="LinkedList"/> class that contains all
-		///  elements of the specified list.
+		///     Creates a new instance of the
+		///     <see cref="LinkedList" /> class that contains all
+		///     elements of the specified list.
 		/// </summary>
 		/// <param name="list">
-		/// A list of elements that defines the initial contents.
+		///     A list of elements that defines the initial contents.
 		/// </param>
 		public LinkedList(IList list) : this()
 		{
 			AddAll(list);
 		}
 
-		#endregion
-
-		#region IList Members
 
 		/// <summary>
-		/// Is list read only?
+		///     Is list read only?
 		/// </summary>
 		/// <value>
-		/// <see langword="true"/> if the list is read only.
+		///     <see langword="true" /> if the list is read only.
 		/// </value>
 		public bool IsReadOnly
 		{
@@ -80,15 +69,15 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Returns the node at the specified index.
+		///     Returns the node at the specified index.
 		/// </summary>
 		/// <remarks>
-		/// <p>
-		/// This is the indexer for the
-		/// <see cref="LinkedList"/> class.
-		/// </p>
+		///     <p>
+		///         This is the indexer for the
+		///         <see cref="LinkedList" /> class.
+		///     </p>
 		/// </remarks>
-		/// <seealso cref="GetNode(int)"/>
+		/// <seealso cref="GetNode(int)" />
 		public object this[int index]
 		{
 			get { return GetNode(index).Value; }
@@ -96,12 +85,12 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Removes the object at the specified index.
+		///     Removes the object at the specified index.
 		/// </summary>
 		/// <param name="index">The lookup index.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// If the specified <paramref name="index"/> is greater than the
-		/// number of objects within the list.
+		///     If the specified <paramref name="index" /> is greater than the
+		///     number of objects within the list.
 		/// </exception>
 		public void RemoveAt(int index)
 		{
@@ -110,13 +99,13 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Inserts an object at the specified index.
+		///     Inserts an object at the specified index.
 		/// </summary>
 		/// <param name="index">The lookup index.</param>
 		/// <param name="value">The object to be inserted.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// If the specified <paramref name="index"/> is greater than the
-		/// number of objects within the list.
+		///     If the specified <paramref name="index" /> is greater than the
+		///     number of objects within the list.
 		/// </exception>
 		public void Insert(int index, object value)
 		{
@@ -139,7 +128,7 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Removes the first instance of the specified object found.
+		///     Removes the first instance of the specified object found.
 		/// </summary>
 		/// <param name="value">The object to remove</param>
 		public void Remove(object value)
@@ -150,12 +139,12 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Returns <see langword="true"/> if this list contains the specified
-		/// element.
+		///     Returns <see langword="true" /> if this list contains the specified
+		///     element.
 		/// </summary>
 		/// <param name="value">The element to look for.</param>
 		/// <returns>
-		/// <see langword="true"/> if this list contains the specified element.
+		///     <see langword="true" /> if this list contains the specified element.
 		/// </returns>
 		public bool Contains(object value)
 		{
@@ -163,7 +152,7 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Removes all objects from the list.
+		///     Removes all objects from the list.
 		/// </summary>
 		public void Clear()
 		{
@@ -173,13 +162,13 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Returns the index of the first instance of the specified
-		/// <paramref name="value"/> found.
+		///     Returns the index of the first instance of the specified
+		///     <paramref name="value" /> found.
 		/// </summary>
 		/// <param name="value">The object to search for</param>
 		/// <returns>
-		/// The index of the first instance found, or -1 if the element was not
-		/// found.
+		///     The index of the first instance found, or -1 if the element was not
+		///     found.
 		/// </returns>
 		public int IndexOf(object value)
 		{
@@ -192,7 +181,7 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Adds the specified object to the end of the list.
+		///     Adds the specified object to the end of the list.
 		/// </summary>
 		/// <param name="value">The object to add</param>
 		/// <returns>The index that the object was added at.</returns>
@@ -203,8 +192,8 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Adds all of the elements of the supplied
-		/// <paramref name="elements"/>list to the end of this list.
+		///     Adds all of the elements of the supplied
+		///     <paramref name="elements" />list to the end of this list.
 		/// </summary>
 		/// <param name="elements">The list of objects to add.</param>
 		public void AddAll(IList elements)
@@ -216,25 +205,22 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Is the list a fixed size?
+		///     Is the list a fixed size?
 		/// </summary>
 		/// <value>
-		/// <see langword="true"/> if the list is a fixed size list.
+		///     <see langword="true" /> if the list is a fixed size list.
 		/// </value>
 		public bool IsFixedSize
 		{
 			get { return false; }
 		}
 
-		#endregion
-
-		#region Private Methods
 
 		/// <summary>
-		/// Checks whether the list can be modified.
+		///     Checks whether the list can be modified.
 		/// </summary>
 		/// <exception cref="System.NotSupportedException">
-		/// If the list cannot be modified.
+		///     If the list cannot be modified.
 		/// </exception>
 		private void CheckUpdateState()
 		{
@@ -245,11 +231,11 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Validates the specified index.
+		///     Validates the specified index.
 		/// </summary>
 		/// <param name="index">The lookup index.</param>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// If the index is invalid.
+		///     If the index is invalid.
 		/// </exception>
 		private void ValidateIndex(int index)
 		{
@@ -260,13 +246,13 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Returns the node at the specified index.
+		///     Returns the node at the specified index.
 		/// </summary>
 		/// <param name="index">The lookup index.</param>
 		/// <returns>The node at the specified index.</returns>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// If the specified <paramref name="index"/> is greater than the
-		/// number of objects within the list.
+		///     If the specified <paramref name="index" /> is greater than the
+		///     number of objects within the list.
 		/// </exception>
 		private Node GetNode(int index)
 		{
@@ -280,45 +266,43 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Returns the node (and index) of the first node that contains
-		/// the specified value.
+		///     Returns the node (and index) of the first node that contains
+		///     the specified value.
 		/// </summary>
 		/// <param name="value">The value to search for.</param>
 		/// <returns>
-		/// The node, or <see langword="null"/> if not found.
+		///     The node, or <see langword="null" /> if not found.
 		/// </returns>
 		private NodeHolder GetNode(object value)
 		{
-            var i = 0;
-            if (value == null)
-            {
-
-                for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
-                {
-                    if (n.Value == null)
-                    {
-                        return new NodeHolder(n, i);
-                    }
-                    i++;
-                }
-            }
-            else
-            {
-
-                for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
-                {
-                    if (value.Equals(n.Value))                
-                    {
-                        return new NodeHolder(n, i);
-                    }
-                    i++;
-                }
-            }
+			var i = 0;
+			if (value == null)
+			{
+				for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
+				{
+					if (n.Value == null)
+					{
+						return new NodeHolder(n, i);
+					}
+					i++;
+				}
+			}
+			else
+			{
+				for (var n = _rootNode.NextNode; n != _rootNode; n = n.NextNode)
+				{
+					if (value.Equals(n.Value))
+					{
+						return new NodeHolder(n, i);
+					}
+					i++;
+				}
+			}
 			return null;
 		}
 
 		/// <summary>
-		/// Removes the specified node.
+		///     Removes the specified node.
 		/// </summary>
 		/// <param name="node">The node to be removed.</param>
 		private void RemoveNode(Node node)
@@ -332,22 +316,19 @@ namespace Solenoid.Expressions.Support.Collections
 			_modId++;
 		}
 
-		#endregion
-
-		#region ICollection Members
 
 		/// <summary>
-		/// Returns <see langword="true"/> if the list is synchronized across
-		/// threads.
+		///     Returns <see langword="true" /> if the list is synchronized across
+		///     threads.
 		/// </summary>
 		/// <remarks>
-		/// <note>
-		/// This implementation <b>always</b> returns <see langword="false"/>.
-		/// </note>
-		/// <p>
-		/// Note that enumeration is inherently not thread-safe. Use the
-		/// <see cref="SyncRoot"/> to lock the object during enumeration.
-		/// </p>
+		///     <note>
+		///         This implementation <b>always</b> returns <see langword="false" />.
+		///     </note>
+		///     <p>
+		///         Note that enumeration is inherently not thread-safe. Use the
+		///         <see cref="SyncRoot" /> to lock the object during enumeration.
+		///     </p>
 		/// </remarks>
 		public bool IsSynchronized
 		{
@@ -355,7 +336,7 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// The number of objects within the list.
+		///     The number of objects within the list.
 		/// </summary>
 		public int Count
 		{
@@ -363,29 +344,29 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// Copies the elements in this list to an array.
+		///     Copies the elements in this list to an array.
 		/// </summary>
 		/// <remarks>
-		/// <p>
-		/// The type of array needs to be compatible with the objects in this
-		/// list, obviously.
-		/// </p>
+		///     <p>
+		///         The type of array needs to be compatible with the objects in this
+		///         list, obviously.
+		///     </p>
 		/// </remarks>
 		/// <param name="array">
-		/// An array that will be the target of the copy operation.
+		///     An array that will be the target of the copy operation.
 		/// </param>
 		/// <param name="index">
-		/// The zero-based index where copying will start.
+		///     The zero-based index where copying will start.
 		/// </param>
 		/// <exception cref="System.ArgumentNullException">
-		/// If the supplied <paramref name="array"/> is <see langword="null"/>.
+		///     If the supplied <paramref name="array" /> is <see langword="null" />.
 		/// </exception>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// If the supplied <paramref name="index"/> is less than zero
-		/// or is greater than the length of <paramref name="array"/>.
+		///     If the supplied <paramref name="index" /> is less than zero
+		///     or is greater than the length of <paramref name="array" />.
 		/// </exception>
 		/// <exception cref="System.ArgumentException">
-		/// If the supplied <paramref name="array"/> is of insufficient size.
+		///     If the supplied <paramref name="array" /> is of insufficient size.
 		/// </exception>
 		public void CopyTo(Array array, int index)
 		{
@@ -395,15 +376,16 @@ namespace Solenoid.Expressions.Support.Collections
 			}
 			if ((index < 0) || (index > array.Length))
 			{
-				throw new ArgumentOutOfRangeException("index", String.Format("Index {0} is out of range.", index));
+				throw new ArgumentOutOfRangeException("index", 
+					String.Format("Index {0} is out of range.", index));
 			}
-			if ((array.Length - index) < this._nodeIndex)
+			if ((array.Length - index) < _nodeIndex)
 			{
 				throw new ArgumentException("Array is of insufficient size.");
 			}
 
-			var node = this._rootNode;
-			for (int i = 0, pos = index; i < this._nodeIndex; i++, pos++)
+			var node = _rootNode;
+			for (int i = 0, pos = index; i < _nodeIndex; i++, pos++)
 			{
 				node = node.NextNode;
 				array.SetValue(node.Value, pos);
@@ -411,46 +393,40 @@ namespace Solenoid.Expressions.Support.Collections
 		}
 
 		/// <summary>
-		/// An object that can be used to synchronize this
-		/// <see cref="LinkedList"/> to make it thread-safe.
+		///     An object that can be used to synchronize this
+		///     <see cref="LinkedList" /> to make it thread-safe.
 		/// </summary>
 		/// <value>
-		/// An object that can be used to synchronize this
-		/// <see cref="LinkedList"/> to make it thread-safe.
+		///     An object that can be used to synchronize this
+		///     <see cref="LinkedList" /> to make it thread-safe.
 		/// </value>
 		public object SyncRoot
 		{
 			get { return this; }
 		}
 
-		#endregion
-
-		#region IEnumerable Members
 
 		/// <summary>
-		/// Gets an enumerator for the elements in the
-		/// <see cref="LinkedList"/>.
+		///     Gets an enumerator for the elements in the
+		///     <see cref="LinkedList" />.
 		/// </summary>
 		/// <remarks>
-		/// <p>
-		/// Enumerators are fail fast.
-		/// </p>
+		///     <p>
+		///         Enumerators are fail fast.
+		///     </p>
 		/// </remarks>
 		/// <returns>
-		/// An <see cref="System.Collections.IEnumerator"/> over the elements
-		/// in the <see cref="LinkedList"/>.
+		///     An <see cref="System.Collections.IEnumerator" /> over the elements
+		///     in the <see cref="LinkedList" />.
 		/// </returns>
 		public IEnumerator GetEnumerator()
 		{
 			return new LinkedListEnumerator(this);
 		}
 
-		#endregion
 
-		#region Inner Classes
-
-        [Serializable]
-        private class Node
+		[Serializable]
+		private class Node
 		{
 			private object _value;
 			private Node _next;
@@ -465,27 +441,27 @@ namespace Solenoid.Expressions.Support.Collections
 			public Node NextNode
 			{
 				get { return _next; }
-				set { this._next = value; }
+				set { _next = value; }
 			}
 
 			public Node PreviousNode
 			{
 				get { return _previous; }
-				set { this._previous = value; }
+				set { _previous = value; }
 			}
 
 			public Node(object val, Node previous, Node next)
 			{
-				this._value = val;
-				this._next = next;
-				this._previous = previous;
+				_value = val;
+				_next = next;
+				_previous = previous;
 			}
 		}
 
 		private class NodeHolder
 		{
-			private int _index;
-			private Node _node;
+			private readonly int _index;
+			private readonly Node _node;
 
 			public int Index
 			{
@@ -499,16 +475,16 @@ namespace Solenoid.Expressions.Support.Collections
 
 			public NodeHolder(Node node, int index)
 			{
-				this._node = node;
-				this._index = index;
+				_node = node;
+				_index = index;
 			}
 		}
 
 		private class LinkedListEnumerator : IEnumerator
 		{
-			private LinkedList _ll;
+			private readonly LinkedList _ll;
 			private Node _current;
-			private int _modId;
+			private readonly int _modId;
 
 			public object Current
 			{
@@ -517,20 +493,20 @@ namespace Solenoid.Expressions.Support.Collections
 
 			public LinkedListEnumerator(LinkedList ll)
 			{
-				this._ll = ll;
-				this._modId = ll._modId;
-				this._current = _ll._rootNode;
+				_ll = ll;
+				_modId = ll._modId;
+				_current = _ll._rootNode;
 			}
 
 			public bool MoveNext()
 			{
-				if (this._modId != this._ll._modId)
+				if (_modId != _ll._modId)
 				{
 					throw new InvalidOperationException("LinkedList has been modified.");
 				}
 
 				_current = _current.NextNode;
-				return (_current == _ll._rootNode ? false : true);
+				return (_current != _ll._rootNode);
 			}
 
 			public void Reset()
@@ -538,7 +514,5 @@ namespace Solenoid.Expressions.Support.Collections
 				_current = _ll._rootNode;
 			}
 		}
-
-		#endregion
 	}
 }

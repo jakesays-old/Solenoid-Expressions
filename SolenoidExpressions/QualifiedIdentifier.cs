@@ -75,10 +75,6 @@ namespace Solenoid.Expressions
         public override string getText()
         {
             var tmp = base.getText();
-//            if (tmp != null)
-//            {
-//                tmp = tmp.Replace(ESCAPE_CHAR, ""); // remove all occurrences of escape char
-//            }
             var node = getFirstChild();
             while (node != null)
             {

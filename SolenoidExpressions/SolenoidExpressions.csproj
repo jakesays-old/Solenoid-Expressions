@@ -24,8 +24,8 @@
     <FwVersion Condition="'$(TargetFrameworkVersion)' == 'v4.0'">NET_4_0</FwVersion>
     <FwVersion Condition="'$(TargetFrameworkVersion)' == 'v4.5'">NET_4_5</FwVersion>
     <OutputPath>.\bin\$(Configuration)\$(OutputSubPath)</OutputPath>
-	  <SignAssembly Condition="'$(NugetBuild)' == 'true'">true</SignAssembly>
-	  <AssemblyOriginatorKeyFile Condition="'$(NugetBuild)' == 'true'">SolenoidPublishingKey.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly Condition="'$(NugetBuild)' == 'true'">true</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="'$(NugetBuild)' == 'true'">SolenoidPublishingKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -151,6 +151,14 @@
     <Compile Include="Support\NullValueInNestedPathException.cs" />
     <Compile Include="Support\PropertyAccessException.cs" />
     <Compile Include="Support\PropertyChangeEventArgs.cs" />
+    <Compile Include="Support\Reflection\Dynamic\IDynamicConstructor.cs" />
+    <Compile Include="Support\Reflection\Dynamic\IDynamicField.cs" />
+    <Compile Include="Support\Reflection\Dynamic\IDynamicMethod.cs" />
+    <Compile Include="Support\Reflection\Dynamic\IDynamicProperty.cs" />
+    <Compile Include="Support\Reflection\Dynamic\SafeConstructor.cs" />
+    <Compile Include="Support\Reflection\Dynamic\SafeField.cs" />
+    <Compile Include="Support\Reflection\Dynamic\SafeMethod.cs" />
+    <Compile Include="Support\Reflection\Dynamic\SafeProperty.cs" />
     <Compile Include="Support\TypeConversion\TypeConversionUtils.cs">
       <SubType>Code</SubType>
     </Compile>

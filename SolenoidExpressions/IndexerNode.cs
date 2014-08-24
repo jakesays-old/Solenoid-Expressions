@@ -199,10 +199,10 @@ namespace Solenoid.Expressions
 			var argCount = array.Rank;
 			AssertArgumentCount(argCount);
 
-			var indices = new Int32[argCount];
+			var indices = new int[argCount];
 			for (var i = 0; i < argCount; i++)
 			{
-				indices[i] = (Int32) ResolveArgument(i, evalContext);
+				indices[i] = (int) ResolveArgument(i, evalContext);
 			}
 			return array.GetValue(indices);
 		}
@@ -236,10 +236,10 @@ namespace Solenoid.Expressions
 			var argCount = array.Rank;
 			AssertArgumentCount(argCount);
 
-			var indices = new Int32[argCount];
+			var indices = new int[argCount];
 			for (var i = 0; i < argCount; i++)
 			{
-				indices[i] = (Int32) ResolveArgument(i, evalContext);
+				indices[i] = (int) ResolveArgument(i, evalContext);
 			}
 			array.SetValue(newValue, indices);
 		}

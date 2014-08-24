@@ -61,11 +61,11 @@ namespace Solenoid.Expressions
                         var n = getText();
                         try
                         {
-                            _nodeValue = Int32.Parse(n.Substring(2), NumberStyles.HexNumber);
+                            _nodeValue = int.Parse(n.Substring(2), NumberStyles.HexNumber);
                         }
                         catch (OverflowException)
                         {
-                            _nodeValue = Int64.Parse(n.Substring(2), NumberStyles.HexNumber);
+                            _nodeValue = long.Parse(n.Substring(2), NumberStyles.HexNumber);
                         }
                     }
                 }

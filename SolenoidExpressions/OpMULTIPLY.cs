@@ -59,11 +59,14 @@ namespace Solenoid.Expressions
             {
                 return NumberUtils.Multiply(lhs, rhs);
             }
-	        if (lhs is IList || lhs is ISet)
+
+	        if (lhs is IList || 
+				lhs is ISet)
 	        {
 		        ISet leftset = new HybridSet(lhs as ICollection);
 		        ISet rightset;
-		        if (rhs is IList || rhs is ISet)
+		        if (rhs is IList ||
+					rhs is ISet)
 		        {
 			        rightset = new HybridSet(rhs as ICollection);
 		        }

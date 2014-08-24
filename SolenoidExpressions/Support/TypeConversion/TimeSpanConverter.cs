@@ -200,15 +200,6 @@ namespace Solenoid.Expressions.Support.TypeConversion
 
 
 		/// <summary>
-		///     Creates a new instance of the
-		///     <see cref="TimeSpanConverter" /> class.
-		/// </summary>
-		public TimeSpanConverter()
-		{
-		}
-
-
-		/// <summary>
 		///     Convert from a string value to a <see cref="System.TimeSpan" /> instance.
 		/// </summary>
 		/// <param name="context">
@@ -239,7 +230,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
 					foreach (var specifierParser in _specifiers)
 					{
 						var res = specifierParser.Match(stringValue);
-						if (res.HasValue) return res.Value;
+						if (res.HasValue)
+						{
+							return res.Value;
+						}
 					}
 				}
 				catch

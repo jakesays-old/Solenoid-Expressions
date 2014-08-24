@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,7 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
 
 using System;
 using System.Collections;
@@ -26,116 +23,117 @@ using Solenoid.Expressions.Support.Util;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents arithmetic subtraction operator.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class OpSubtract : BinaryOperator
-    {
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public OpSubtract()
-        {
-        }
+	/// <summary>
+	///     Represents arithmetic subtraction operator.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class OpSubtract : BinaryOperator
+	{
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public OpSubtract()
+		{
+		}
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected OpSubtract(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        
-        /// <summary>
-        /// Returns a value for the arithmetic subtraction operator node.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            var left = GetLeftValue( context, evalContext );
-            var right = GetRightValue( context, evalContext );
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected OpSubtract(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-            if (NumberUtils.IsNumber(left) && NumberUtils.IsNumber(right))
-            {
-                return NumberUtils.Subtract(left, right);
-            }
-            else if (left is DateTime && (right is TimeSpan || right is string || NumberUtils.IsNumber(right)))
-            {
-                if (NumberUtils.IsNumber(right))
-                {
-                    right = TimeSpan.FromDays(Convert.ToDouble(right));
-                }
-                else if (right is string)
-                {
-                    right = TimeSpan.Parse((string) right);
-                }
-                return (DateTime) left - (TimeSpan) right;
-            }
-            else if (left is DateTime && right is DateTime)
-            {
-                return (DateTime) left - (DateTime) right;
-            }
-            else if (left is IList || left is ISet)
-            {
-                ISet leftset = new HybridSet(left as ICollection);
-                ISet rightset;
-                if(right is IList || right is ISet)
-                {
-                    rightset = new HybridSet(right as ICollection);
-                }
-                else if (right is IDictionary)
-                {
-                    rightset = new HybridSet(((IDictionary) right).Keys);
-                }
-                else
-                {
-                    throw new ArgumentException("Cannot subtract instances of '"
-                    + left.GetType().FullName
-                    + "' and '"
-                    + right.GetType().FullName
-                    + "'.");
-                }
-                return leftset.Minus(rightset);
-            }
-            else if (left is IDictionary)
-            {
-                ISet leftset = new HybridSet(((IDictionary) left).Keys);
-                ISet rightset;
-                if (right is IList || right is ISet)
-                {
-                    rightset = new HybridSet(right as ICollection);
-                }
-                else if (right is IDictionary)
-                {
-                    rightset = new HybridSet(((IDictionary) right).Keys);
-                }
-                else
-                {
-                    throw new ArgumentException("Cannot subtract instances of '"
-                    + left.GetType().FullName
-                    + "' and '"
-                    + right.GetType().FullName
-                    + "'.");
-                }
-                IDictionary result = new Hashtable(rightset.Count);
-                foreach(var key in leftset.Minus(rightset))
-                {
-                    result.Add(key, ((IDictionary)left)[key]);
-                }
-                return result;
-            }
-            else
-            {
-                throw new ArgumentException("Cannot subtract instances of '"
-                    + left.GetType().FullName
-                    + "' and '"
-                    + right.GetType().FullName
-                    + "'.");
-            }
-        }
-    }
+		/// <summary>
+		///     Returns a value for the arithmetic subtraction operator node.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			var lhs = GetLeftValue(context, evalContext);
+			var rhs = GetRightValue(context, evalContext);
+
+			if (NumberUtils.IsNumber(lhs) && NumberUtils.IsNumber(rhs))
+			{
+				return NumberUtils.Subtract(lhs, rhs);
+			}
+			if (lhs is DateTime &&
+				(rhs is TimeSpan ||
+				rhs is string ||
+				NumberUtils.IsNumber(rhs)))
+			{
+				if (NumberUtils.IsNumber(rhs))
+				{
+					rhs = TimeSpan.FromDays(Convert.ToDouble(rhs));
+				}
+				else if (rhs is string)
+				{
+					rhs = TimeSpan.Parse((string) rhs);
+				}
+				return (DateTime) lhs - (TimeSpan) rhs;
+			}
+			if (lhs is DateTime && rhs is DateTime)
+			{
+				return (DateTime) lhs - (DateTime) rhs;
+			}
+			if (lhs is IList ||
+				lhs is ISet)
+			{
+				ISet leftset = new HybridSet(lhs as ICollection);
+				ISet rightset;
+				if (rhs is IList || rhs is ISet)
+				{
+					rightset = new HybridSet(rhs as ICollection);
+				}
+				else if (rhs is IDictionary)
+				{
+					rightset = new HybridSet(((IDictionary) rhs).Keys);
+				}
+				else
+				{
+					throw new ArgumentException("Cannot subtract instances of '"
+												+ lhs.GetType().FullName
+												+ "' and '"
+												+ rhs.GetType().FullName
+												+ "'.");
+				}
+				return leftset.Minus(rightset);
+			}
+			if (lhs is IDictionary)
+			{
+				ISet leftset = new HybridSet(((IDictionary) lhs).Keys);
+				ISet rightset;
+				if (rhs is IList || rhs is ISet)
+				{
+					rightset = new HybridSet(rhs as ICollection);
+				}
+				else if (rhs is IDictionary)
+				{
+					rightset = new HybridSet(((IDictionary) rhs).Keys);
+				}
+				else
+				{
+					throw new ArgumentException("Cannot subtract instances of '"
+												+ lhs.GetType().FullName
+												+ "' and '"
+												+ rhs.GetType().FullName
+												+ "'.");
+				}
+				IDictionary result = new Hashtable(rightset.Count);
+				foreach (var key in leftset.Minus(rightset))
+				{
+					result.Add(key, ((IDictionary) lhs)[key]);
+				}
+				return result;
+			}
+			throw new ArgumentException("Cannot subtract instances of '"
+										+ lhs.GetType().FullName
+										+ "' and '"
+										+ rhs.GetType().FullName
+										+ "'.");
+		}
+	}
 }

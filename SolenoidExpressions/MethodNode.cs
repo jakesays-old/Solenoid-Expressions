@@ -124,7 +124,7 @@ namespace Solenoid.Expressions
 	            if (!_extensionMethodProcessorMap.TryGetValue(methodName, out methodCallExtension)
 					&& evalContext.Variables != null)
 	            {
-		            // user-defined extension method processor?
+		            // user-defined extension method?
 		            object temp;
 		            evalContext.Variables.TryGetValue(methodName, out temp);
 		            methodCallExtension = temp as IMethodCallExtension;

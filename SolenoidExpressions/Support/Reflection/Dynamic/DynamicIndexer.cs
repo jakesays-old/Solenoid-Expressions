@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,7 +15,8 @@
  * limitations under the License.
  */
 
-#endregion
+// ReSharper disable UnusedMember.Global
+
 
 namespace Solenoid.Expressions.Support.Reflection.Dynamic
 {

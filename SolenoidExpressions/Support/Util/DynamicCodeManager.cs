@@ -38,23 +38,6 @@ namespace Solenoid.Expressions.Support.Util
     /// Using this factory you can't define several modules within a single dynamic assembly - only a simple one2one relation between assembly/module is used.
     /// </note>
     /// </remarks>
-    /// <example>
-    /// <p>The following excerpt from <see cref="Spring.Proxy.DynamicProxyManager"/> demonstrates usage:</p>
-    /// <code language="c#">
-    /// public class DynamicProxyManager
-    /// {
-    ///   public const string PROXY_ASSEMBLY_NAME = "Spring.Proxy";
-    ///
-    ///   public static TypeBuilder CreateTypeBuilder(string name, Type baseType)
-    ///   {
-    ///     // Generates type name
-    ///     string typeName = String.Format("{0}.{1}_{2}", PROXY_ASSEMBLY_NAME, name, Guid.NewGuid().ToString("N"));
-    ///     ModuleBuilder module = DynamicCodeManager.GetModuleBuilder(PROXY_ASSEMBLY_NAME);
-    ///     return module.DefineType(typeName, PROXY_TYPE_ATTRIBUTES);
-    ///   }
-    /// }
-    /// </code>
-    /// </example>
     /// <author>Erich Eichinger</author>
     public static class DynamicCodeManager
     {

@@ -69,15 +69,15 @@ namespace Solenoid.Expressions
                             n = n.Substring(0, n.Length - 1);
                             if (lastChar == 'm')
                             {
-                                _nodeValue = Decimal.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = decimal.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                             else if (lastChar == 'f')
                             {
-                                _nodeValue = Single.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = float.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                             else
                             {
-                                _nodeValue = Double.Parse(n, NumberFormatInfo.InvariantInfo);
+                                _nodeValue = double.Parse(n, NumberFormatInfo.InvariantInfo);
                             }
                         }
                     }

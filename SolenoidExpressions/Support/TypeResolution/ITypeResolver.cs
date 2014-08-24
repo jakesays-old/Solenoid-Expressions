@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,45 +14,40 @@
  * limitations under the License.
  */
 
-#endregion
-
-#region Imports
 
 using System;
-
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeResolution
 {
 	/// <summary>
-	/// Resolves a <see cref="System.Type"/> by name.
+	///     Resolves a <see cref="System.Type" /> by name.
 	/// </summary>
 	/// <remarks>
-	/// <p>
-	/// The rationale behind the creation of this interface is to centralise
-	/// the resolution of type names to <see cref="System.Type"/> instances
-	/// beyond that offered by the plain vanilla
-	/// <see cref="System.Type.GetType(string)"/> method call.
-	/// </p>
+	///     <p>
+	///         The rationale behind the creation of this interface is to centralise
+	///         the resolution of type names to <see cref="System.Type" /> instances
+	///         beyond that offered by the plain vanilla
+	///         <see cref="System.Type.GetType(string)" /> method call.
+	///     </p>
 	/// </remarks>
 	/// <author>Rick Evans</author>
 	public interface ITypeResolver
 	{
 		/// <summary>
-		/// Resolves the supplied <paramref name="typeName"/> to a
-		/// <see cref="System.Type"/>
-		/// instance.
+		///     Resolves the supplied <paramref name="typeName" /> to a
+		///     <see cref="System.Type" />
+		///     instance.
 		/// </summary>
 		/// <param name="typeName">
-		/// The (possibly partially assembly qualified) name of a
-		/// <see cref="System.Type"/>.
+		///     The (possibly partially assembly qualified) name of a
+		///     <see cref="System.Type" />.
 		/// </param>
 		/// <returns>
-		/// A resolved <see cref="System.Type"/> instance.
+		///     A resolved <see cref="System.Type" /> instance.
 		/// </returns>
 		/// <exception cref="System.TypeLoadException">
-		/// If the supplied <paramref name="typeName"/> could not be resolved
-		/// to a <see cref="System.Type"/>.
+		///     If the supplied <paramref name="typeName" /> could not be resolved
+		///     to a <see cref="System.Type" />.
 		/// </exception>
 		Type Resolve(string typeName);
 	}

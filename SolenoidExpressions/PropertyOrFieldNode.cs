@@ -174,7 +174,7 @@ namespace Solenoid.Expressions
             }
             catch (AmbiguousMatchException)
             {
-                PropertyInfo pi = null;
+                PropertyInfo pi;
 
                 // search type hierarchy
                 while (contextType != typeof(object) &&
@@ -405,7 +405,8 @@ namespace Solenoid.Expressions
         private bool AddToCollections(object context, EvaluationContext evalContext, object newValue)
         {
             // short-circuit if accessor is not readable or if we have an array
-            if (!_accessor.IsReadable || _accessor.TargetType.IsArray)
+            if (!_accessor.IsReadable ||
+				_accessor.TargetType.IsArray)
             {
                 return false;
             }

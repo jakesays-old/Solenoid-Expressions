@@ -38,7 +38,7 @@ namespace Solenoid.Expressions.Support
         /// Creates a new instance of the
         /// <see cref="InvalidPropertyException"/> class.
         /// </summary>
-        public InvalidPropertyException()
+        protected InvalidPropertyException()
         {
         }
 
@@ -49,7 +49,7 @@ namespace Solenoid.Expressions.Support
         /// <param name="message">
         /// A message about the exception.
         /// </param>
-        public InvalidPropertyException(string message) : base(message)
+        protected InvalidPropertyException(string message) : base(message)
         {
         }
 
@@ -126,7 +126,7 @@ namespace Solenoid.Expressions.Support
         /// <param name="rootCause">
         /// The root exception that is being wrapped.
         /// </param>
-        public InvalidPropertyException(string message, Exception rootCause)
+        protected InvalidPropertyException(string message, Exception rootCause)
             : base(message, rootCause)
         {
         }

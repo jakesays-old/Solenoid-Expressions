@@ -35,7 +35,7 @@ namespace Solenoid.Expressions.Support.Util
         /// <summary>
         /// Creates a new instance of the FatalObjectException class.
         /// </summary>
-        public FatalReflectionException()
+        protected FatalReflectionException()
         {
         }
 

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,7 +14,6 @@
  * limitations under the License.
  */
 
-#endregion
 
 using System;
 using System.Collections;
@@ -25,73 +22,71 @@ using Solenoid.Expressions.Support.TypeResolution;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents parsed method node in the navigation expression.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class ArrayConstructorNode : NodeWithArguments
-    {
-        private Type arrayType;
+	/// <summary>
+	///     Represents parsed method node in the navigation expression.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class ArrayConstructorNode : NodeWithArguments
+	{
+		private Type _arrayType;
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public ArrayConstructorNode()
-        {
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public ArrayConstructorNode()
+		{
+		}
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected ArrayConstructorNode(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected ArrayConstructorNode(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-        /// <summary>
-        /// Creates new instance of the type defined by this node.
-        /// </summary>
-        /// <param name="context">Context to evaluate expressions against.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            if (arrayType == null)
-            {
-                lock (this)
-                {
-                    if (arrayType == null)
-                    {
-                        arrayType = TypeResolutionUtils.ResolveType(getText());
-                    }
-                }
-            }
+		/// <summary>
+		///     Creates new instance of the type defined by this node.
+		/// </summary>
+		/// <param name="context">Context to evaluate expressions against.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			if (_arrayType == null)
+			{
+				lock (this)
+				{
+					if (_arrayType == null)
+					{
+						_arrayType = TypeResolutionUtils.ResolveType(getText());
+					}
+				}
+			}
 
-            var rankRoot = getFirstChild();
-            var dimensions = rankRoot.getNumberOfChildren();
-            var ranks = new int[dimensions];
-            if (dimensions > 0)
-            {
-                var i = 0;
-                var rankNode = rankRoot.getFirstChild();
-                while (rankNode != null)
-                {
-                    ranks[i++] = (int)GetValue((BaseNode)rankNode, context, evalContext);
-                    rankNode = rankNode.getNextSibling();
-                }
-                return Array.CreateInstance(arrayType, ranks);
-            }
-            else
-            {
-                var valuesRoot = getFirstChild().getNextSibling();
-                if (valuesRoot != null)
-                {
-                    var values = (ArrayList)GetValue(((BaseNode)valuesRoot), context, evalContext);
-                    return values.ToArray(arrayType);
-                }
-            }
+			var rankRoot = getFirstChild();
+			var dimensions = rankRoot.getNumberOfChildren();
+			var ranks = new int[dimensions];
+			if (dimensions > 0)
+			{
+				var i = 0;
+				var rankNode = rankRoot.getFirstChild();
+				while (rankNode != null)
+				{
+					ranks[i++] = (int) GetValue((BaseNode) rankNode, context, evalContext);
+					rankNode = rankNode.getNextSibling();
+				}
+				return Array.CreateInstance(_arrayType, ranks);
+			}
+			var valuesRoot = getFirstChild().getNextSibling();
+			if (valuesRoot != null)
+			{
+				var values = (ArrayList) GetValue(((BaseNode) valuesRoot), context, evalContext);
+				return values.ToArray(_arrayType);
+			}
 
-            throw new ArgumentException("You have to specify either rank or initializer for an array.");
-        }
-    }
+			throw new ArgumentException("You have to specify either rank or initializer for an array.");
+		}
+	}
 }

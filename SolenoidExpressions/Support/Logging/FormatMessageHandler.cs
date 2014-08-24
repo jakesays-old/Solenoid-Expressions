@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2009 the original author or authors.
@@ -16,7 +15,6 @@
  * limitations under the License.
  */
 
-#endregion
 
 namespace Solenoid.Expressions.Support.Logging
 {

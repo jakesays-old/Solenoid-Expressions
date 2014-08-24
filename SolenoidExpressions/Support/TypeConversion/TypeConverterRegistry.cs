@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright 2002-2010 the original author or authors.
@@ -16,9 +15,8 @@
  * limitations under the License.
  */
 
-#endregion
+// ReSharper disable UnusedMember.Global
 
-#region Imports
 
 using System;
 using System.Collections.Generic;
@@ -29,7 +27,6 @@ using System.Text.RegularExpressions;
 using Solenoid.Expressions.Support.TypeResolution;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeConversion
 {
@@ -39,23 +36,24 @@ namespace Solenoid.Expressions.Support.TypeConversion
     /// <author>Aleksandar Seovic</author>
     public static class TypeConverterRegistry
     {
-        private static readonly object syncRoot = new object();
-        private static IDictionary<Type, TypeConverter> converters = new Dictionary<Type, TypeConverter>();
+        private static readonly object _syncRoot = new object();
+        private static readonly IDictionary<Type, TypeConverter> _converters = 
+			new Dictionary<Type, TypeConverter>();
         
         /// <summary>
         /// Registers standard and configured type converters.
         /// </summary>
         static TypeConverterRegistry()
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                converters[typeof(string[])] = new StringArrayConverter();
-                converters[typeof(Type)] = new RuntimeTypeConverter();
-                converters[typeof(Uri)] = new UriConverter();
-                converters[typeof(FileInfo)] = new FileInfoConverter();
-                converters[typeof(NameValueCollection)] = new NameValueConverter();
-                converters[typeof(Regex)] = new RegexConverter();
-                converters[typeof(TimeSpan)] = new TimeSpanConverter();
+                _converters[typeof(string[])] = new StringArrayConverter();
+                _converters[typeof(Type)] = new RuntimeTypeConverter();
+                _converters[typeof(Uri)] = new UriConverter();
+                _converters[typeof(FileInfo)] = new FileInfoConverter();
+                _converters[typeof(NameValueCollection)] = new NameValueConverter();
+                _converters[typeof(Regex)] = new RegexConverter();
+                _converters[typeof(TimeSpan)] = new TimeSpanConverter();
             }
         }
         
@@ -70,7 +68,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
             AssertUtils.ArgumentNotNull(type, "type");
 
             TypeConverter converter;
-            if (!converters.TryGetValue(type, out converter))
+            if (!_converters.TryGetValue(type, out converter))
             {
                 if (type.IsEnum)
                 {
@@ -96,9 +94,9 @@ namespace Solenoid.Expressions.Support.TypeConversion
             AssertUtils.ArgumentNotNull(type, "type");
             AssertUtils.ArgumentNotNull(converter, "converter");
 
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                converters[type] = converter;
+                _converters[type] = converter;
             }
         }
 

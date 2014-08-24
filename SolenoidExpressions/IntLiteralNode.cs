@@ -68,11 +68,11 @@ namespace Solenoid.Expressions
                         var n = getText();
                         try
                         {
-                            _nodeValue = Int32.Parse(n);
+                            _nodeValue = int.Parse(n);
                         }
                         catch (OverflowException)
                         {
-                            _nodeValue = Int64.Parse(n);
+                            _nodeValue = long.Parse(n);
                         }
                     }
                 }

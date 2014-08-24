@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,15 +15,12 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.ComponentModel;
 using System.Globalization;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeConversion
 {
@@ -35,16 +31,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
 	/// <author>Mark Pollack (.NET)</author>
 	public class UriConverter : TypeConverter
 	{
-        #region Constructor (s) / Destructor
-        /// <summary>
-        /// Creates a new instance of the
-        /// <see cref="UriConverter"/> class.
-        /// </summary>
-        public UriConverter () {}
-        #endregion
-
-        #region Methods
-        /// <summary>
+		/// <summary>
         /// Returns whether this converter can convert an object of one
         /// <see cref="System.Type"/> to a <see cref="System.Uri"/>
         /// </summary>
@@ -108,6 +95,5 @@ namespace Solenoid.Expressions.Support.TypeConversion
             }
             return base.ConvertFrom (context, culture, value);
         }
-        #endregion
 	}
 }

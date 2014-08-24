@@ -110,8 +110,8 @@ namespace Solenoid.Expressions
 
 			public SpringAstFactory() : base(_basenodeType)
 			{
-				base.defaultASTNodeTypeObject_ = _basenodeType;
-				base.typename2creator_ = _typename2Creator;
+				defaultASTNodeTypeObject_ = _basenodeType;
+				typename2creator_ = _typename2Creator;
 			}
 		}
 
@@ -120,8 +120,8 @@ namespace Solenoid.Expressions
 			public SolenoidExpressionParser(TokenStream lexer)
 				: base(lexer)
 			{
-				base.astFactory = new SpringAstFactory();
-				base.initialize();
+				astFactory = new SpringAstFactory();
+				initialize();
 			}
 		}
 
@@ -199,7 +199,8 @@ namespace Solenoid.Expressions
 				}
 				catch (TokenStreamRecognitionException ex)
 				{
-					throw new SyntaxErrorException(ex.recog.Message, ex.recog.Line, ex.recog.Column, expression);
+					throw new SyntaxErrorException(ex.recog.Message, ex.recog.Line,
+						ex.recog.Column, expression);
 				}
 				return (IExpression) parser.getAST();
 			}
@@ -328,13 +329,15 @@ namespace Solenoid.Expressions
 					node = node.getNextSibling();
 				}
 
-				if (node is PropertyOrFieldNode)
+				var fieldNode = node as PropertyOrFieldNode;
+				if (fieldNode != null)
 				{
-					return (PropertyInfo) ((PropertyOrFieldNode) node).GetMemberInfo(target);
+					return (PropertyInfo) fieldNode.GetMemberInfo(target);
 				}
-				if (node is IndexerNode)
+				var indexerNode = node as IndexerNode;
+				if (indexerNode != null)
 				{
-					return ((IndexerNode) node).GetPropertyInfo(target, variables);
+					return indexerNode.GetPropertyInfo(target, variables);
 				}
 				throw new FatalReflectionException(
 					"Cannot obtain PropertyInfo from an expression that does not resolve to a property or an indexer.");

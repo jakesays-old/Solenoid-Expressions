@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -16,66 +14,65 @@
  * limitations under the License.
  */
 
-#endregion
 
 using System;
 using System.Runtime.Serialization;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Represents parsed boolean literal node.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public class BooleanLiteralNode : BaseNode
-    {
-        private object nodeValue;
+	/// <summary>
+	///     Represents parsed boolean literal node.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public class BooleanLiteralNode : BaseNode
+	{
+		private object _nodeValue;
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public BooleanLiteralNode()
-        {
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public BooleanLiteralNode()
+		{
+		}
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public BooleanLiteralNode(string text)
-        {
-            this.Text = text;
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public BooleanLiteralNode(string text)
+		{
+			Text = text;
+		}
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected BooleanLiteralNode(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-        
-        /// <summary>
-        /// Returns a value for the boolean literal node.
-        /// </summary>
-        /// <summary>
-        /// This is the entrypoint into evaluating this expression.
-        /// </summary>
-        /// <returns>Node's value.</returns>
-        protected override object Get(object context, EvaluationContext evalContext)
-        {
-            if (nodeValue == null)
-            {
-                lock(this)
-                {
-                    if (nodeValue == null)
-                    {
-                        nodeValue = Boolean.Parse(this.getText());
-                    }
-                }
-            }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected BooleanLiteralNode(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-            return nodeValue;
-        }
-    }
+		/// <summary>
+		///     Returns a value for the boolean literal node.
+		/// </summary>
+		/// <summary>
+		///     This is the entrypoint into evaluating this expression.
+		/// </summary>
+		/// <returns>Node's value.</returns>
+		protected override object Get(object context, EvaluationContext evalContext)
+		{
+			if (_nodeValue == null)
+			{
+				lock (this)
+				{
+					if (_nodeValue == null)
+					{
+						_nodeValue = bool.Parse(getText());
+					}
+				}
+			}
+
+			return _nodeValue;
+		}
+	}
 }

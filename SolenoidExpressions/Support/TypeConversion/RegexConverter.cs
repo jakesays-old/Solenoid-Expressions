@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,16 +15,13 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeConversion
 {
@@ -76,16 +72,14 @@ namespace Solenoid.Expressions.Support.TypeConversion
         /// <returns>
         /// A <see cref="Regex"/> if successful.
         /// </returns>        
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context,
+			CultureInfo culture, object value)
         {
-            if (value is string)
+	        if (value is string)
             {
                 return new Regex(value as string);
             }
-            else
-            {
-                return base.ConvertFrom(context, culture, value);
-            }
+	        return base.ConvertFrom(context, culture, value);
         }
     }
 }

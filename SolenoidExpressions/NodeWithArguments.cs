@@ -21,185 +21,181 @@ using System.Runtime.Serialization;
 
 namespace Solenoid.Expressions
 {
-    /// <summary>
-    /// Base type for nodes that accept arguments.
-    /// </summary>
-    /// <author>Aleksandar Seovic</author>
-    [Serializable]
-    public abstract class NodeWithArguments : BaseNode
-    {
-        private BaseNode[] _args;
-        private IDictionary _namedArgs;
+	/// <summary>
+	///     Base type for nodes that accept arguments.
+	/// </summary>
+	/// <author>Aleksandar Seovic</author>
+	[Serializable]
+	public abstract class NodeWithArguments : BaseNode
+	{
+		private BaseNode[] _args;
+		private IDictionary _namedArgs;
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public NodeWithArguments()
-        {
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public NodeWithArguments()
+		{
+		}
 
-        /// <summary>
-        /// Create a new instance
-        /// </summary>
-        public NodeWithArguments(string text)
-        {
-            setText(text);
-        }
+		/// <summary>
+		///     Create a new instance
+		/// </summary>
+		public NodeWithArguments(string text)
+		{
+			setText(text);
+		}
 
-        /// <summary>
-        /// Append an argument node to the list of child nodes
-        /// </summary>
-        /// <param name="argumentNode"></param>
-        public void AddArgument(BaseNode argumentNode)
-        {
-            base.addChild(argumentNode);
-        }
+		/// <summary>
+		///     Append an argument node to the list of child nodes
+		/// </summary>
+		/// <param name="argumentNode"></param>
+		public void AddArgument(BaseNode argumentNode)
+		{
+			base.addChild(argumentNode);
+		}
 
-        /// <summary>
-        /// Create a new instance from SerializationInfo
-        /// </summary>
-        protected NodeWithArguments(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+		/// <summary>
+		///     Create a new instance from SerializationInfo
+		/// </summary>
+		protected NodeWithArguments(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+		}
 
-        /// <summary>
-        /// Initializes the node. 
-        /// </summary>
-        private void InitializeNode()
-        {
-            lock (this)
-            {
-                if (_args == null)
-                {
-                    var argList = new List<BaseNode>();
-                    _namedArgs = new Hashtable();
+		/// <summary>
+		///     Initializes the node.
+		/// </summary>
+		private void InitializeNode()
+		{
+			if (_args != null)
+			{
+				return;
+			}
+			lock (this)
+			{
+				if (_args == null)
+				{
+					var argList = new List<BaseNode>();
+					_namedArgs = new Hashtable();
 
-                    var node = getFirstChild();
+					var node = getFirstChild();
 
-                    while (node != null)
-                    {
-                        if (node.getFirstChild() is LambdaExpressionNode)
-                        {
-                            argList.Add((BaseNode) node.getFirstChild());
-                        }
-                        else if (node is NamedArgumentNode)
-                        {
-                            _namedArgs.Add(node.getText(), node);
-                        }
-                        else
-                        {
-                            argList.Add((BaseNode) node);
-                        }
-                        node = node.getNextSibling();
-                    }
+					while (node != null)
+					{
+						if (node.getFirstChild() is LambdaExpressionNode)
+						{
+							argList.Add((BaseNode) node.getFirstChild());
+						}
+						else if (node is NamedArgumentNode)
+						{
+							_namedArgs.Add(node.getText(), node);
+						}
+						else
+						{
+							argList.Add((BaseNode) node);
+						}
+						node = node.getNextSibling();
+					}
 
-                    _args = argList.ToArray();
-                }
-            }
-        }
+					_args = argList.ToArray();
+				}
+			}
+		}
 
-        /// <summary>
-        /// Asserts the argument count.
-        /// </summary>
-        /// <param name="requiredCount">The required count.</param>
-        protected void AssertArgumentCount(int requiredCount)
-        {
-            InitializeNode();
-            if (requiredCount != _args.Length)
-            {
-                throw new ArgumentException("This expression node requires exactly " +
-                                            requiredCount + " argument(s) and " +
-                                            _args.Length + " were specified.");
-            }
-        }
+		/// <summary>
+		///     Asserts the argument count.
+		/// </summary>
+		/// <param name="requiredCount">The required count.</param>
+		protected void AssertArgumentCount(int requiredCount)
+		{
+			InitializeNode();
+			if (requiredCount != _args.Length)
+			{
+				throw new ArgumentException("This expression node requires exactly " +
+											requiredCount + " argument(s) and " +
+											_args.Length + " were specified.");
+			}
+		}
 
-        /// <summary>
-        /// Resolves the arguments.
-        /// </summary>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>An array of argument values</returns>
-        protected object[] ResolveArguments(EvaluationContext evalContext)
-        {
-            if (_args == null)
-            {
-                InitializeNode();
-            }
+		/// <summary>
+		///     Resolves the arguments.
+		/// </summary>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>An array of argument values</returns>
+		protected object[] ResolveArguments(EvaluationContext evalContext)
+		{
+			InitializeNode();
 
-            var length = _args.Length;
-            var values = new object[length];
-            for (var i = 0; i < length; i++)
-            {
-                values[i] = ResolveArgumentInternal(i, evalContext);
-            }
-            return values;
-        }
+			var length = _args.Length;
+			var values = new object[length];
+			for (var i = 0; i < length; i++)
+			{
+				values[i] = ResolveArgumentInternal(i, evalContext);
+			}
+			return values;
+		}
 
-        /// <summary>
-        /// Resolves the named arguments.
-        /// </summary>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>A dictionary of argument name to value mappings.</returns>
-        protected IDictionary ResolveNamedArguments(EvaluationContext evalContext)
-        {
-            if (_args == null)
-            {
-                InitializeNode();
-            }
-            
-            if (_namedArgs.Count == 0)
-            {
-                return null;
-            }
+		/// <summary>
+		///     Resolves the named arguments.
+		/// </summary>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>A dictionary of argument name to value mappings.</returns>
+		protected IDictionary ResolveNamedArguments(EvaluationContext evalContext)
+		{
+			InitializeNode();
 
-            IDictionary namesAndValues = new Hashtable(_namedArgs.Count);
-            foreach (string name in _namedArgs.Keys)
-            {
-                namesAndValues[name] = ResolveNamedArgument(name, evalContext);
-            }
-            return namesAndValues;
-        }
+			if (_namedArgs.Count == 0)
+			{
+				return null;
+			}
 
-        /// <summary>
-        /// Resolves the argument.
-        /// </summary>
-        /// <param name="position">Argument position.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Resolved argument value.</returns>
-        protected object ResolveArgument(int position, EvaluationContext evalContext)
-        {
-            if (_args == null)
-            {
-                InitializeNode();
-            }
-            return ResolveArgumentInternal(position, evalContext);
-        }
+			IDictionary namesAndValues = new Hashtable(_namedArgs.Count);
+			foreach (string name in _namedArgs.Keys)
+			{
+				namesAndValues[name] = ResolveNamedArgument(name, evalContext);
+			}
+			return namesAndValues;
+		}
 
-        /// <summary>
-        /// Resolves the argument without ensuring <see cref="InitializeNode"/> was called.
-        /// </summary>
-        /// <param name="position">Argument position.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Resolved argument value.</returns>
-        private object ResolveArgumentInternal(int position, EvaluationContext evalContext)
-        {
-            var arg = _args[position];
-            if (arg is LambdaExpressionNode)
-            {
-                return arg;
-            }
-            return GetValue(arg, evalContext.ThisContext, evalContext);
-        }
+		/// <summary>
+		///     Resolves the argument.
+		/// </summary>
+		/// <param name="position">Argument position.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Resolved argument value.</returns>
+		protected object ResolveArgument(int position, EvaluationContext evalContext)
+		{
+			InitializeNode();
 
-        /// <summary>
-        /// Resolves the named argument.
-        /// </summary>
-        /// <param name="name">Argument name.</param>
-        /// <param name="evalContext">Current expression evaluation context.</param>
-        /// <returns>Resolved named argument value.</returns>
-        private object ResolveNamedArgument(string name, EvaluationContext evalContext)
-        {
-            return GetValue(((BaseNode)_namedArgs[name]), evalContext.ThisContext, evalContext);
-        }
-    }
+			return ResolveArgumentInternal(position, evalContext);
+		}
+
+		/// <summary>
+		///     Resolves the argument without ensuring <see cref="InitializeNode" /> was called.
+		/// </summary>
+		/// <param name="position">Argument position.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Resolved argument value.</returns>
+		private object ResolveArgumentInternal(int position, EvaluationContext evalContext)
+		{
+			var arg = _args[position];
+			if (arg is LambdaExpressionNode)
+			{
+				return arg;
+			}
+			return GetValue(arg, evalContext.ThisContext, evalContext);
+		}
+
+		/// <summary>
+		///     Resolves the named argument.
+		/// </summary>
+		/// <param name="name">Argument name.</param>
+		/// <param name="evalContext">Current expression evaluation context.</param>
+		/// <returns>Resolved named argument value.</returns>
+		private object ResolveNamedArgument(string name, EvaluationContext evalContext)
+		{
+			return GetValue(((BaseNode) _namedArgs[name]), evalContext.ThisContext, evalContext);
+		}
+	}
 }

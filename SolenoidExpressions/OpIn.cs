@@ -59,13 +59,15 @@ namespace Solenoid.Expressions
             {
                 return false;
             }
-	        if (rhs is IList)
+	        var list = rhs as IList;
+	        if (list != null)
 	        {
-		        return ((IList) rhs).Contains(lhs);
+		        return list.Contains(lhs);
 	        }
-	        if (rhs is IDictionary)
+	        var dictionary = rhs as IDictionary;
+	        if (dictionary != null)
 	        {
-		        return ((IDictionary) rhs).Contains(lhs);
+		        return dictionary.Contains(lhs);
 	        }
 	        throw new ArgumentException(
 		        "Right hand parameter for 'in' operator has to be an instance of IList or IDictionary.");

@@ -63,10 +63,10 @@ namespace Solenoid.Expressions
 			var maxIndexExpression = (minIndexExpression == null) ? null : (BaseNode) minIndexExpression.getNextSibling();
 
 			var minIndex = (int) ((minIndexExpression == null)
-				? Int32.MinValue
+				? int.MinValue
 				: GetValue(minIndexExpression, context, evalContext));
 			var maxIndex = (int) ((maxIndexExpression == null)
-				? Int32.MaxValue
+				? int.MaxValue
 				: GetValue(maxIndexExpression, context, evalContext));
 
 			IList selectionList = new ArrayList();

@@ -60,7 +60,7 @@ namespace Solenoid.Expressions
 
             using (evalContext.SwitchThisContext())
             {
-                var expression = (BaseNode) this.getFirstChild();
+                var expression = (BaseNode) getFirstChild();
                 for (var i = list.Count - 1; i >= 0; i--)
                 {
                     var listItem = list[i];

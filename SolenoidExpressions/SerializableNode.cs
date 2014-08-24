@@ -43,7 +43,7 @@ namespace Solenoid.Expressions
 	    /// <summary>
         /// Create an instance
         /// </summary>
-        public SerializableNode()
+	    public SerializableNode()
         {}
 
         /// <summary>

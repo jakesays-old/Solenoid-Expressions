@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,15 +15,12 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Reflection;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeResolution
 {
@@ -110,6 +106,8 @@ namespace Solenoid.Expressions.Support.TypeResolution
         private static Type LoadTypeDirectlyFromAssembly(TypeAssemblyHolder typeInfo)
         {
             Type type = null;
+
+			//TODO: determine if this mono difference still exits
 #if MONO_2_0
             Assembly assembly = Assembly.Load(typeInfo.AssemblyName);
 #else

@@ -76,27 +76,31 @@ namespace Solenoid.Expressions
             }
 
 		    /// <summary>
-            /// Gets/Sets the root context of the current evaluation
-            /// </summary>
-            public object RootContext;
-            /// <summary>
+		    /// Gets/Sets the root context of the current evaluation
+		    /// </summary>
+		    public object RootContext { get; set; }
+
+		    /// <summary>
             /// Gets the type of the <see cref="RootContext"/>
             /// </summary>
             public Type RootContextType { get { return (RootContext == null) ? null : RootContext.GetType(); } }
-            /// <summary>
-            /// Gets/Sets the current context of the current evaluation
-            /// </summary>
-            public object ThisContext;
-            /// <summary>
-            /// Gets/Sets global variables of the current evaluation
-            /// </summary>
-            public readonly IDictionary<string, object> Variables;
-            /// <summary>
-            /// Gets/Sets local variables of the current evaluation
-            /// </summary>
-            public IDictionary LocalVariables;
 
-            /// <summary>
+		    /// <summary>
+		    /// Gets/Sets the current context of the current evaluation
+		    /// </summary>
+		    public object ThisContext { get; set; }
+
+		    /// <summary>
+		    /// Gets/Sets global variables of the current evaluation
+		    /// </summary>
+		    public IDictionary<string, object> Variables { get; private set; }
+
+		    /// <summary>
+		    /// Gets/Sets local variables of the current evaluation
+		    /// </summary>
+		    public IDictionary LocalVariables { get; set; }
+
+		    /// <summary>
             /// Initializes a new EvaluationContext instance.
             /// </summary>
             /// <param name="rootContext">The root context for this evaluation</param>

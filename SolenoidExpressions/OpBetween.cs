@@ -56,7 +56,8 @@ namespace Solenoid.Expressions
             var value = GetLeftValue(context, evalContext);
             var range = GetRightValue(context, evalContext) as IList;
 
-            if (range == null || range.Count != 2)
+            if (range == null || 
+				range.Count != 2)
             {
                 throw new ArgumentException("Right operand for the 'between' operator has to be a two-element list.");
             }

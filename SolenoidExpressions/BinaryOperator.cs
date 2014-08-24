@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright © 2002-2011 the original author or authors.
@@ -16,7 +15,6 @@
  * limitations under the License.
  */
 
-#endregion
 
 using System;
 using System.Runtime.Serialization;
@@ -58,9 +56,9 @@ namespace Solenoid.Expressions
         /// Gets the left operand.
         /// </summary>
         /// <value>The left operand.</value>
-        public BaseNode Left
+        protected BaseNode Left
         {
-            get { return (BaseNode) this.getFirstChild(); }
+            get { return (BaseNode) getFirstChild(); }
         }
 
         /// <summary>
@@ -75,9 +73,9 @@ namespace Solenoid.Expressions
         /// </summary>
         /// <value>The right operand.</value>
         [CLSCompliant(false)]
-        public BaseNode Right
+        protected BaseNode Right
         {
-            get { return (BaseNode) this.getFirstChild().getNextSibling(); }
+            get { return (BaseNode) getFirstChild().getNextSibling(); }
         }
 
         /// <summary>

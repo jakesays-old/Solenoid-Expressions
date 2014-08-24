@@ -1,4 +1,3 @@
-#region License
 
 /*
  * Copyright 2002-2010 the original author or authors.
@@ -16,16 +15,13 @@
  * limitations under the License.
  */
 
-#endregion
 
-#region Imports
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Solenoid.Expressions.Support.Util;
 
-#endregion
 
 namespace Solenoid.Expressions.Support.TypeConversion
 {
@@ -33,7 +29,7 @@ namespace Solenoid.Expressions.Support.TypeConversion
     /// Utility methods that are used to convert objects from one type into another.
     /// </summary>
     /// <author>Aleksandar Seovic</author>
-    public class TypeConversionUtils
+    public static class TypeConversionUtils
     {
         /// <summary>
         /// Convert the value to the required <see cref="System.Type"/> (if necessary from a string).
@@ -43,9 +39,6 @@ namespace Solenoid.Expressions.Support.TypeConversion
         /// The <see cref="System.Type"/> we must convert to.
         /// </param>
         /// <param name="propertyName">Property name, used for error reporting purposes...</param>
-        /// <exception cref="Spring.Objects.ObjectsException">
-        /// If there is an internal error.
-        /// </exception>
         /// <returns>The new value, possibly the result of type conversion.</returns>
         public static object ConvertValueIfNecessary(Type requiredType, object newValue, string propertyName)
         {
@@ -67,26 +60,23 @@ namespace Solenoid.Expressions.Support.TypeConversion
                         var elements = (ICollection)newValue;
                         return ToArrayWithTypeConversion(componentType, elements, propertyName);
                     }
-                    else if (newValue is string)
-                    {
-                        if (requiredType.Equals(typeof(char[])))
-                        {
-                            return ((string)newValue).ToCharArray();
-                        }
-                        else
-                        {
-                            var elements = StringUtils.CommaDelimitedListToStringArray((string)newValue);
-                            return ToArrayWithTypeConversion(componentType, elements, propertyName);
-                        }
-                    }
-                    else if (!newValue.GetType().IsArray)
-                    {
-                        // A plain value: convert it to an array with a single component.
-                        var result = Array.CreateInstance(componentType, 1);
-                        var val = ConvertValueIfNecessary(componentType, newValue, propertyName);
-                        result.SetValue(val, 0);
-                        return result;
-                    }
+	                if (newValue is string)
+	                {
+		                if (requiredType == typeof(char[]))
+		                {
+			                return ((string)newValue).ToCharArray();
+		                }
+		                var elements = StringUtils.CommaDelimitedListToStringArray((string)newValue);
+		                return ToArrayWithTypeConversion(componentType, elements, propertyName);
+	                }
+	                if (!newValue.GetType().IsArray)
+	                {
+		                // A plain value: convert it to an array with a single component.
+		                var result = Array.CreateInstance(componentType, 1);
+		                var val = ConvertValueIfNecessary(componentType, newValue, propertyName);
+		                result.SetValue(val, 0);
+		                return result;
+	                }
                 }
 
                 // if required type is some IList<T>, convert all the elements
@@ -111,17 +101,17 @@ namespace Solenoid.Expressions.Support.TypeConversion
                     {
                         var elements = (IDictionary)newValue;
                         var targetCollectionType = typeof(Dictionary<,>);
-                        var collectionType = targetCollectionType.MakeGenericType(new Type[] { keyType, valueType });
+                        var collectionType = targetCollectionType.MakeGenericType(new[] { keyType, valueType });
                         var typedCollection = Activator.CreateInstance(collectionType);
 
-                        var addMethod = collectionType.GetMethod("Add", new Type[] { keyType, valueType });
+                        var addMethod = collectionType.GetMethod("Add", new[] { keyType, valueType });
                         var i = 0;
                         foreach (DictionaryEntry entry in elements)
                         {
                             var propertyExpr = BuildIndexedPropertyName(propertyName, i);
                             var key = ConvertValueIfNecessary(keyType, entry.Key, propertyExpr + ".Key");
                             var value = ConvertValueIfNecessary(valueType, entry.Value, propertyExpr + ".Value");
-                            addMethod.Invoke(typedCollection, new object[] { key, value });
+                            addMethod.Invoke(typedCollection, new[] { key, value });
                             i++;
                         }
                         return typedCollection;
@@ -129,7 +119,9 @@ namespace Solenoid.Expressions.Support.TypeConversion
                 }
 
                 // if required type is some IEnumerable<T>, convert all the elements
-                if (requiredType != null && requiredType.IsGenericType && TypeImplementsGenericInterface(requiredType, typeof(IEnumerable<>)))
+                if (requiredType != null &&
+					requiredType.IsGenericType && 
+					TypeImplementsGenericInterface(requiredType, typeof(IEnumerable<>)))
                 {
                     // convert individual elements to array elements
                     var componentType = requiredType.GetGenericArguments()[0];
@@ -168,10 +160,10 @@ namespace Solenoid.Expressions.Support.TypeConversion
                         else
                         {
                             // look if it's an enum
-                            if (requiredType != null
-                                && requiredType.IsEnum
-                                && (!(newValue is float)
-                                    && (!(newValue is double))))
+                            if (requiredType != null &&
+                                requiredType.IsEnum &&
+                                (!(newValue is float) &&
+                                    (!(newValue is double))))
                             {
                                 // convert numeric value into enum's underlying type
                                 var numericType = Enum.GetUnderlyingType(requiredType);
@@ -235,15 +227,16 @@ namespace Solenoid.Expressions.Support.TypeConversion
             }
 
 
-            var collectionType = targetCollectionType.MakeGenericType(new Type[] { componentType });
+            var collectionType = targetCollectionType.MakeGenericType(new[] { componentType });
 
             var typedCollection = Activator.CreateInstance(collectionType);
 
             var i = 0;
             foreach (var element in elements)
             {
-                var value = ConvertValueIfNecessary(componentType, element, BuildIndexedPropertyName(propertyName, i));
-                collectionType.GetMethod("Add").Invoke(typedCollection, new object[] { value });
+                var value = ConvertValueIfNecessary(componentType, element,
+					BuildIndexedPropertyName(propertyName, i));
+                collectionType.GetMethod("Add").Invoke(typedCollection, new[] { value });
                 i++;
             }
             return typedCollection;
@@ -320,9 +313,11 @@ namespace Solenoid.Expressions.Support.TypeConversion
             return match;
         }
 
-        private static bool IsMatchingGenericInterface(Type candidateInterfaceType, Type matchingGenericInterface)
+        private static bool IsMatchingGenericInterface(Type candidateInterfaceType, 
+			Type matchingGenericInterface)
         {
-            return candidateInterfaceType.IsGenericType && candidateInterfaceType.GetGenericTypeDefinition() == matchingGenericInterface;
+            return candidateInterfaceType.IsGenericType &&
+				candidateInterfaceType.GetGenericTypeDefinition() == matchingGenericInterface;
         }
     }
 }

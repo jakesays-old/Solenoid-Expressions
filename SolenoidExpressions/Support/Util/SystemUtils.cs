@@ -18,6 +18,7 @@
 
 
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -106,7 +107,7 @@ namespace Solenoid.Expressions.Support.Util
                 {
                     return name;
                 }
-	            return Thread.CurrentThread.ManagedThreadId.ToString();
+	            return Thread.CurrentThread.ManagedThreadId.ToString(CultureInfo.InvariantCulture);
             }
         }
     }
