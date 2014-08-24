@@ -9,9 +9,7 @@ Copies of this document may be made for your own use and for distribution to oth
 Introduction
 ============
 
-The Solenoid.Expressions namespace provides a powerful expression language for querying and manipulating an object graph at runtime. The language supports setting and getting of property values, property assignment, method invocation, accessing the context of arrays, collections and indexers, logical and arithmetic operators, named variables, and retrieval of objects by name from Spring's IoC container. It also supports list projection and selection, as well as common list aggregators.
-
-The functionality provided in this namespace serves as the foundation for a variety of other features in Solenoid such as enhanced property evaluation in the XML based configuration of the IoC container, a Data Validation framework, and a Data Binding framework for ASP.NET. You will likely find other cool uses for this library in your own work where run-time evaluation of criteria based on an object's state is required. For those with a Java background, the Solenoid.Expressions namespace provides functionality similar to the Java based Object Graph Navigation Language, [OGNL](http://www.ognl.org/).
+Solenoid.Expressions is a powerful expression language for querying and manipulating an object graph at runtime. The language supports setting and getting of property values, property assignment, method invocation, accessing the context of arrays, collections and indexers, logical and arithmetic operators and named variables. It also supports list projection and selection, as well as common list aggregators.
 
 This chapter covers the features of the expression language using an Inventor and Inventor's Society class as the target objects for expression evaluation. The class declarations and the data used to populate them are listed at the end of the chapter in section ?. These classes are blatantly taken from the NUnit tests for the Expressions namespace which you can refer to for additional example usage.
 

@@ -1,5 +1,3 @@
-#region License
-
 /*
  * Copyright © 2002-2011 the original author or authors.
  *
@@ -15,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#endregion
 
 using System;
 using System.Reflection;
@@ -37,9 +33,8 @@ using System.Runtime.InteropServices;
 internal static class AssyInfo
 {
 #if NET_4_5
-	internal string FrameworkVersion = "4.5";
-#endif
-#if NET_4_0
+	internal const string FrameworkVersion = "4.5";
+#elif NET_4_0
 	internal const string FrameworkVersion = "4.0";
 #endif
 #if DEBUG

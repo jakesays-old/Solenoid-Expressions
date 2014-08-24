@@ -7,30 +7,33 @@
     <ProjectGuid>{710961A3-0DF4-49E4-A26E-F5B9C044AC84}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
     <AssemblyName>Solenoid.Expressions</AssemblyName>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <RootNamespace>Solenoid.Expressions</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UseAlternateLikeImplementation Condition="Exists('$(ProjectDir)LikeOperatorImplementation.cs')">true</UseAlternateLikeImplementation>
+    <NugetBuild Condition="'$(NugetBuild)' == ''">false</NugetBuild>
+    <UseAlternateLikeImplementation Condition="'$(NugetBuild)' == 'false' And Exists('$(ProjectDir)LikeOperatorImplementation.cs')">true</UseAlternateLikeImplementation>
     <LikeDefine Condition="'$(UseAlternateLikeImplementation)' == 'true'">USE_ALTERNATE_LIKE_IMPLEMENTATION</LikeDefine>
+    <OutputSubPath Condition="'$(TargetFrameworkVersion)' == 'v4.0'">net40</OutputSubPath>
+    <OutputSubPath Condition="'$(TargetFrameworkVersion)' == 'v4.5'">net45</OutputSubPath>
+    <FwVersion Condition="'$(TargetFrameworkVersion)' == 'v4.0'">NET_4_0</FwVersion>
+    <FwVersion Condition="'$(TargetFrameworkVersion)' == 'v4.5'">NET_4_5</FwVersion>
+    <OutputPath>.\bin\$(Configuration)\$(OutputSubPath)</OutputPath>
+	  <SignAssembly Condition="'$(NugetBuild)' == 'true'">true</SignAssembly>
+	  <AssemblyOriginatorKeyFile Condition="'$(NugetBuild)' == 'true'">SolenoidPublishingKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>.\bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;DEBUG;NET_4_0;DEBUG_DYNAMIC_DISABLED;$(LikeDefine)</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;$(FwVersion);DEBUG_DYNAMIC_DISABLED;$(LikeDefine)</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
@@ -49,13 +52,12 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>.\bin\Release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE;NET_4_0;$(LikeDefine)</DefineConstants>
+    <DefineConstants>TRACE;$(FwVersion);$(LikeDefine)</DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -444,6 +446,7 @@
     <Compile Include="OpLike.cs" />
     <None Include="Expression.g" />
     <None Include="genparser.cmd" />
+    <None Include="SolenoidPublishingKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Parser\antlr\README_ANTLR.txt" />

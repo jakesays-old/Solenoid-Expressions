@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+    <metadata minClientVersion="2.8">
+        <id>Solenoid.Expressions</id>
+        <version>1.0.0.1</version>
+        <title>Solenoid Expression Engine</title>
+        <authors>JakeSays</authors>
+        <licenseUrl>https://raw.githubusercontent.com/jakesays/Solenoid-Expressions/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/jakesays/Solenoid-Expressions</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Solenoid.Expressions is a powerful expression language for querying and manipulating an object graph at runtime. The language supports setting and getting of property values, property assignment, method invocation, accessing the context of arrays, collections and indexers, logical and arithmetic operators and named variables. It also supports list projection and selection, as well as common list aggregators.
+
+Solenoid.Expressions is based on the Spring.NET SpEL, and is licensed under the Apache License, Version 2.0.</description>
+        <summary>Simple but powerful expression language.</summary>
+        <releaseNotes>First release.</releaseNotes>
+        <copyright>Copyright 2014, the original authors.</copyright>
+        <tags>Expression</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+            <frameworkAssembly assemblyName="Microsoft.VisualBasic" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="lib\net40\Solenoid.Expressions.dll" target="lib\net40\Solenoid.Expressions.dll" />
+        <file src="lib\net45\Solenoid.Expressions.dll" target="lib\net45\Solenoid.Expressions.dll" />
+    </files>
+</package>
