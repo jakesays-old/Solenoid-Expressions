@@ -454,7 +454,6 @@
     <Compile Include="OpLike.cs" />
     <None Include="Expression.g" />
     <None Include="genparser.cmd" />
-    <None Include="SolenoidPublishingKey.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Parser\antlr\README_ANTLR.txt" />
