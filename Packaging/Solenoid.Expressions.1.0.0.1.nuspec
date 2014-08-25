@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata minClientVersion="2.8">
         <id>Solenoid.Expressions</id>
-        <version>1.0.0.1</version>
+        <version>1.0.0.2</version>
         <title>Solenoid Expression Engine</title>
         <authors>JakeSays</authors>
         <licenseUrl>https://raw.githubusercontent.com/jakesays/Solenoid-Expressions/master/LICENSE</licenseUrl>
@@ -12,7 +12,7 @@
 
 Solenoid.Expressions is based on the Spring.NET SpEL, and is licensed under the Apache License, Version 2.0.</description>
         <summary>Simple but powerful expression language.</summary>
-        <releaseNotes>First release.</releaseNotes>
+        <releaseNotes>More cleanup, and some internal API changes.</releaseNotes>
         <copyright>Copyright 2014, the original authors.</copyright>
         <tags>Expression</tags>
         <frameworkAssemblies>

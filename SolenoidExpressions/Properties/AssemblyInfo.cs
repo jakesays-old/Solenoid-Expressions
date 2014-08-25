@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Portions Copyright Spring.NET Framework Team. (http://www.springframework.net)")]
 [assembly: AssemblyTrademark("Apache License, Version 2.0")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.2")]
 [assembly: AssemblyConfiguration("net-" + AssyInfo.FrameworkVersion + "; " + AssyInfo.BuildType)]
 
 internal static class AssyInfo
