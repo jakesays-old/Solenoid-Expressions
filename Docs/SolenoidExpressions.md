@@ -579,10 +579,10 @@ ExpressionEvaluator.GetValue(ieee, "Members.${Nationality == 'Serbian'}.Name")  
 
 Notice that we access the `Name` property directly on the selection result, because an actual matched instance is returned by the first and last match expression instead of a filtered list.
 
-Collection Processors and Aggregators
+Collection Extensions and Aggregators
 -------------------------------------
 
-In addition to list projection and selection, Solenoid Expression Language also supports several collection processors, such as `distinct`, `nonNull` and `sort`, as well as a number of commonly used aggregators, such as `max`, `min`, `count`, `sum` and `average`.
+In addition to list projection and selection, Solenoid Expression Language also supports several collection extensions, such as `distinct`, `nonNull` and `sort`, as well as a number of commonly used aggregators, such as `max`, `min`, `count`, `sum` and `average`.
 
 The difference between processors and aggregators is that processors return a new or transformed collection, while aggregators return a single value. Other than that, they are very similar -- both processors and aggregators are invoked on a collection node using standard method invocation expression syntax, which makes them very simple to use and allows easy chaining of multiple processors.
 
@@ -631,56 +631,56 @@ ExpressionEvaluator.GetValue(null, "{1, 5, -3, 10}.max()")  // 10
 ExpressionEvaluator.GetValue(null, "{'abc', 'efg', 'xyz'}.max()")  // 'xyz'
 ```
 
-### Non-null Processor
+### Non-null Extension
 
-A non-null processor is a very simple collection processor that eliminates all `null` values from the collection.
+The non-null extension is a very simple collection extension that eliminates all `null` values from the collection.
 
 ``` csharp
 ExpressionEvaluator.GetValue(null, "{ 'abc', 'xyz', null, 'abc', 'def', null}.nonNull()")  // { 'abc', 'xyz', 'abc', 'def' }
 ExpressionEvaluator.GetValue(null, "{ 'abc', 'xyz', null, 'abc', 'def', null}.nonNull().distinct().sort()")  // { 'abc', 'def', 'xyz' }
 ```
 
-### Distinct Processor
+### Distinct Extension
 
-A distinct processor is very useful when you want to ensure that you don't have duplicate items in the collection. It can also accept an optional `Boolean` argument that will determine whether `null` values should be included in the results. The default is `false`, which means that they will not be included.
+The distinct extension is very useful when you want to ensure that you don't have duplicate items in the collection. It can also accept an optional `Boolean` argument that will determine whether `null` values should be included in the results. The default is `false`, which means that they will not be included.
 
 ``` csharp
 ExpressionEvaluator.GetValue(null, "{ 'abc', 'xyz', 'abc', 'def', null, 'def' }.distinct(true).sort()")  // { null, 'abc', 'def', 'xyz' }
 ExpressionEvaluator.GetValue(null, "{ 'abc', 'xyz', 'abc', 'def', null, 'def' }.distinct(false).sort()")  // { 'abc', 'def', 'xyz' }
 ```
 
-### Sort Processor
+### Sort Extension
 
-The sort processor can be used to sort uniform collections of elements that implement `IComparable`.
+The sort extension can be used to sort uniform collections of elements that implement `IComparable`.
 
 ``` csharp
 ExpressionEvaluator.GetValue(null, "{1.2, 5.5, -3.3}.sort()")  // { -3.3, 1.2, 5.5 }
 ExpressionEvaluator.GetValue(null, "{ 'abc', 'xyz', 'abc', 'def', null, 'def' }.sort()")  // { null, 'abc', 'abc', 'def', 'def', 'xyz' }
 ```
 
-The sort processor also accepts a boolean value as an argument to determine sort order, sort(false) will sort the collection in decending order.
+The sort extension also accepts a boolean value as an argument to determine sort order, sort(false) will sort the collection in descending order.
 
-### Type Conversion Processor
+### Type Conversion Extension
 
-The convert processor can be used to convert a collection of elements to a given Type.
+The convert extension can be used to convert a collection of elements to a given Type.
 
 ``` csharp
 object[] arr = new object[] { "0", 1, 1.1m, "1.1", 1.1f };
 decimal[] result = (decimal[]) ExpressionEvaluator.GetValue(arr, "convert(decimal)");
 ```
 
-### Reverse Processor
+### Reverse Extension
 
-The reverse processor returns the reverse order of elements in the list
+The reverse extension returns the reverse order of elements in the list
 
 ``` csharp
 object[] arr = new object[] { "0", 1, 2.1m, "3", 4.1f };
 object[] result = new ArrayList( (ICollection) ExpressionEvaluator.GetValue(arr, "reverse()") ).ToArray(); // { 4.1f, "3", 2.1m, 1, "0" }            
 ```
 
-### OrderBy Processor
+### OrderBy Extension
 
-Collections can be ordered in three ways, an expression, a SpEL lamda expreression, or a delegate.
+Collections can be ordered in three ways, an expression, a Solenoid Expression Language (SeL) lamda expreression, or a delegate.
 
 ``` csharp
 // orderBy expression
@@ -689,7 +689,7 @@ object[] input = new object[] { 'b', 1, 2.0, "a" };
 object[] ordered = exp.GetValue(input);  // { 1, 2.0, "a", 'b' }
 
 
-// SpEL lambda expressions
+// SeL lambda expressions
 IExpression exp = Expression.Parse("orderBy({|a,b| $a.ToString().CompareTo($b.ToString())})");
 object[] input = new object[] { 'b', 1, 2.0, "a" };
 object[] ordered = exp.GetValue(input);  // { 1, 2.0, "a", 'b' }
@@ -715,14 +715,14 @@ object[] input = new object[] { 'b', 1, 2.0, "a" };
 object[] ordered = exp.GetValue(input);  // { 1, 2.0, "a", 'b' }
 ```
 
-### User Defined Collection Processor
+### User Defined Collection Extensions
 
-You can register your own collection processor for use in evaluation a collection. Here is an example of a ICollectionProcessor implementation that sums only the even numbers of an integer list
+You can register your own collection extension for use in evaluation a collection. Here is an example of a ICollectionExtension implementation that sums only the even numbers of an integer list
 
 ``` csharp
-        public class IntEvenSumCollectionProcessor : ICollectionProcessor
+        public class IntEvenSumCollectionExtension : ICollectionExtension
         {
-            public object Process(ICollection source, object[] args)
+            public object Execute(ICollection source, object[] args)
             {
                 object total = 0d;
                 foreach (object item in source)
@@ -751,7 +751,7 @@ You can register your own collection processor for use in evaluation a collectio
         public void DoWork()
         {
             Hashtable vars = new Hashtable();
-            vars["EvenSum"] = new IntEvenSumCollectionProcessor();
+            vars["EvenSum"] = new IntEvenSumCollectionExtension();
             int result = (int)ExpressionEvaluator.GetValue(null, "{1, 2, 3, 4}.EvenSum()", vars));  // 6
         }
 ```
@@ -836,7 +836,7 @@ public void DoWork()
 Null Context
 ------------
 
-If you do not specify a root object, i.e. pass in null, then the expressions evaluated either have to be literal values, i.e. ExpressionEvaluator.GetValue(null, "2 + 3.14"), refer to classes that have static methods or properties, i.e. ExpressionEvaluator.GetValue(null, "DateTime.Today"), create new instances of objects, i.e. ExpressionEvaluator.GetValue(null, "new DateTime(2004, 8, 14)") or refer to other objects such as those in the variable dictionary or in the IoC container. The latter two usages will be discussed later.
+If you do not specify a root object, i.e. pass in null, then the expressions evaluated either have to be literal values, i.e. ExpressionEvaluator.GetValue(null, "2 + 3.14"), refer to classes that have static methods or properties, i.e. ExpressionEvaluator.GetValue(null, "DateTime.Today"), create new instances of objects, i.e. ExpressionEvaluator.GetValue(null, "new DateTime(2004, 8, 14)") or refer to other objects such as those in the variable dictionary. The latter usage will be discussed later.
 
 Classes used in the examples
 ============================
