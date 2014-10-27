@@ -11,7 +11,7 @@ Introduction
 
 Solenoid.Expressions is a powerful expression language for querying and manipulating an object graph at runtime. The language supports setting and getting of property values, property assignment, method invocation, accessing the context of arrays, collections and indexers, logical and arithmetic operators and named variables. It also supports list projection and selection, as well as common list aggregators.
 
-This chapter covers the features of the expression language using an Inventor and Inventor's Society class as the target objects for expression evaluation. The class declarations and the data used to populate them are listed at the end of the chapter in section ?. These classes are blatantly taken from the NUnit tests for the Expressions namespace which you can refer to for additional example usage.
+This chapter covers the features of the expression language using an Inventor and Inventor's Society class as the target objects for expression evaluation. The class declarations and the data used to populate them are listed at the end of the chapter in section (TODO). These classes are blatantly taken from the NUnit tests for the Expressions namespace which you can refer to for additional example usage.
 
 Evaluating Expressions
 ======================
@@ -28,7 +28,7 @@ public static void SetValue(object root, string expression, object newValue)
 public static void SetValue(object root, string expression, IDictionary variables, object newValue)
 ```
 
-The first argument is the 'root' object that the expression string (2nd argument) will be evaluated against. The third argument is used to support variables in the expression and will be discussed later. Simple usage to get the value of an object property is shown below using the `Inventor` class. You can find the class listing in section ?.
+The first argument is the 'root' object that the expression string (2nd argument) will be evaluated against. The third argument is used to support variables in the expression and will be discussed later. Simple usage to get the value of an object property is shown below using the `Inventor` class. You can find the class listing in section (TODO).
 
 ``` csharp
 Inventor tesla = new Inventor("Nikola Tesla", new DateTime(1856, 7, 9), "Serbian");
@@ -46,7 +46,7 @@ The value of 'evaluatedName' is 'Nikola Tesla' and that of 'evaluatedCity' is 'S
 ExpressionEvaluator.SetValue(tesla, "PlaceOfBirth.City", "Novi Sad");
 ```
 
-A much better way to evaluate expressions is to parse them once and then evaluate as many times as you want using`Expression`class. Unlike `ExpressionEvaluator`, which parses expression every time you invoke one of its methods, `Expression` class will cache the parsed expression for increased performance. The methods of this class are listed below:
+A much better way to evaluate expressions is to parse them once and then evaluate as many times as you want using the `Expression` class. Unlike `ExpressionEvaluator`, which parses the expression every time you invoke one of its methods, `Expression` class will cache the parsed expression for increased performance. The methods of this class are listed below:
 
 ``` csharp
 public static IExpression Parse(string expression)
@@ -56,7 +56,7 @@ public override object Get(object context, IDictionary variables)
 public override void Set(object context, IDictionary variables, object newValue)
 ```
 
-The retrieval of the Name property in the previous example using the Expression class is shown below
+The retrieval of the Name property in the previous example using the Expression class is shown below:
 
 ``` csharp
 IExpression exp = Expression.Parse("Name");
@@ -68,7 +68,7 @@ The difference in performance between the two approaches, when evaluating the sa
 
 There are a few exception classes to be aware of when using the `ExpressionEvaluator`. These are `InvalidPropertyException`, when you refer to a property that doesn't exist, `NullValueInNestedPathException`, when a null value is encountered when traversing through the nested property list, and `ArgumentException` and `NotSupportedException` when you pass in values that are in error in some other manner.
 
-The expression language is based on a grammar and uses [ANTLR](http://www.antlr.org/) to construct the lexer and parser. Errors relating to bad syntax of the language will be caught at this level of the language implementation. For those interested in the digging deeper into the implementation, the grammar file is named Expression.g and is located in the source directory. As a side note, the ANTLR runtime has been included in to the Solenoid source tree, removing the dependency on the antlr.runtime.dll.
+The expression language is based on a grammar and uses [ANTLR](http://www.antlr.org/) to construct the lexer and parser. Errors relating to bad syntax of the language will be caught at this level of the language implementation. For those interested in the digging deeper into the implementation, the grammar file is named Expression.g and is located in the source directory. As a side note, the ANTLR runtime has been included in to the Solenoid source tree, removing the dependency on antlr.runtime.dll.
 
 Language Reference
 ==================
@@ -102,7 +102,7 @@ Note that the extra backslash character in Tony's Pizza is to satisfy C\# escape
 Properties, Arrays, Lists, Dictionaries, Indexers
 -------------------------------------------------
 
-As shown in the previous example in ?, navigating through properties is easy, just use a period to indicate a nested property value. The instances of `Inventor` class, *pupin* and *tesla*, were populated with data listed in section ?. To navigate "down" and get Tesla's year of birth and Pupin's city of birth the following expressions are used
+As shown in the previous example in ?, navigating through properties is easy, just use a period to indicate a nested property value. The instances of `Inventor` class, *pupin* and *tesla*, were populated with data listed in section ?. To navigate "down" and get Tesla's year of birth and Pupin's city of birth the following expressions are used:
 
 ``` csharp
 int year = (int) ExpressionEvaluator.GetValue(tesla, "DOB.Year"));  // 1856
@@ -136,7 +136,7 @@ string city = (string) ExpressionEvaluator.GetValue(ieee, "Officers['president']
 ExpressionEvaluator.SetValue(ieee, "Officers['advisors'][0].PlaceOfBirth.Country", "Croatia");
 ```
 
-You may also specify non literal values in place of the quoted literal values by using another expression inside the square brackets such as variable names or static properties/methods on other types. These features are discussed in other sections.
+You may also specify non literal values in place of the quoted literal values by using another expression inside the square brackets, such as variable names or static properties/methods on other types. These features are discussed in other sections.
 
 Indexers are similarly referenced using square brackets. The following is a small example that shows the use of indexers. Multidimensional indexers are also supported.
 
@@ -204,7 +204,7 @@ Operators
 
 ### Relational operators
 
-The relational operators; equal, not equal, less than, less than or equal, greater than, and greater than or equal are supported using standard operator notation. These operators take into account if the object implements the `IComparable` interface. Enumerations are also supported but you will need to register the enumeration type, as described in Section ?, in order to use an enumeration value in an expression if it is not contained in the mscorlib.
+The relational operators equal, not equal, less than, less than or equal, greater than, and greater than or equal are supported using standard operator notation. These operators take into account if the object implements the `IComparable` interface. Enumerations are also supported but you will need to register the enumeration type, as described in Section (TODO), in order to use an enumeration value in an expression if it is not contained in the mscorlib.
 
 ``` csharp
 ExpressionEvaluator.GetValue(null, "2 == 2")  // true
@@ -218,7 +218,7 @@ ExpressionEvaluator.GetValue(null, "DateTime.Today <= date('1974-08-24')") // fa
 ExpressionEvaluator.GetValue(null, "'Test' >= 'test'") // true
 ```
 
-Enumerations can be evaluated as shown below
+Enumerations can be evaluated as shown below:
 
 ``` csharp
 FooColor fColor = new FooColor();
@@ -228,7 +228,7 @@ ExpressionEvaluator.SetValue(fColor, "Color", KnownColor.Blue);
 bool trueValue = (bool) ExpressionEvaluator.GetValue(fColor, "Color == KnownColor.Blue"); //true
 ```
 
-Where FooColor is the following class.
+Where FooColor is the following class:
 
 ``` csharp
 public class FooColor
@@ -269,7 +269,7 @@ Note that the Visual Basic and not SQL syntax is used for the *like* operator pa
 
 ### Logical operators
 
-The logical operators that are supported are *and*, *or*, and *not*. Their use is demonstrated below
+The logical operators that are supported are *and*, *or*, and *not*. Their use is demonstrated below:
 
 ``` csharp
 // AND
@@ -294,7 +294,7 @@ bool falseValue = (bool) ExpressionEvaluator.GetValue(ieee, expression);
 
 ### Bitwise operators
 
-The bitwise operators that are supported are *and*, *or*, *xor* and *not*. Their use is demonstrated below. Note, that the logical and bitwise operators are the same and their interpretation depends if you pass in integral values or boolean values.
+The bitwise operators that are supported are *and*, *or*, *xor* and *not*. Their use is demonstrated below. Note, that the logical and bitwise operators are the same and their interpretation depends type of values passed in. If you pass in integral values the operators are interpreted as bitwise and logical if boolean values are passed.
 
 ``` csharp
 // AND
@@ -312,13 +312,13 @@ int result = (int) ExpressionEvaluator.GetValue(null, "!1"); // ~1
 
 ### Mathematical operators
 
-The addition operator can be used on numbers, strings and dates. Subtraction can be used on numbers and dates. Multiplication and division can be used only on numbers. Other mathematical operators supported are modulus (%) and exponential power (^). Standard operator precedence is enforced. These operators are demonstrated below
+The addition operator can be used on numbers, strings and dates. Subtraction can be used on numbers and dates. Multiplication and division can be used only on numbers. Other mathematical operators supported are modulus (%) and exponential power (^). Standard operator precedence is enforced. These operators are demonstrated below:
 
 ``` csharp
 // Addition
 int two = (int)ExpressionEvaluator.GetValue(null, "1 + 1"); // 2
 
-String testString = (String)ExpressionEvaluator.GetValue(null, "'test' + ' ' + 'string'"); //'test string'
+string testString = (String)ExpressionEvaluator.GetValue(null, "'test' + ' ' + 'string'"); //'test string'
 
 DateTime dt = (DateTime)ExpressionEvaluator.GetValue(null, "date('1974-08-24') + 5"); // 8/29/1974
 
@@ -360,11 +360,11 @@ int minusFortyFive = (int) ExpressionEvaluator.GetValue(null, "1+2-3*8^2/2/2"); 
 Assignment
 ----------
 
-Setting of a property is done by using the assignment operator. This would typically be done within a call to `GetValue` since in the simple case `SetValue` offers the same functionality. Assignment in this manner is useful when combining multiple operators in an expression list, discussed in the next section. Some examples of assignment are shown below
+Setting of a property is done by using the assignment operator. This would typically be done within a call to `GetValue` since in the simple case `SetValue` offers the same functionality. Assignment in this manner is useful when combining multiple operators in an expression list, discussed in the next section. Some examples of assignment are shown below:
 
 ``` csharp
 Inventor inventor = new Inventor();
-String aleks = (String) ExpressionEvaluator.GetValue(inventor, "Name = 'Aleksandar Seovic'");
+string aleks = (String) ExpressionEvaluator.GetValue(inventor, "Name = 'Aleksandar Seovic'");
 DateTime dt = (DateTime) ExpressionEvaluator.GetValue(inventor, "DOB = date('1974-08-24')");
 
 //Set the vice president of the society
@@ -374,12 +374,12 @@ Inventor tesla = (Inventor) ExpressionEvaluator.GetValue(ieee, "Officers['vp'] =
 Expression lists
 ----------------
 
-Multiple expressions can be evaluated against the same context object by separating them with a semicolon and enclosing the entire expression within parentheses. The value returned is the value of the last expression in the list. Examples of this are shown below
+Multiple expressions can be evaluated against the same context object by separating them with a semicolon and enclosing the entire expression within parentheses. The value returned is the value of the last expression in the list. Examples of this are shown below:
 
 ``` csharp
 //Perform property assignments and then return Name property.
 
-String pupin = (String) ExpressionEvaluator.GetValue(ieee.Members,
+string pupin = (String) ExpressionEvaluator.GetValue(ieee.Members,
   "( [1].PlaceOfBirth.City = 'Beograd'; [1].PlaceOfBirth.Country = 'Serbia'; [1].Name )"));
 
 // pupin = "Mihajlo Pupin"
@@ -413,7 +413,7 @@ bool trueValue = (bool) ExpressionEvaluator.GetValue(tesla, "T(System.DateTime) 
 Type Registration
 -----------------
 
-To refer to a type within an expression that is not in the mscorlib you need to register it with the `TypeRegistry`. This will allow you to refer to a shorthand name of the type within your expressions. This is commonly used in expression that use the new operator or refer to a static properties of an object. Example usage is shown below.
+To refer to a type within an expression that is not in the mscorlib you need to register it with the `TypeRegistry`. This will allow you to refer to a shorthand name of the type within your expressions. This is commonly used in expression that use the new operator or refer to a static properties of an object. Example usage is shown below:
 
 ``` csharp
 TypeRegistry.RegisterType("Society", typeof(Society));
@@ -455,12 +455,12 @@ WebMethodAttribute webMethod = (WebMethodAttribute) ExpressionEvaluator.GetValue
 
 As you can see, with the exception of the `@` prefix, syntax is exactly the same as in C\#.
 
-Slightly different syntax is not the only thing that differentiates an attribute expression from a standard constructor invocation expression. In addition to that, attribute expression uses slightly different type resolution mechanism and will attempt to load both the specified type name and the specified type name with an `Attribute` suffix, just like the C\# compiler.
+Slightly different syntax is not the only thing that differentiates an attribute expression from a standard constructor invocation expression. In addition to that, attribute expression uses a slightly different type resolution mechanism and will attempt to load both the specified type name and the specified type name with an `Attribute` suffix, just like the C\# compiler.
 
 Variables
 ---------
 
-Variables can referenced in the expression using the syntax `#`*variableName*. The variables are passed in and out of the expression using the dictionary parameter in `ExpressionEvaluator`'s `GetValue` or `SetValue` methods.
+Variables can be referenced in the expression using the syntax `#`*variableName*. The variables are passed in and out of the expression using the dictionary parameter in `ExpressionEvaluator`'s `GetValue` or `SetValue` methods.
 
 ``` csharp
 public static object GetValue(object root, string expression, IDictionary variables)
@@ -468,7 +468,7 @@ public static object GetValue(object root, string expression, IDictionary variab
 public static void SetValue(object root, string expression, IDictionary variables, object newValue)
 ```
 
-The variable name is the key value of the dictionary. Example usage is shown below;
+The variable name is the key value of the dictionary. Example usage is shown below:
 
 ``` csharp
 IDictionary vars = new Hashtable();
@@ -476,14 +476,14 @@ vars["newName"] = "Mike Tesla";
 ExpressionEvaluator.GetValue(tesla, "Name = #newName", vars));
 ```
 
-You can also use the dictionary as a place to store values of the object as they are evaluated inside the expression. For example to change Tesla's first name back again and keep the old value;
+You can also use the dictionary as a place to store values of the object as they are evaluated inside the expression. For example to change Tesla's first name back again and keep the old value:
 
 ``` csharp
 ExpressionEvaluator.GetValue(tesla, "{ #oldName = Name; Name = 'Nikola Tesla' }", vars);
 String oldName = (String)vars["oldName"]; // Mike Tesla
 ```
 
-Variable names can also be used inside indexers or maps instead of literal values. For example;
+Variable names can also be used inside indexers or maps instead of literal values. For example:
 
 ``` csharp
 vars["prez"] = "president";
@@ -492,7 +492,7 @@ Inventor pupin = (Inventor) ExpressionEvaluator.GetValue(ieee, "Officers[#prez]"
 
 ### The '\#this' and '\#root' variables
 
-There are two special variables that are always defined and can be references within the expression: `#this` and `#root`.
+There are two special variables that are always defined and can be reference within the expression: `#this` and `#root`.
 
 The `#this` variable can be used to explicitly refer to the context for the node that is currently being evaluated:
 
@@ -511,13 +511,13 @@ ExpressionEvaluator.GetValue(ieee, "Officers['president'].( #root.Officers.Remov
 Ternary Operator (If-Then-Else)
 -------------------------------
 
-You can use the ternary operator for performing if-then-else conditional logic inside the expression. A minimal example is;
+You can use the ternary operator for performing if-then-else conditional logic inside the expression. A minimal example is:
 
 ``` csharp
 String aTrueString  = (String) ExpressionEvaluator.GetValue(null, "false ? 'trueExp' : 'falseExp'") // trueExp
 ```
 
-In this case, the boolean false results in returning the string value 'trueExp'. A less artificial example is shown below
+In this case, the boolean false results in returning the string value 'trueExp'. A less artificial example is shown below:
 
 ``` csharp
 ExpressionEvaluator.SetValue(ieee, "Name", "IEEE");
@@ -584,7 +584,7 @@ Collection Extensions and Aggregators
 
 In addition to list projection and selection, Solenoid Expression Language also supports several collection extensions, such as `distinct`, `nonNull` and `sort`, as well as a number of commonly used aggregators, such as `max`, `min`, `count`, `sum` and `average`.
 
-The difference between processors and aggregators is that processors return a new or transformed collection, while aggregators return a single value. Other than that, they are very similar -- both processors and aggregators are invoked on a collection node using standard method invocation expression syntax, which makes them very simple to use and allows easy chaining of multiple processors.
+The difference between extensions and aggregators is that extensions return a new or transformed collection, while aggregators return a single value. Other than that, they are very similar -- both extensions and aggregators are invoked on a collection node using standard method invocation expression syntax, which makes them very simple to use and allows easy chaining of multiple extensions.
 
 ### Count Aggregator
 
